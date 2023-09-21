@@ -1,0 +1,15 @@
+.three-days-left {
+  color: orange;
+}
+
+.two-days-left {
+  color: rgb(148, 101, 101);
+}
+
+.one-days-left{
+  color: brown;
+}
+
+.current-date {
+  color: red;
+}

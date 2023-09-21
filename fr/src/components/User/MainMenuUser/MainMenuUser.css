@@ -1,0 +1,108 @@
+@media screen and (min-width: 320px) {
+  .user-menu-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .user-menu__container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+  }
+  .user-menu__container-nav {
+    display: flex;
+    flex-direction: column;
+  }
+  .user-menu__container a {
+    text-decoration: none;
+  }
+  .user-menu__body {
+    display: flex;
+    flex-direction: column;
+  }
+  .user-menu__message {
+    margin-bottom: 10px;
+    font-size: 16px;
+    color: red;
+  }
+  
+  .user-menu__label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .user-menu__form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-items: baseline;
+  }
+  
+  .user-menu__input {
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+  }
+  .user-menu__button {
+    width: 85px;
+    color: #fff;
+    background-color: #0066cc;
+    padding: 10px 30px;
+    border: 2px solid #0066cc;
+    box-shadow: rgb(0, 0, 0) 0px 0px 0px 0px;
+    border-radius: 50px;
+    transition: 1000ms;
+    transform: translateY(0);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    cursor: pointer;
+    justify-content: center;
+  }
+  .active button.user-menu__button {
+    width: 85px;
+    color: #fff;
+    background-color: #ccd0d3;
+    padding: 10px 30px;
+    border: 2px solid #6b6f74;
+    box-shadow: rgb(0, 0, 0) 0px 0px 0px 0px;
+    border-radius: 50px;
+    transition: 1000ms;
+    transform: translateY(0);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    cursor: pointer;
+    justify-content: center;
+  }
+}
+/* ----------------------------------------------------------------- */
+@media screen and (min-width: 768px) {
+  .user-menu__container-nav {
+    flex-direction: row;
+  }
+  .user-menu__button {
+    width: 200px;
+  }
+  .user-menu__button:hover {
+    transition: 1000ms;
+    padding: 10px 50px;
+    transform: translateY(-0px);
+    background-color: #fff;
+    color: #0066cc;
+    border: solid 2px #0066cc;
+  }
+  .active button.user-menu__button {
+    width: 200px;
+  }
+}
+@media screen and (min-width: 1024px) {
+}
+@media screen and (min-width: 1440px) {
+}

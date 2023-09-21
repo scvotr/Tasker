@@ -1,0 +1,30 @@
+.test-fields {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: auto;
+  margin: auto;
+}
+
+@media screen and (orientation: portrait) and (min-width: 412px) and (height: 915px) {
+  .test-fields {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: auto;
+    margin: auto;
+  }
+  .test-fields textarea{
+    margin-left: 10px;
+  }
+}
+
+@media screen and (orientation: landscape) and (min-width: 915px) and (height: 412px) {
+  .test-fields {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: auto;
+    margin: auto;
+  }
+}

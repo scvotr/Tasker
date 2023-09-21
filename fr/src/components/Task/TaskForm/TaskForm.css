@@ -1,0 +1,146 @@
+.form {
+  margin-top: 16px;
+}
+
+.form__container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  align-content: stretch;
+  flex-direction: column;
+}
+
+.form-input__task {
+  width: 280px;
+  height: 48px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+.form__input {
+  width: 150px;
+  height: 32px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+.form-input__file {
+  margin-bottom: 16px;
+}
+
+.form__comment {
+  border-radius: 8px;
+  width: 200px;
+  height: 75px;
+  margin-bottom: 16px;
+}
+
+.form__btn {
+  width: 200px;
+  height: 40px;
+  font-family: Roboto, sans-serif;
+  font-size: 14px;
+  color: #fff;
+  background-color: #0066cc;
+  border: 2px solid #0066cc;
+  box-shadow: rgb(0, 0, 0) 0px 0px 0px 0px;
+  border-radius: 50px;
+  transition: 1000ms;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.form__btn:hover {
+  transition: 1000ms;
+  background-color: #fff;
+  color: #0066cc;
+  border: solid 2px #0066cc;
+}
+
+.form__btn-remove {
+  width: 200px;
+  height: 40px;
+  font-family: Roboto, sans-serif;
+  font-size: 14px;
+  color: #fff;
+  background-color: #f80000;
+  border: 2px solid #0066cc;
+  box-shadow: rgb(0, 0, 0) 0px 0px 0px 0px;
+  border-radius: 50px;
+  transition: 1000ms;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.form__btn-remove:hover {
+  transition: 1000ms;
+  background-color: #fff;
+  color: #0066cc;
+  border: solid 2px #0066cc;
+}
+
+
+/* 26/07/23 */
+.file-preview-container {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 20px;
+  margin-left: 20px;
+  border: 1px solid;
+}
+
+.file-preview-container:hover::after {
+  content: "удалить";
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  padding: 1px;
+}
+/* заглушка для отображения  */
+input[type="file"] {
+  color: transparent;
+  padding-top: 10px;
+}
+
+.task-form-image__prewiev {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.add-file label {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: stretch;
+  flex-wrap: wrap;
+  align-content: stretch;
+}
+
+@media screen and (orientation: portrait) and (min-width: 412px) and (height: 915px) {
+  .form__container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: stretch;
+    flex-wrap: wrap;
+    align-content: stretch;
+    padding-left: 5px;
+  }
+}
+
+@media screen and (orientation: landscape) and (min-width: 915px) and (height: 412px) {
+  .form__container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: stretch;
+    flex-wrap: wrap;
+    align-content: stretch;
+  }
+}

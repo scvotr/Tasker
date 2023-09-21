@@ -1,0 +1,74 @@
+.current-date {
+  color: red;
+}
+
+
+.table-bordered {
+  width: 100%;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center; /* Добавлено для центрирования содержимого ячеек */
+}
+
+.table-bordered th,
+.table-bordered td {
+  padding: 2px;
+  border: 1px solid #ddd;
+  text-align: center; /* Добавлено для центрирования содержимого ячеек */
+}
+
+.table-bordered tr:hover {
+  background-color: initial; /* Устанавливаем исходный цвет фона */
+  background-color: #3cd882;
+}
+
+.pagination-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 15px;
+  margin-top: 10px;
+}
+
+.table-view{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Медиа-запрос для устройств с максимальной шириной 768px */
+/* @media screen and (max-width: 915px) {
+  .edit-user-table th,
+  .edit-user-table td {
+    padding: 6px;
+  }
+} */
+
+/* Медиа-запрос для устройств с максимальной шириной 480px */
+@media screen and (max-width: 411px) {
+  .edit-user-table th,
+  .edit-user-table td {
+    padding: 4px;
+    font-size: 14px;
+  }
+}
+
+@media screen and (orientation: portrait) and (min-width: 412px) and (height: 915px) {
+  /* Стили для вертикальной ориентации */
+  /* Например: */
+  .mobile {
+    display: none;
+  }
+  /* ... */
+}
+
+@media screen and (orientation: landscape) and (min-width: 915px) and (height: 412px) {
+  /* Стили для вертикальной ориентации */
+  /* Например: */
+  /* .edit-user-table th,
+  .edit-user-table td {
+    padding: 6px;
+  } */
+  /* ... */
+}

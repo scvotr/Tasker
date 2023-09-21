@@ -1,0 +1,44 @@
+@media screen and (min-width: 320px) {
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  th,
+  td {
+    text-align: left;
+    padding: 2px;
+  }
+  th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+  }
+  tr {
+    cursor: pointer;
+  }
+  tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  .edit-user-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+  }
+  .edit-user-table th,
+  .edit-user-table td {
+    padding: 2px;
+    border: 1px solid #ddd;
+    text-align: center; /* Добавлено для центрирования содержимого ячеек */
+  }
+  
+}
+@media screen and (min-width: 768px) {
+}
+@media screen and (min-width: 1024px) {
+}
+@media screen and (min-width: 1440px) {
+}
+

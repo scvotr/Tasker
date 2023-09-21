@@ -1,0 +1,9 @@
+.select-section{
+  padding-bottom: 10px;
+}
+
+@media screen and (orientation: portrait) and (min-width: 412px) and (height: 915px) {
+  .select-section{
+    padding-bottom: 10px;
+  }
+}
