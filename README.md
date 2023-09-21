@@ -16,7 +16,7 @@
 
 Серверная часть:
 ```
-$ cd bkgit 
+$ cd bk
 $ npm i
 $ node server.js
 ```
