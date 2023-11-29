@@ -1,3 +1,4 @@
+'use strict'
 const http = require("http");
 
 const { handleDefaultRoute } = require("./routes/handleDefaultRoute");
@@ -7,6 +8,7 @@ const { handleAdminRoutes } = require("./routes/handleAdminRoutes");
 const { handleOrgStructRoutes } = require("./routes/handleOrgStructRoutes");
 const { handleTaskRoutes } = require("./routes/handleTaskRoutes");
 const { handleUserRoutes } = require("./routes/handleUserRoutes");
+const { handleVenchelRoutes } = require("./routes/handleVenchelRoutes");
 
 const routeHandlers = [
   { prefix: "/auth", handler: handleAuthRoutes },
@@ -14,6 +16,7 @@ const routeHandlers = [
   { prefix: "/orgStruct", handler: handleOrgStructRoutes },
   { prefix: "/tasks", handler: handleTaskRoutes },
   { prefix: "/user", handler: handleUserRoutes },
+  { prefix: "/venchel", handler: handleVenchelRoutes },
 ];
 
 const server = http.createServer(async (req, res) => {
