@@ -65,7 +65,7 @@
 @media screen and (min-width: 1024px) {
   .modal {
     max-width: 80%;
-    margin-left: 55%;
+    /* margin-left: 55%; */
   }
 }
 @media screen and (min-width: 1440px) {
