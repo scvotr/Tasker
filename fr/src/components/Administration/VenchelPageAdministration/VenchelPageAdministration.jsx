@@ -48,7 +48,6 @@ export const VenchelPageAdministration = () => {
     setTaskFormKey((prevKey) => prevKey + 1);
   }
 
-
   useEffect(() => {
     console.log('re render')
     if (currentUser.login) {
@@ -63,7 +62,7 @@ export const VenchelPageAdministration = () => {
   return (
     <div className="admin-venchel-page">
       <div className="admin-venchel-page__container">
-        Редактирование оборудования
+        Редактирование оборудования {resStaus}
       </div>
       <div className="admin-venchel-page__container">
         <MainMenuAdministration />

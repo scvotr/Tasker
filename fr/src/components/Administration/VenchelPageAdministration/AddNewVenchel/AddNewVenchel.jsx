@@ -5,6 +5,8 @@ import { v4 as uuidv4 } from "uuid";
 import { useAuthContext } from "../../../../context/AuthProvider";
 import { convertToFormData } from "../../../../utils/convertToFormData";
 import { HOST_ADDR } from "../../../../utils/ApiHostAdres";
+import {QRCodeSVG, QRCodeCanvas} from 'qrcode.react';
+
 
 export const sendNewVenchelData = async (token, formData, onSuccess) => {
   delete formData.filePreviews;
@@ -34,8 +36,12 @@ export const AddNewVenchel = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [reqStatus, setReqStatus] = useState();
 
+  
+  
   const [equipmentId, setEquipmentId] = useState(uuidv4());
 
+  const [qrCodeValue, setQrCodeValue] = useState(equipmentId); // Состояние для значения, используемого для генерации QR кода
+  
   const equipmentInitVal = {
     id: equipmentId,
     position: "",
@@ -50,6 +56,7 @@ export const AddNewVenchel = (props) => {
   };
 
   const [formData, setFormData] = useState(equipmentInitVal);
+  console.log(formData)
 
   const getFormData = (e) => {
     e.preventDefault();
@@ -97,8 +104,10 @@ export const AddNewVenchel = (props) => {
           name="position"
           value={formData.position}
           onChange={getFormData}
-        />
+          />
       </label>
+          {/* {qrCodeValue && <QRCodeSVG  value={qrCodeValue} size={128} />} */}
+          {/* {qrCodeValue && <QRCodeCanvas   value={qrCodeValue} size={128} />} */}
       <label>
         Тип: <nsbp></nsbp>
         <input
