@@ -6,7 +6,10 @@ const {
 
 const { saveAndConvert } = require('../../utils/files/saveAndConvert');
 
-const {createNewVenchel} = require("../../Database/VenchelQuery/VenchelQuery")
+const {
+  createNewVenchel,
+  getAllVenchels,
+} = require("../../Database/VenchelQuery/VenchelQuery")
 
 const sendResponseWithData = (res, data) => {
   res.setHeader('Content-Type', 'application/json');
@@ -25,8 +28,6 @@ const handleError = (res, error) => {
 class VenchelControler {
   async addNewVenchel(req, res) {
     try {
-      const authDecodeUserData = req.user
-      const user_id = authDecodeUserData.id
       const postPayload = authDecodeUserData.payLoad
       const fields = postPayload.fields;
       
@@ -37,6 +38,15 @@ class VenchelControler {
 
     } catch (error) {
       handleError(res, 'addNewVenchel')
+    }
+  }
+  async getAllVenchels(req, res) {
+    try {
+      const data = await getAllVenchels()
+      console.log('!!!!!!!!!', data)
+      sendResponseWithData(res, data)
+    } catch (error) {
+      handleError(res, 'getAllVenchels')
     }
   }
 }

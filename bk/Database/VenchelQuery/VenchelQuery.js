@@ -5,11 +5,10 @@ const path = require("path")
 
 
 const createNewVenchel = async(data) => {
-  console.log('createNewVenchel', data)
   const command = `
     INSERT INTO equipment (id, position, type, pos_num, model, location, power, width, height)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
-  `;
+  `
   try {
     await queryAsyncWraperParam(
       command,
@@ -26,11 +25,22 @@ const createNewVenchel = async(data) => {
       ]
     )
   } catch (error) {
-    console.error("createNewVenchel ERROR: ", error);
+    console.error("createNewVenchel ERROR: ", error)
+    return;
+  }
+}
+
+const getAllVenchels = async(data) => {
+  const command = `SELECT * FROM equipment`
+  try {
+    await queryAsyncWraperParam(command)
+  } catch (error) {
+    console.error("getAllVenchels ERROR: ", error)
     return;
   }
 }
 
 module.exports = {
   createNewVenchel,
+  getAllVenchels,
 }
