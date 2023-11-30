@@ -1,6 +1,6 @@
 import './AddNewVenchel.css'
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { useAuthContext } from "../../../../context/AuthProvider";
 import { convertToFormData } from "../../../../utils/convertToFormData";
@@ -29,6 +29,7 @@ export const sendNewVenchelData = async (token, formData, onSuccess) => {
 };
 
 export const AddNewVenchel = (props) => {
+  const { reRender } = props
   const currentUser = useAuthContext();
   const [isLoading, setIsLoading] = useState(false);
   const [reqStatus, setReqStatus] = useState();
@@ -75,13 +76,14 @@ export const AddNewVenchel = (props) => {
       width: "",
       height: "",
     };
-    console.log("!!!", formData);
     setFormData(newEquipmentInitVal);
     setEquipmentId(newEquipmentId);
     try {
       await sendNewVenchelData(currentUser.token, formData, setReqStatus)
+      reRender(true)
     } catch (error) {
       setIsLoading(false)
+      reRender(false)
       console.log('sendNewVenchelData', error)
     }
   };

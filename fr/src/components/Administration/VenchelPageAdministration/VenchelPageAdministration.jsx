@@ -42,7 +42,15 @@ export const VenchelPageAdministration = () => {
     setShowModal(false);
   };
 
+  const [taskFormKey, setTaskFormKey] = useState(0);
+
+  const handleReRenderByModel = (isUpdate) => {
+    setTaskFormKey((prevKey) => prevKey + 1);
+  }
+
+
   useEffect(() => {
+    console.log('re render')
     if (currentUser.login) {
       try {
         getAllVenchels(currentUser.token, setReqStatus).then((data) => {
@@ -50,7 +58,7 @@ export const VenchelPageAdministration = () => {
         });
       } catch (error) {}
     }
-  }, [currentUser]);
+  }, [currentUser, taskFormKey]);
 
   return (
     <div className="admin-venchel-page">
@@ -64,7 +72,7 @@ export const VenchelPageAdministration = () => {
         <button onClick={openModal}>Add</button>
         {showModal && (
           <Modal isOpen={openModal} onClose={closeModal}>
-            <AddNewVenchel />
+            <AddNewVenchel keyProp={taskFormKey} reRender = {handleReRenderByModel}/>
           </Modal>
         )}
         <VenchelTableView data = {venchels}/>

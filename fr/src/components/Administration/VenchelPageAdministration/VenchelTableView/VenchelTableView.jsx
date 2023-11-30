@@ -1,5 +1,4 @@
 export const VenchelTableView = ({ data })=> {
-  console.log(data)
   return (
     <table>
       <thead>
@@ -16,7 +15,7 @@ export const VenchelTableView = ({ data })=> {
         </tr>
       </thead>
       <tbody>
-        {data.map(item => (
+        {data && data.map(item => (
           <tr key={item.id}>
             <td>{(item.id).substring(0,3)}</td>
             <td>{item.height}</td>
