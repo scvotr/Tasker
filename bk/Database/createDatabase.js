@@ -427,6 +427,7 @@ const createEquipmentTable = async () => {
            model TEXT NOT NULL,
            location TEXT NOT NULL,
            power TEXT NOT NULL,
+           width TEXT NOT NULL,
            height TEXT NOT NULL
        )`, "run")
   } catch (error) {

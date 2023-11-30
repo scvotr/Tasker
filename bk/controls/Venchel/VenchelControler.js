@@ -6,7 +6,7 @@ const {
 
 const { saveAndConvert } = require('../../utils/files/saveAndConvert');
 
-// databae query
+const {createNewVenchel} = require("../../Database/VenchelQuery/VenchelQuery")
 
 const sendResponseWithData = (res, data) => {
   res.setHeader('Content-Type', 'application/json');
@@ -29,7 +29,12 @@ class VenchelControler {
       const user_id = authDecodeUserData.id
       const postPayload = authDecodeUserData.payLoad
       const fields = postPayload.fields;
-      console.log('VenchelControler', postPayload)
+      
+      await createNewVenchel(fields)
+      res.setHeader('Content-Type', 'application/json')
+      res.write(JSON.stringify('Status venchel created'))
+      res.end()
+
     } catch (error) {
       handleError(res, 'addNewVenchel')
     }

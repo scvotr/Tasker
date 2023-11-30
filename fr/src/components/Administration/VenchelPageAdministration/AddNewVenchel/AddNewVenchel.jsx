@@ -134,7 +134,7 @@ export const AddNewVenchel = (props) => {
         />
       </label>
       <label>
-        Мошьность: <nsbp></nsbp>
+        Мощьность: <nsbp></nsbp>
         <input
           type="text"
           name="power"
