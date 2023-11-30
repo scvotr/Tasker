@@ -414,6 +414,26 @@ const createUsers = async (userDataArray) => {
     console.error("Error creating tokens table:", error);
   }
 }
+// ----------------------------------------------------------------------------
+const createEquipmentTable = async () => {
+  try {
+    await queryAsyncWraper(
+      // command
+      `CREATE TABLE IF NOT EXISTS equipment (
+           id TEXT PRIMARY KEY,
+           position TEXT NOT NULL,
+           type TEXT NOT NULL,
+           pos_num TEXT NOT NULL,
+           model TEXT NOT NULL,
+           location TEXT NOT NULL,
+           power TEXT NOT NULL,
+           height TEXT NOT NULL
+       )`, "run")
+  } catch (error) {
+    console.log('DB ERROR: ', error)
+  }
+}
+
 
 db.serialize(async () => {
   createTableTasks()
@@ -424,6 +444,7 @@ db.serialize(async () => {
   createTablePositions()
   createTableTasksComments()
   createTableTasksFiles()
+  createEquipmentTable()
 })
 
 module.exports = {
