@@ -37,8 +37,15 @@ export const AddNewVenchel = (props) => {
 
   const equipmentInitVal = {
     id: equipmentId,
-    name: "",
-    name2: "",
+    position: "",
+    type: "",
+    pos_num: "",
+    model: "",
+    location: "",
+    power: "",
+    length: "",
+    width: "",
+    height: "",
   };
 
   const [formData, setFormData] = useState(equipmentInitVal);
@@ -58,8 +65,15 @@ export const AddNewVenchel = (props) => {
     const newEquipmentId = uuidv4();
     const newEquipmentInitVal = {
       id: newEquipmentId,
-      name: "",
-      name2: "",
+      position: "",
+      type: "",
+      pos_num: "",
+      model: "",
+      location: "",
+      power: "",
+      length: "",
+      width: "",
+      height: "",
     };
     console.log("!!!", formData);
     setFormData(newEquipmentInitVal);
@@ -75,20 +89,74 @@ export const AddNewVenchel = (props) => {
   return (
     <form className="add-equip__form" onSubmit={addEquip}>
       <label>
-        Номер:
+        Позиция: <nsbp></nsbp>
         <input
           type="text"
-          name="name"
-          value={formData.name}
+          name="position"
+          value={formData.position}
           onChange={getFormData}
         />
       </label>
       <label>
-        Название:
+        Тип: <nsbp></nsbp>
         <input
           type="text"
-          name="name2"
-          value={formData.name2}
+          name="type"
+          value={formData.type}
+          onChange={getFormData}
+        />
+      </label>
+      <label>
+        Номер: <nsbp></nsbp>
+        <input
+          type="text"
+          name="pos_num"
+          value={formData.pos_num}
+          onChange={getFormData}
+        />
+      </label>
+      <label>
+        Модель: <nsbp></nsbp>
+        <input
+          type="text"
+          name="model"
+          value={formData.model}
+          onChange={getFormData}
+        />
+      </label>
+      <label>
+        Расположени: <nsbp></nsbp>
+        <input
+          type="text"
+          name="location"
+          value={formData.location}
+          onChange={getFormData}
+        />
+      </label>
+      <label>
+        Мошьность: <nsbp></nsbp>
+        <input
+          type="text"
+          name="power"
+          value={formData.power}
+          onChange={getFormData}
+        />
+      </label>
+      <label>
+        Длина: <nsbp></nsbp>
+        <input
+          type="text"
+          name="length"
+          value={formData.length}
+          onChange={getFormData}
+        />
+      </label>
+      <label>
+        Высота: <nsbp></nsbp>
+        <input
+          type="text"
+          name="height"
+          value={formData.height}
           onChange={getFormData}
         />
       </label>
