@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { AddNewVenchel } from "./AddNewVenchel/AddNewVenchel.jsx";
 import { useAuthContext } from "../../../context/AuthProvider.js";
 import { HOST_ADDR } from "../../../utils/ApiHostAdres.js";
+import { VenchelTableView } from "./VenchelTableView/VenchelTableView.jsx";
 
 const getAllVenchels = async (token, onSuccess) => {
   try {
@@ -32,7 +33,6 @@ export const VenchelPageAdministration = () => {
   const [resStaus, setReqStatus] = useState(null);
 
   const [venchels, setVenchels] = useState()
-
   const [showModal, setShowModal] = useState(false);
 
   const openModal = () => {
@@ -67,6 +67,7 @@ export const VenchelPageAdministration = () => {
             <AddNewVenchel />
           </Modal>
         )}
+        <VenchelTableView data = {venchels}/>
       </div>
     </div>
   );
