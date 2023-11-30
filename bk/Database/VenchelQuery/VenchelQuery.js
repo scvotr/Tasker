@@ -30,15 +30,15 @@ const createNewVenchel = async(data) => {
   }
 }
 
-const getAllVenchels = async(data) => {
-  const command = `SELECT * FROM equipment`
+const getAllVenchels = async () => {
   try {
-    await queryAsyncWraperParam(command)
+    const result = await queryAsyncWraperParam("SELECT * FROM equipment");
+    return result;
   } catch (error) {
-    console.error("getAllVenchels ERROR: ", error)
-    return;
+    console.error("getAllVenchels ERROR: ", error);
+    return [];
   }
-}
+};
 
 module.exports = {
   createNewVenchel,

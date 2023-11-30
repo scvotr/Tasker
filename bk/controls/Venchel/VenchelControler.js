@@ -28,6 +28,7 @@ const handleError = (res, error) => {
 class VenchelControler {
   async addNewVenchel(req, res) {
     try {
+      const authDecodeUserData = req.user
       const postPayload = authDecodeUserData.payLoad
       const fields = postPayload.fields;
       
@@ -42,8 +43,8 @@ class VenchelControler {
   }
   async getAllVenchels(req, res) {
     try {
+      const authDecodeUserData = req.user
       const data = await getAllVenchels()
-      console.log('!!!!!!!!!', data)
       sendResponseWithData(res, data)
     } catch (error) {
       handleError(res, 'getAllVenchels')
