@@ -1,8 +1,21 @@
 import { useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 import { ImageBlock } from "../../../Task/TaskForm/ImageBlock/ImageBlock";
+import { VenchelTextFields } from "./VenchelTextFields/VenchelTextFields";
+import "./VenchelFormV2.css";
 
 export const VenchelFormV2 = () => {
   const initValue = {
+    venchel_id: uuidv4(),
+    position: "",
+    type: "",
+    pos_num: "",
+    model: "",
+    location: "",
+    power: "",
+    length: "",
+    width: "",
+    height: "",
     files: [],
     filePreviews: [],
     filesToRemove: [],
@@ -10,6 +23,7 @@ export const VenchelFormV2 = () => {
   };
 
   const [formData, setFormData] = useState(initValue);
+  console.log("formData", formData);
   const [isLoading, setIsLoading] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
 
@@ -61,8 +75,10 @@ export const VenchelFormV2 = () => {
   };
 
   const handleFIleInput = (e) => {
-    if (e.target.files.length > 5) {
-      alert(`не больше 5`);
+    const input = e.target;
+    if (input.files.length > 5) {
+      alert("Максимальное количество файлов - 5");
+      input.value = "";
     }
   };
 
@@ -73,46 +89,39 @@ export const VenchelFormV2 = () => {
         const currentPrewievs = [...formData.filePreviews];
         currentFiles.splice(fileIndex, 1);
         currentPrewievs.splice(fileIndex, 1);
-         setFormData((prev) => ({
+        setFormData((prev) => ({
           ...prev,
           files: currentFiles,
           filePreviews: currentPrewievs,
         }));
       } catch (error) {
-        console.error('Ошибка при удалении файла', error);
+        console.error("Ошибка при удалении файла", error);
       }
     }
   };
 
+  const removeCurrentFiles = (fileIndex) => {};
+
   return (
-    <div className="form">
+    <>
       {isLoading ? (
         <>Загрузка.....</>
       ) : (
         <form className="form__container" onSubmit={handleFormSubmit}>
-          <div className="add-file">
-            <label>
-              pic
-              <div>
-                <input
-                  className="form-input__file"
-                  type="file"
-                  onChange={getInputData}
-                  name={isEdit ? "append_new_files" : "add_new_files"}
-                  accept="image/jpeg, image/png"
-                  multiple
-                  onInput={handleFIleInput}
-                />
-              </div>
-            </label>
-          </div>
-
-          <ImageBlock
-            files={formData}
-            actionType="addNewTaskFiles"
-            takeAddedIndex={removeAppendedFile}
-          />
-
+    
+            <VenchelTextFields
+              getData={getInputData}
+              value={formData}
+              isEdit={isEdit}
+              handleFIleInput={handleFIleInput}
+            />
+ 
+            <ImageBlock
+              files={formData}
+              actionType="addNewTaskFiles"
+              takeAddedIndex={removeAppendedFile}
+            />
+ 
           <div className="add-edit__btn">
             <button className="form__btn" type="submit">
               {isEdit ? "Редактирование" : "Создать"}
@@ -125,6 +134,6 @@ export const VenchelFormV2 = () => {
           )}
         </form>
       )}
-    </div>
+    </>
   );
 };
