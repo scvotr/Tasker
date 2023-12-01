@@ -2,7 +2,7 @@ import { MainMenuAdministration } from "../MainMenuAdministration/MainMenuAdmini
 import "./VenchelPageAdministration.css";
 import { Modal } from "../../Modal/Modal.jsx";
 import { useState, useEffect } from "react";
-import { AddNewVenchel } from "./AddNewVenchel/AddNewVenchel.jsx";
+import { VenchelForm } from "./VenchelForm/VenchelForm.jsx";
 import { useAuthContext } from "../../../context/AuthProvider.js";
 import { HOST_ADDR } from "../../../utils/ApiHostAdres.js";
 import { VenchelTableView } from "./VenchelTableView/VenchelTableView.jsx";
@@ -44,7 +44,7 @@ export const VenchelPageAdministration = () => {
 
   const [taskFormKey, setTaskFormKey] = useState(0);
 
-  const handleReRenderByModel = (isUpdate) => {
+  const handleReRenderByModal = (isUpdate) => {
     setTaskFormKey((prevKey) => prevKey + 1);
   }
 
@@ -71,7 +71,7 @@ export const VenchelPageAdministration = () => {
         <button onClick={openModal}>Add</button>
         {showModal && (
           <Modal isOpen={openModal} onClose={closeModal}>
-            <AddNewVenchel keyProp={taskFormKey} reRender = {handleReRenderByModel}/>
+            <VenchelForm keyProp={taskFormKey} reRender = {handleReRenderByModal}/>
           </Modal>
         )}
         <VenchelTableView data = {venchels}/>

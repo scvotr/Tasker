@@ -1,34 +1,67 @@
-export const VenchelTableView = ({ data })=> {
+import { useState } from "react";
+import { Modal } from "../../../Modal/Modal";
+import { VenchelForm } from "../VenchelForm/VenchelForm";
+
+
+export const VenchelTableView = ({ data }) => {
+  const [selectedVenchel, setSelectedVencel] = useState();
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const openModal = (task) => {
+    setSelectedVencel(task);
+    setModalOpen(true);
+  };
+  const closeModal = () => {
+    setSelectedVencel(null);
+    setModalOpen(false);
+  };
+
+  const [taskFormKey, setTaskFormKey] = useState(0);
+
+  const handleReRenderByModal = (isUpdate) => {
+    setTaskFormKey((prevKey) => prevKey + 1);
+  }
+
   return (
-    <table>
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Высота</th>
-          <th>Размещение</th>
-          <th>Марка</th>
-          <th>Номер</th>
-          <th>Позиция</th>
-          <th>Мощьность</th>
-          <th>Тип</th>
-          <th>Длина</th>
-        </tr>
-      </thead>
-      <tbody>
-        {data && data.map(item => (
-          <tr key={item.id}>
-            <td>{(item.id).substring(0,3)}</td>
-            <td>{item.height}</td>
-            <td>{item.location}</td>
-            <td>{item.model}</td>
-            <td>{item.pos_num}</td>
-            <td>{item.position}</td>
-            <td>{item.power}</td>
-            <td>{item.type}</td>
-            <td>{item.width}</td>
+    <>
+      <>
+        {selectedVenchel && (
+          <Modal isOpen={openModal} onClose={closeModal}>
+            <VenchelForm keyProp={taskFormKey} reRender = {handleReRenderByModal} selectedVenchel = {selectedVenchel}/>
+          </Modal>
+        )}
+      </>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Высота</th>
+            <th>Размещение</th>
+            <th>Марка</th>
+            <th>Номер</th>
+            <th>Позиция</th>
+            <th>Мощьность</th>
+            <th>Тип</th>
+            <th>Длина</th>
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {data &&
+            data.map((item) => (
+              <tr key={item.id} onClick={() => openModal(item)}>
+                <td>{item.id.substring(0, 3)}</td>
+                <td>{item.height}</td>
+                <td>{item.location}</td>
+                <td>{item.model}</td>
+                <td>{item.pos_num}</td>
+                <td>{item.position}</td>
+                <td>{item.power}</td>
+                <td>{item.type}</td>
+                <td>{item.width}</td>
+              </tr>
+            ))}
+        </tbody>
+      </table>
+    </>
   );
-}
+};

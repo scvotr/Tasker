@@ -1,12 +1,11 @@
-import './AddNewVenchel.css'
+import "./VenchelForm.css";
 
 import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { useAuthContext } from "../../../../context/AuthProvider";
 import { convertToFormData } from "../../../../utils/convertToFormData";
 import { HOST_ADDR } from "../../../../utils/ApiHostAdres";
-import {QRCodeSVG, QRCodeCanvas} from 'qrcode.react';
-
+import { QRCodeSVG, QRCodeCanvas } from "qrcode.react";
 
 export const sendNewVenchelData = async (token, formData, onSuccess) => {
   delete formData.filePreviews;
@@ -30,18 +29,17 @@ export const sendNewVenchelData = async (token, formData, onSuccess) => {
   }
 };
 
-export const AddNewVenchel = (props) => {
-  const { reRender } = props
+export const VenchelForm = (props) => {
+  const { reRender, selectedVenchel } = props;
+
   const currentUser = useAuthContext();
   const [isLoading, setIsLoading] = useState(false);
   const [reqStatus, setReqStatus] = useState();
 
-  
-  
   const [equipmentId, setEquipmentId] = useState(uuidv4());
 
   const [qrCodeValue, setQrCodeValue] = useState(equipmentId); // Состояние для значения, используемого для генерации QR кода
-  
+
   const equipmentInitVal = {
     id: equipmentId,
     position: "",
@@ -56,7 +54,13 @@ export const AddNewVenchel = (props) => {
   };
 
   const [formData, setFormData] = useState(equipmentInitVal);
-  console.log(formData)
+  console.log(formData);
+
+  useEffect(() => {
+    if (selectedVenchel) {
+      setFormData({ ...formData, ...selectedVenchel });
+    }
+  }, [selectedVenchel]);
 
   const getFormData = (e) => {
     e.preventDefault();
@@ -67,7 +71,7 @@ export const AddNewVenchel = (props) => {
     }));
   };
 
-  const addEquip = async (e) => {
+  const handelAddEquip = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     const newEquipmentId = uuidv4();
@@ -86,30 +90,44 @@ export const AddNewVenchel = (props) => {
     setFormData(newEquipmentInitVal);
     setEquipmentId(newEquipmentId);
     try {
-      await sendNewVenchelData(currentUser.token, formData, setReqStatus)
-      reRender(true)
+      await sendNewVenchelData(currentUser.token, formData, setReqStatus);
+      reRender(true);
     } catch (error) {
-      setIsLoading(false)
-      reRender(false)
-      console.log('sendNewVenchelData', error)
+      setIsLoading(false);
+      reRender(false);
+      console.log("sendNewVenchelData", error);
     }
   };
 
+  const handelRemoveEquip = async (e) => {
+    e.preventDefault();
+    const data = {
+      task_id: formData.id,
+      // file_name: formData.file_names,
+    };
+    try {
+      // await removeTask(currentUser.token, data, setReqStatus);
+      // onTaskSubmit(true);
+      console.log(data)
+    } catch (error) {}
+    // onTaskSubmit(false);
+  };
+
   return (
-    <form className="add-equip__form" onSubmit={addEquip}>
+    <form className="add-equip__form" onSubmit={handelAddEquip}>
       <label>
-        Позиция: <nsbp></nsbp>
+        Позиция: <nbsp />
         <input
           type="text"
           name="position"
           value={formData.position}
           onChange={getFormData}
-          />
+        />
       </label>
-          {/* {qrCodeValue && <QRCodeSVG  value={qrCodeValue} size={128} />} */}
-          {/* {qrCodeValue && <QRCodeCanvas   value={qrCodeValue} size={128} />} */}
+      {/* {qrCodeValue && <QRCodeSVG  value={qrCodeValue} size={128} />} */}
+      {/* {qrCodeValue && <QRCodeCanvas   value={qrCodeValue} size={128} />} */}
       <label>
-        Тип: <nsbp></nsbp>
+        Тип: <nbsp />
         <input
           type="text"
           name="type"
@@ -118,7 +136,7 @@ export const AddNewVenchel = (props) => {
         />
       </label>
       <label>
-        Номер: <nsbp></nsbp>
+        Номер: <nbsp />
         <input
           type="text"
           name="pos_num"
@@ -127,7 +145,7 @@ export const AddNewVenchel = (props) => {
         />
       </label>
       <label>
-        Модель: <nsbp></nsbp>
+        Модель: <nbsp />
         <input
           type="text"
           name="model"
@@ -136,7 +154,7 @@ export const AddNewVenchel = (props) => {
         />
       </label>
       <label>
-        Расположени: <nsbp></nsbp>
+        Расположени: <nbsp />
         <input
           type="text"
           name="location"
@@ -145,7 +163,7 @@ export const AddNewVenchel = (props) => {
         />
       </label>
       <label>
-        Мощьность: <nsbp></nsbp>
+        Мощьность: <nbsp />
         <input
           type="text"
           name="power"
@@ -154,7 +172,7 @@ export const AddNewVenchel = (props) => {
         />
       </label>
       <label>
-        Длина: <nsbp></nsbp>
+        Длина: <nbsp />
         <input
           type="text"
           name="length"
@@ -163,7 +181,7 @@ export const AddNewVenchel = (props) => {
         />
       </label>
       <label>
-        Высота: <nsbp></nsbp>
+        Высота: <nbsp />
         <input
           type="text"
           name="height"
@@ -171,11 +189,20 @@ export const AddNewVenchel = (props) => {
           onChange={getFormData}
         />
       </label>
-      <button type="submit">add</button>
+      <div className="add-edit__btn">
+        <button className="form__btn" type="submit">
+          {selectedVenchel ? "Редактирование" : "Создать"}
+        </button>
+      </div>
+      {selectedVenchel && (
+        <button className="form__btn-remove" onClick={handelRemoveEquip}>
+          Удалить
+        </button>
+      )}
     </form>
   );
 };
 
-AddNewVenchel.defaultProps = {
+VenchelForm.defaultProps = {
   name: 404,
 };
