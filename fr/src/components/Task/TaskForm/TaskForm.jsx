@@ -303,7 +303,7 @@ export const TaskForm = ({ taskToEdit, onTaskSubmit, keyProp }) => {
   };
 
   return (
-    <div className="from">
+    <div className="form">
       {isLoading ? (
         <>Загрузка......</>
       ) : (
