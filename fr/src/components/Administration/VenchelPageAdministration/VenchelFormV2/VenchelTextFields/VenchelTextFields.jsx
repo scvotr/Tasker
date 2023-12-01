@@ -16,7 +16,7 @@ export const VenchelTextFields = ({ getData, value, isEdit, handleFileInput }) =
 
   return (
     <div className="text-fields__container">
-      {fields.map((field) => (
+      {fields && fields.map((field) => (
         <label key={field.name}>
           {field.label}:
           <input

@@ -30,7 +30,8 @@ class VenchelControler {
   async addNewVenchel(req, res) {
     try {
       const fields = req.user.payLoad.fields;
-      await createNewVenchel(fields)
+      console.log(fields)
+      // await createNewVenchel(fields)
       res.setHeader('Content-Type', 'application/json')
       res.write(JSON.stringify('Status venchel created'))
       res.end()

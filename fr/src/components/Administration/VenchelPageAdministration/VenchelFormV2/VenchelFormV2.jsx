@@ -2,9 +2,12 @@ import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { ImageBlock } from "../../../Task/TaskForm/ImageBlock/ImageBlock";
 import { VenchelTextFields } from "./VenchelTextFields/VenchelTextFields";
+import { useAuthContext } from "../../../../context/AuthProvider";
+import { sendDataToEndpoint } from "../../../../utils/sendDataToEndpoint";
 import "./VenchelFormV2.css";
 
 export const VenchelFormV2 = () => {
+  const currentUser = useAuthContext();
   const initValue = {
     venchel_id: uuidv4(),
     position: "",
@@ -23,11 +26,30 @@ export const VenchelFormV2 = () => {
   };
 
   const [formData, setFormData] = useState(initValue);
-  console.log("formData", formData);
   const [isLoading, setIsLoading] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
+  const [reqStatus, setReqStatus] = useState(null); console.log('reqStatus', reqStatus)
 
-  const handleFormSubmit = () => {};
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    if (isEdit) {
+      try {
+      } catch (error) {}
+    } else {
+      try {
+        await sendDataToEndpoint(
+          currentUser.token,
+          formData,
+          "/venchel/addNewVenchel",
+          "POST",
+          setReqStatus
+        );
+        setFormData(initValue);
+        setIsLoading(false);
+      } catch (error) {}
+    }
+  };
   const handleRemoveItem = () => {};
 
   const getInputData = async (e) => {
@@ -108,30 +130,28 @@ export const VenchelFormV2 = () => {
         <>Загрузка.....</>
       ) : (
         <form className="form__container" onSubmit={handleFormSubmit}>
-    
-            <VenchelTextFields
-              getData={getInputData}
-              value={formData}
-              isEdit={isEdit}
-              handleFIleInput={handleFIleInput}
-            />
- 
-            <ImageBlock
-              files={formData}
-              actionType="addNewTaskFiles"
-              takeAddedIndex={removeAppendedFile}
-            />
- 
+          <VenchelTextFields
+            getData={getInputData}
+            value={formData}
+            isEdit={isEdit}
+            handleFIleInput={handleFIleInput}
+          />
+          <ImageBlock
+            files={formData}
+            actionType="addNewTaskFiles"
+            takeAddedIndex={removeAppendedFile}
+          />
           <div className="add-edit__btn">
             <button className="form__btn" type="submit">
               {isEdit ? "Редактирование" : "Создать"}
             </button>
+            {isEdit && (
+              <button className="form__btn-remove" onClick={handleRemoveItem}>
+                Удалить
+              </button>
+            )}
+            <p>{reqStatus}</p>
           </div>
-          {isEdit && (
-            <button className="form__btn-remove" onClick={handleRemoveItem}>
-              Удалить
-            </button>
-          )}
         </form>
       )}
     </>

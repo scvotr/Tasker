@@ -34,7 +34,7 @@ export const ImageBlock = ({ files, actionType, takeExistIndex, takeAddedIndex }
         </>
       ) : actionType === "addNewTaskFiles" ? (
         <>
-          {files.filePreviews.map((preview, index) => (
+          {files && files.filePreviews && files.filePreviews.map((preview, index) => (
             <div key={index} className="file-preview-container">
               {preview.startsWith("data:application/pdf") ? (
                 <div className="pdf__container" onClick={() => takeAddedIndex(index)}>
