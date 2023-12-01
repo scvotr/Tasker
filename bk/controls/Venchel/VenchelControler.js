@@ -50,6 +50,18 @@ class VenchelControler {
       handleError(res, 'getAllVenchels')
     }
   }
+  async removeVenchel(req, res) {
+    try {
+      const authDecodeUserData = req.user
+      const postPayload = authDecodeUserData.payLoad
+      console.log('removeNewVenchel', postPayload)
+      res.setHeader('Content-Type', 'application/json')
+      res.write(JSON.stringify('Status venchel removed'))
+      res.end()
+    } catch (error) {
+      
+    }
+  }
 }
 
 module.exports = new VenchelControler()

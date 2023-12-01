@@ -6,9 +6,9 @@ const { protectRouteTkPl } = require("../utils/protectRouteTkPl");
 
 const routeHandlers = {
   "/venchel/addNewVenchel": VenchelControler.addNewVenchel,
-  "/venchel/updateNewVenchel": VenchelControler.updateNewVenchel,
-  "/venchel/removeNewVenchel": VenchelControler.removeNewVenchel,
   "/venchel/getAllVenchels": VenchelControler.getAllVenchels,
+  "/venchel/removeVenchel": VenchelControler.removeVenchel,
+  "/venchel/updateNewVenchel": VenchelControler.updateNewVenchel,
   "/venchel/getAllVenchelsByDep": VenchelControler.getAllVenchelsByDep,
   "/venchel/getVenchelsFile": VenchelControler.getVenchelsFile,
   "/venchel/getFullFileContent": VenchelControler.getFullFileContent,
