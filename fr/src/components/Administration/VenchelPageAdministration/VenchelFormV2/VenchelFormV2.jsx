@@ -9,7 +9,7 @@ export const VenchelFormV2 = () => {
     task_files: [],
   };
 
-  const [formData, setFormData] = useState(initValue); 
+  const [formData, setFormData] = useState(initValue);
   const [isLoading, setIsLoading] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
 
@@ -20,40 +20,38 @@ export const VenchelFormV2 = () => {
     e.preventDefault();
     const { name, value, files } = e.target;
     if (name === "add_new_files" || name === "append_new_files") {
-      setIsLoading(true)
+      setIsLoading(true);
       const allowedTypes = ["image/jpeg", "image/png"];
       const data = Array.from(files).filter((file) =>
         allowedTypes.includes(file.type)
       );
       const previews = await Promise.all(
-        data.map(file => {
-          return new Promise( resolve => {
+        data.map((file) => {
+          return new Promise((resolve) => {
             const fileReader = new FileReader();
             fileReader.onload = (e) => {
-              if(file.type.startsWith('image/')){
+              if (file.type.startsWith("image/")) {
                 const image = new Image();
-                image.src = e.target.result
+                image.src = e.target.result;
                 image.onload = () => {
-                  resolve(e.target.result)
-                }
-              } else if (fileReader.type.startsWith('application/pdf')) {
-                resolve(e.target.result);  
+                  resolve(e.target.result);
+                };
+              } else if (fileReader.type.startsWith("application/pdf")) {
+                resolve(e.target.result);
               }
             };
-            fileReader.readAsDataURL(file)
-          })
+            fileReader.readAsDataURL(file);
+          });
         })
-      )
-      setIsLoading(false)
-      setFormData( (prev) => ({
+      );
+      setIsLoading(false);
+      setFormData((prev) => ({
         ...prev,
-        files : [...prev.files, ...data],
-        filePreviews : [...prev.filePreviews, ...previews]
-      }))
-    } else if(name === '') {
-
-    } else if(name === '2'){
-
+        files: [...prev.files, ...data],
+        filePreviews: [...prev.filePreviews, ...previews],
+      }));
+    } else if (name === "") {
+    } else if (name === "2") {
     } else {
       setFormData((prev) => ({
         ...prev,
@@ -65,6 +63,24 @@ export const VenchelFormV2 = () => {
   const handleFIleInput = (e) => {
     if (e.target.files.length > 5) {
       alert(`не больше 5`);
+    }
+  };
+
+  const removeAppendedFile = (fileIndex) => {
+    if (formData.files && formData.filePreviews) {
+      try {
+        const currentFiles = [...formData.files];
+        const currentPrewievs = [...formData.filePreviews];
+        currentFiles.splice(fileIndex, 1);
+        currentPrewievs.splice(fileIndex, 1);
+         setFormData((prev) => ({
+          ...prev,
+          files: currentFiles,
+          filePreviews: currentPrewievs,
+        }));
+      } catch (error) {
+        console.error('Ошибка при удалении файла', error);
+      }
     }
   };
 
@@ -91,7 +107,11 @@ export const VenchelFormV2 = () => {
             </label>
           </div>
 
-          <ImageBlock files={formData} actionType="addNewTaskFiles" />
+          <ImageBlock
+            files={formData}
+            actionType="addNewTaskFiles"
+            takeAddedIndex={removeAppendedFile}
+          />
 
           <div className="add-edit__btn">
             <button className="form__btn" type="submit">
