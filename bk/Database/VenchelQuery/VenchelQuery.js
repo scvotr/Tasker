@@ -40,7 +40,19 @@ const getAllVenchels = async () => {
   }
 };
 
+const removeVenchel = async (id) => {
+  command  = `
+    DELETE FROM equipment WHERE id = ?
+  `
+  try {
+    await queryAsyncWraperParam(command,[id])
+  } catch (error) {
+    console.error("removeVenchel ERROR: ", error)
+  }
+};
+
 module.exports = {
   createNewVenchel,
   getAllVenchels,
+  removeVenchel,
 }

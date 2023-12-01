@@ -9,6 +9,7 @@ const { saveAndConvert } = require('../../utils/files/saveAndConvert');
 const {
   createNewVenchel,
   getAllVenchels,
+  removeVenchel,
 } = require("../../Database/VenchelQuery/VenchelQuery")
 
 const sendResponseWithData = (res, data) => {
@@ -54,7 +55,9 @@ class VenchelControler {
     try {
       const authDecodeUserData = req.user
       const postPayload = authDecodeUserData.payLoad
-      console.log('removeNewVenchel', postPayload)
+      const fields = postPayload.fields;
+      console.log('removeNewVenchel', fields.task_id)
+      await removeVenchel(fields.task_id)
       res.setHeader('Content-Type', 'application/json')
       res.write(JSON.stringify('Status venchel removed'))
       res.end()

@@ -29,6 +29,27 @@ export const sendNewVenchelData = async (token, formData, onSuccess) => {
   }
 };
 
+const removeVenchel = async(token, formData, onSuccess) => {
+  try {
+    const data = convertToFormData(formData)
+    const res = await fetch( HOST_ADDR + "/venchel/removeVenchel", {
+      method: "POST",
+      headers: {
+        Authorization: token,
+      },
+      body: data,
+    })
+    if (res.ok) {
+      const responseData = await res.json();
+      onSuccess(responseData);
+    } else {
+      throw new Error("Server response was not ok");
+    }
+  } catch (error) {
+    onSuccess(error);
+  }
+}
+
 export const VenchelForm = (props) => {
   const { reRender, selectedVenchel } = props;
 
@@ -106,7 +127,7 @@ export const VenchelForm = (props) => {
       // file_name: formData.file_names,
     };
     try {
-      // await removeTask(currentUser.token, data, setReqStatus);
+      await removeVenchel(currentUser.token, data, setReqStatus)
       // onTaskSubmit(true);
       console.log(data)
     } catch (error) {}
