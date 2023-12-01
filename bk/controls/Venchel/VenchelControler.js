@@ -14,6 +14,7 @@ const { saveAndConvert } = require('../../utils/files/saveAndConvert');
 
 const {
   createNewVenchel,
+  createNewVenchel_V02,
   getAllVenchels,
   removeVenchel,
 } = require("../../Database/VenchelQuery/VenchelQuery")
@@ -47,14 +48,14 @@ class VenchelControler {
           console.error('Error saving  venchel file:', error);
         }
       }
-      console.log(fileNames)
+      const data = {fields, fileNames}
+      await createNewVenchel_V02(data)
       // await createNewVenchel(fields)
       res.setHeader('Content-Type', 'application/json')
       res.write(JSON.stringify('Status venchel created'))
       res.end()
-
     } catch (error) {
-      handleError(res, error)
+      handleError(res, `addNewVenchel${error}`)
     }
   }
 

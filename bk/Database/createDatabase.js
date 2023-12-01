@@ -415,7 +415,7 @@ const createUsers = async (userDataArray) => {
   }
 }
 // ----------------------------------------------------------------------------
-const createEquipmentTable = async () => {
+const createVenchelTable = async () => {
   try {
     await queryAsyncWraper(
       // command
@@ -435,6 +435,23 @@ const createEquipmentTable = async () => {
   }
 }
 
+const createTableVenchelFiles = async () => {
+  try {
+    await queryAsyncWraper(
+      // command
+      `CREATE TABLE IF NOT EXISTS venchel_files (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        venchel_id INTEGER,
+        file_name TEXT,
+        file_path TEXT,
+        uploaded_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY(venchel_id) REFERENCES equipment(id)
+       )`, "run")
+  } catch (error) {
+    console.log('DB ERROR: ', error)
+  }
+}
+
 
 db.serialize(async () => {
   createTableTasks()
@@ -445,7 +462,8 @@ db.serialize(async () => {
   createTablePositions()
   createTableTasksComments()
   createTableTasksFiles()
-  createEquipmentTable()
+  createVenchelTable()
+  createTableVenchelFiles()
 })
 
 module.exports = {

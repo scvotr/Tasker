@@ -68,7 +68,7 @@ class TasksControler {
       res.write(JSON.stringify('Status acceptet'))
       res.end()
     } catch (error) {
-      handleError(res, 'addNewTask')
+      handleError(res, `addNewTask${error}`)
     }
   }
   // Все задачи по ID пользоветля
