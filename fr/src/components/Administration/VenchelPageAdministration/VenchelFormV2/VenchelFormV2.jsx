@@ -6,7 +6,7 @@ import { useAuthContext } from "../../../../context/AuthProvider";
 import { sendDataToEndpoint } from "../../../../utils/sendDataToEndpoint";
 import "./VenchelFormV2.css";
 
-export const VenchelFormV2 = () => {
+export const VenchelFormV2 = ({reRender}) => {
   const currentUser = useAuthContext();
   const initValue = {
     venchel_id: uuidv4(),
@@ -47,7 +47,12 @@ export const VenchelFormV2 = () => {
         );
         setFormData(initValue);
         setIsLoading(false);
-      } catch (error) {}
+        reRender(true);
+      } catch (error) {
+        setIsLoading(false);
+        reRender(false);
+        console.log("sendNewVenchelData", error);
+      }
     }
   };
   const handleRemoveItem = () => {};
