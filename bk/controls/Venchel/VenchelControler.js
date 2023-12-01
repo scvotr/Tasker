@@ -29,8 +29,19 @@ const handleError = (res, error) => {
 class VenchelControler {
   async addNewVenchel(req, res) {
     try {
-      const fields = req.user.payLoad.fields;
-      console.log(fields)
+      const fields = req.user.payLoad.fields
+      const files = req.user.payLoad.files
+      const venchelFolderName = fields.venchel_id
+      const fileNames = []
+      for(const [key, file] of Object.entries(files)) {
+        try {
+          const fileName = await saveAndConvert(file, venchelFolderName)
+          fileNames.push(fileName.fileName)
+        } catch (error) {
+          console.error('Error saving  venchel file:', error);
+        }
+      }
+      console.log(fileNames)
       // await createNewVenchel(fields)
       res.setHeader('Content-Type', 'application/json')
       res.write(JSON.stringify('Status venchel created'))
