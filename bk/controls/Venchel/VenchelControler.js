@@ -29,40 +29,35 @@ const handleError = (res, error) => {
 class VenchelControler {
   async addNewVenchel(req, res) {
     try {
-      const authDecodeUserData = req.user
-      const postPayload = authDecodeUserData.payLoad
-      const fields = postPayload.fields;
-      
+      const fields = req.user.payLoad.fields;
       await createNewVenchel(fields)
       res.setHeader('Content-Type', 'application/json')
       res.write(JSON.stringify('Status venchel created'))
       res.end()
 
     } catch (error) {
-      handleError(res, 'addNewVenchel')
+      handleError(res, error)
     }
   }
+
   async getAllVenchels(req, res) {
     try {
-      const authDecodeUserData = req.user
       const data = await getAllVenchels()
       sendResponseWithData(res, data)
     } catch (error) {
-      handleError(res, 'getAllVenchels')
+      handleError(res, error)
     }
   }
+
   async removeVenchel(req, res) {
     try {
-      const authDecodeUserData = req.user
-      const postPayload = authDecodeUserData.payLoad
-      const fields = postPayload.fields;
-      console.log('removeNewVenchel', fields.task_id)
+      const fields = req.user.payLoad.fields;
       await removeVenchel(fields.task_id)
       res.setHeader('Content-Type', 'application/json')
       res.write(JSON.stringify('Status venchel removed'))
       res.end()
     } catch (error) {
-      
+      handleError(res, error)
     }
   }
 }
