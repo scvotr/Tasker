@@ -1,3 +1,9 @@
+const fs = require('fs');
+const path = require('path');
+
+const currentDirectory = process.cwd();
+const venchelsFolderPath = path.join(currentDirectory, 'uploads/venchels')
+
 const {
   saveFile,
   deleteFile,
@@ -35,7 +41,7 @@ class VenchelControler {
       const fileNames = []
       for(const [key, file] of Object.entries(files)) {
         try {
-          const fileName = await saveAndConvert(file, venchelFolderName)
+          const fileName = await saveAndConvert(file, venchelFolderName, venchelsFolderPath)
           fileNames.push(fileName.fileName)
         } catch (error) {
           console.error('Error saving  venchel file:', error);
