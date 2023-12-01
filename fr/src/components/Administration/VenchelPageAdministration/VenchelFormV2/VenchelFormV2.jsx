@@ -9,7 +9,7 @@ export const VenchelFormV2 = () => {
     task_files: [],
   };
 
-  const [formData, setFormData] = useState(initValue); console.log('formData', formData)
+  const [formData, setFormData] = useState(initValue); 
   const [isLoading, setIsLoading] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
 
@@ -50,6 +50,15 @@ export const VenchelFormV2 = () => {
         files : [...prev.files, ...data],
         filePreviews : [...prev.filePreviews, ...previews]
       }))
+    } else if(name === '') {
+
+    } else if(name === '2'){
+
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
     }
   };
 
