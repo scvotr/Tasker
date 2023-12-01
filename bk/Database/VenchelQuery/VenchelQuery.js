@@ -62,10 +62,7 @@ const createNewVenchel_V02 = async (data) => {
   if (data.fileNames) {
     for (let i = 0; i < data.fileNames.length; i++) {
       const file_name = data.fileNames[i];
-      // console.log('file', file_name)
-      // Если пользователь не ввел название файла и путь, пропускаем файл
       if (!file_name) {
-        //.file_name || !file.file_path
         continue;
       }
 
