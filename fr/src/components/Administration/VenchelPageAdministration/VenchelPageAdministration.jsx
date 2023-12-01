@@ -74,7 +74,7 @@ export const VenchelPageAdministration = () => {
             <VenchelForm keyProp={taskFormKey} reRender = {handleReRenderByModal}/>
           </Modal>
         )}
-        <VenchelTableView data = {venchels}/>
+        <VenchelTableView data = {venchels} reRender = {handleReRenderByModal}/>
       </div>
     </div>
   );

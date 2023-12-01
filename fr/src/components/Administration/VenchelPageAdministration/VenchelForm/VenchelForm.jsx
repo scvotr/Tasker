@@ -29,16 +29,16 @@ export const sendNewVenchelData = async (token, formData, onSuccess) => {
   }
 };
 
-const removeVenchel = async(token, formData, onSuccess) => {
+const removeVenchel = async (token, venchel_id, onSuccess) => {
   try {
-    const data = convertToFormData(formData)
-    const res = await fetch( HOST_ADDR + "/venchel/removeVenchel", {
+    const data = convertToFormData(venchel_id);
+    const res = await fetch(HOST_ADDR + "/venchel/removeVenchel", {
       method: "POST",
       headers: {
         Authorization: token,
       },
       body: data,
-    })
+    });
     if (res.ok) {
       const responseData = await res.json();
       onSuccess(responseData);
@@ -48,7 +48,7 @@ const removeVenchel = async(token, formData, onSuccess) => {
   } catch (error) {
     onSuccess(error);
   }
-}
+};
 
 export const VenchelForm = (props) => {
   const { reRender, selectedVenchel } = props;
@@ -124,14 +124,13 @@ export const VenchelForm = (props) => {
     e.preventDefault();
     const data = {
       task_id: formData.id,
-      // file_name: formData.file_names,
     };
     try {
-      await removeVenchel(currentUser.token, data, setReqStatus)
-      // onTaskSubmit(true);
-      console.log(data)
+      await removeVenchel(currentUser.token, data, setReqStatus);
+      reRender(true);
+      console.log(data);
     } catch (error) {}
-    // onTaskSubmit(false);
+      reRender(false);
   };
 
   return (

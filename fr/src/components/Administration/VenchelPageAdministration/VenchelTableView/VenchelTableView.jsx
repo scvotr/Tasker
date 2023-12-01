@@ -3,7 +3,7 @@ import { Modal } from "../../../Modal/Modal";
 import { VenchelForm } from "../VenchelForm/VenchelForm";
 
 
-export const VenchelTableView = ({ data }) => {
+export const VenchelTableView = ({ data, reRender }) => {
   const [selectedVenchel, setSelectedVencel] = useState();
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -27,7 +27,7 @@ export const VenchelTableView = ({ data }) => {
       <>
         {selectedVenchel && (
           <Modal isOpen={openModal} onClose={closeModal}>
-            <VenchelForm keyProp={taskFormKey} reRender = {handleReRenderByModal} selectedVenchel = {selectedVenchel}/>
+            <VenchelForm keyProp={taskFormKey} reRender = {reRender} selectedVenchel = {selectedVenchel}/>
           </Modal>
         )}
       </>
