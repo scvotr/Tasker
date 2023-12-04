@@ -5,6 +5,7 @@ import { VenchelTextFields } from "./VenchelTextFields/VenchelTextFields";
 import { useAuthContext } from "../../../../context/AuthProvider";
 import { sendDataToEndpoint } from "../../../../utils/sendDataToEndpoint";
 import "./VenchelFormV2.css";
+import { DepartmentSelect } from "../../../SelectFields/HoldinStuct/Dep/DepartmentSelect";
 
 export const VenchelFormV2 = ({reRender}) => {
   const currentUser = useAuthContext();
@@ -26,7 +27,7 @@ export const VenchelFormV2 = ({reRender}) => {
     task_files: [],
   };
 
-  const [formData, setFormData] = useState(initValue);
+  const [formData, setFormData] = useState(initValue); console.log(formData)
   const [isLoading, setIsLoading] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [reqStatus, setReqStatus] = useState(null); console.log('reqStatus', reqStatus)
@@ -142,6 +143,7 @@ export const VenchelFormV2 = ({reRender}) => {
             isEdit={isEdit}
             handleFIleInput={handleFIleInput}
           />
+          <DepartmentSelect value = {formData.department_id} onChange = {getInputData}/>
           <ImageBlock
             files={formData}
             actionType="addNewTaskFiles"
