@@ -8,7 +8,7 @@ const path = require("path")
 
 const createNewVenchel = async (data) => {
   const command = `
-    INSERT INTO equipment (id, position, type, pos_num, model, location, power, width, height)
+    INSERT INTO venchels (id, position, type, pos_num, model, location, power, width, height)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
   `
   try {
@@ -34,7 +34,7 @@ const createNewVenchel = async (data) => {
 const createNewVenchel_V02 = async (data) => {
   console.log('>>>>>>>>>>>>', data)
   const command = `
-    INSERT INTO equipment (id, position, type, pos_num, model, location, power, width, height)
+    INSERT INTO venchels (id, position, type, pos_num, model, location, power, width, height, department_id)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
   `
   try {
@@ -50,6 +50,7 @@ const createNewVenchel_V02 = async (data) => {
         data.fields.power,
         data.fields.width,
         data.fields.height,
+        data.fields.department_id,
       ],
       "run" //?
     )
@@ -79,7 +80,7 @@ const createNewVenchel_V02 = async (data) => {
 
 const getAllVenchels = async () => {
   try {
-    const result = await queryAsyncWraperParam("SELECT * FROM equipment");
+    const result = await queryAsyncWraperParam("SELECT * FROM venchels");
     return result;
   } catch (error) {
     console.error("getAllVenchels ERROR: ", error);
@@ -87,9 +88,19 @@ const getAllVenchels = async () => {
   }
 };
 
+const getAllVenchelsByDep = async (dep_id) => {
+  const command = `SELECT * FROM venchels WHERE department_id = ?;`
+  try {
+    return await queryAsyncWraperParam(command, [dep_id])
+  } catch (error) {
+    console.log('DB ERROR:', error);
+    throw error;
+  }
+};
+
 const removeVenchel = async (id) => {
-  command = `
-    DELETE FROM equipment WHERE id = ?
+  const command = `
+    DELETE FROM venchels WHERE id = ?
   `
   try {
     await queryAsyncWraperParam(command, [id])
@@ -103,4 +114,5 @@ module.exports = {
   createNewVenchel_V02,
   getAllVenchels,
   removeVenchel,
+  getAllVenchelsByDep,
 }

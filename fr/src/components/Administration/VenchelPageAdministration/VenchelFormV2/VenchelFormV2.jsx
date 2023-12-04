@@ -19,6 +19,7 @@ export const VenchelFormV2 = ({reRender}) => {
     length: "",
     width: "",
     height: "",
+    department_id: "",
     files: [],
     filePreviews: [],
     filesToRemove: [],

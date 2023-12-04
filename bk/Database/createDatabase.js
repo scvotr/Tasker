@@ -418,8 +418,7 @@ const createUsers = async (userDataArray) => {
 const createVenchelTable = async () => {
   try {
     await queryAsyncWraper(
-      // command
-      `CREATE TABLE IF NOT EXISTS equipment (
+      `CREATE TABLE IF NOT EXISTS venchels (
            id TEXT PRIMARY KEY,
            position TEXT NOT NULL,
            type TEXT NOT NULL,
@@ -428,8 +427,11 @@ const createVenchelTable = async () => {
            location TEXT NOT NULL,
            power TEXT NOT NULL,
            width TEXT NOT NULL,
-           height TEXT NOT NULL
-       )`, "run")
+           height TEXT NOT NULL,
+           department_id INTEGER,
+           FOREIGN KEY (department_id) REFERENCES departments (id)
+       )`
+    )
   } catch (error) {
     console.log('DB ERROR: ', error)
   }
@@ -445,7 +447,7 @@ const createTableVenchelFiles = async () => {
         file_name TEXT,
         file_path TEXT,
         uploaded_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY(venchel_id) REFERENCES equipment(id)
+        FOREIGN KEY(venchel_id) REFERENCES venchels(id)
        )`, "run")
   } catch (error) {
     console.log('DB ERROR: ', error)
