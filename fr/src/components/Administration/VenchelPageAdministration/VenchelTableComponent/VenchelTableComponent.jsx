@@ -3,7 +3,7 @@ import { Modal } from "../../../Modal/Modal";
 import { VenchelFormV2 } from "../VenchelFormV2/VenchelFormV2";
 import { VenchelTableView } from "../VenchelTableView/VenchelTableView";
 
-export const VenchelTableComponent = ({current_dep, reRender}) => {
+export const VenchelTableComponent = ({dep, current_dep, reRender}) => {
   const [showModal, setShowModal] = useState(false);
 
   const openModal = () => {
@@ -19,6 +19,7 @@ export const VenchelTableComponent = ({current_dep, reRender}) => {
       {showModal && (
         <Modal isOpen={openModal} onClose={closeModal}>
           <VenchelFormV2
+            dep = {dep}
             reRender={reRender}
           />
         </Modal>

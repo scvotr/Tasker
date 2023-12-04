@@ -7,7 +7,7 @@ import { sendDataToEndpoint } from "../../../../utils/sendDataToEndpoint";
 import "./VenchelFormV2.css";
 import { DepartmentSelect } from "../../../SelectFields/HoldinStuct/Dep/DepartmentSelect";
 
-export const VenchelFormV2 = ({reRender}) => {
+export const VenchelFormV2 = ({dep, reRender}) => {
   const currentUser = useAuthContext();
   const initValue = {
     venchel_id: uuidv4(),
@@ -20,14 +20,14 @@ export const VenchelFormV2 = ({reRender}) => {
     length: "",
     width: "",
     height: "",
-    department_id: "",
+    department_id: dep,
     files: [],
     filePreviews: [],
     filesToRemove: [],
     task_files: [],
   };
 
-  const [formData, setFormData] = useState(initValue); console.log(formData)
+  const [formData, setFormData] = useState(initValue);
   const [isLoading, setIsLoading] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [reqStatus, setReqStatus] = useState(null); console.log('reqStatus', reqStatus)
@@ -143,7 +143,7 @@ export const VenchelFormV2 = ({reRender}) => {
             isEdit={isEdit}
             handleFIleInput={handleFIleInput}
           />
-          <DepartmentSelect value = {formData.department_id} onChange = {getInputData}/>
+          {/* <DepartmentSelect value = {formData.department_id} onChange = {getInputData}/> */}
           <ImageBlock
             files={formData}
             actionType="addNewTaskFiles"

@@ -32,14 +32,17 @@ const getAllVenchels = async (token, onSuccess) => {
   }
 };
 
+const AE_ID = 3
+const PE_ID = 4
+
 export const VenchelPageAdministration = () => {
   const currentUser = useAuthContext()
   const [resStaus, setReqStatus] = useState(null)
   const [selectedButton, setSelectedButton] = useState() //!
  
   const [venchels, setVenchels] = useState()
-  const [ae_venchels, setAe_venchels] = useState(); console.log('ae_venchels', ae_venchels)
-  const [pe_venchels, setPe_venchels] = useState(); console.log('pe_venchels', pe_venchels)
+  const [ae_venchels, setAe_venchels] = useState()
+  const [pe_venchels, setPe_venchels] = useState()
   const [aeCount, setAeCount] = useState()
   const [peCount, setPeCount] = useState()
 
@@ -65,10 +68,10 @@ export const VenchelPageAdministration = () => {
           setVenchels(data);
         });
         getAllVenchels(currentUser.token, setReqStatus).then(data => {
-          const ae_venshels = data.filter( (venchel) => venchel.department_id === 3)
+          const ae_venshels = data.filter( (venchel) => venchel.department_id === AE_ID)
           setAe_venchels(ae_venshels)
           setAeCount(ae_venshels.length)
-          const pe_venshels = data.filter( (venchel) => venchel.department_id === 4)
+          const pe_venshels = data.filter( (venchel) => venchel.department_id === PE_ID)
           setPe_venchels(pe_venshels)
           setPeCount(pe_venshels.length)
         }) 
@@ -83,10 +86,10 @@ export const VenchelPageAdministration = () => {
   let venchelTableComponent;  //!
   if(selectedButton === 'dep_ae') {
     console.log('Алексики')
-    venchelTableComponent = <VenchelTableComponent current_dep={ae_venchels} reRender={handleReRenderByModal}/>
+    venchelTableComponent = <VenchelTableComponent dep={AE_ID} current_dep={ae_venchels} reRender={handleReRenderByModal}/>
   } else if(selectedButton === 'dep_pe'){
     console.log('Панфилово')
-    venchelTableComponent = <VenchelTableComponent current_dep={pe_venchels} reRender={handleReRenderByModal}/>
+    venchelTableComponent = <VenchelTableComponent dep={PE_ID} current_dep={pe_venchels} reRender={handleReRenderByModal}/>
   }
 
   return (
