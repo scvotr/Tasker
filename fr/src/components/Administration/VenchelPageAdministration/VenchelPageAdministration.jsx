@@ -35,12 +35,17 @@ export const VenchelPageAdministration = () => {
   const [resStaus, setReqStatus] = useState(null)
   const [selectedButton, setSelectedButton] = useState()
  
-  const [venchels, setVenchels] = useState()
+  const [venchels, setVenchels] = useState() // not use
   const [ae_venchels, setAe_venchels] = useState()
-  const [pe_venchels, setPe_venchels] = useState()
   const [aeCount, setAeCount] = useState()
+  const [pe_venchels, setPe_venchels] = useState()
   const [peCount, setPeCount] = useState()
   const [taskFormKey, setTaskFormKey] = useState(0);
+
+  const [state, setState] = useState({
+    ae_venchels: undefined,
+    aeCount: undefined,
+  })
 
   const handleReRenderByModal = (isUpdate) => {
     setTaskFormKey((prevKey) => prevKey + 1);
@@ -56,6 +61,13 @@ export const VenchelPageAdministration = () => {
           const ae_venshels = data.filter( (venchel) => venchel.department_id === AE_ID)
           setAe_venchels(ae_venshels)
           setAeCount(ae_venshels.length)
+          // ------------------------------------------
+          setState(prevState => ({
+            ...prevState, // копируем предыдущее состояние
+            ae_venchels: ae_venshels, // обновляем ae_venchels на новое значение
+            aeCount: ae_venshels.length // обновляем ae_venchels на новое значение
+          }))
+          //-------------------------------------------
           const pe_venshels = data.filter( (venchel) => venchel.department_id === PE_ID)
           setPe_venchels(pe_venshels)
           setPeCount(pe_venshels.length)
@@ -71,7 +83,7 @@ export const VenchelPageAdministration = () => {
   let venchelTableComponent
   if(selectedButton === 'dep_ae') {
     console.log('Алексики')
-    venchelTableComponent = <VenchelTableComponent dep={AE_ID} current_dep={ae_venchels} reRender={handleReRenderByModal}/>
+    venchelTableComponent = <VenchelTableComponent dep={AE_ID} current_dep={state.ae_venchels} reRender={handleReRenderByModal}/>
   } else if(selectedButton === 'dep_pe'){
     console.log('Панфилово')
     venchelTableComponent = <VenchelTableComponent dep={PE_ID} current_dep={pe_venchels} reRender={handleReRenderByModal}/>
@@ -89,7 +101,7 @@ export const VenchelPageAdministration = () => {
         <VenchelButtonGroup
           handleButtonClick={handleMenuButtonClick}
           selectedButton={selectedButton}
-          venchelAeCount={aeCount}
+          venchelAeCount={state.aeCount}
           venchelPeCount={peCount}
         />
         {venchelTableComponent}
