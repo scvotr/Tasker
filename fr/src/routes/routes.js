@@ -42,6 +42,14 @@ export const routes = createBrowserRouter([{
     element: <VenchelPageAdministration/>,
   },
   {
+    path: '/elevator_ae',
+    element: <VenchelPageAdministration/>,
+  },
+  {
+    path: '/elevator_pe',
+    element: <VenchelPageAdministration/>,
+  },
+  {
     path: '/taskPageUser',
     element: <TaskPageUser />,
   },

@@ -18,10 +18,6 @@ export const VenchelTableView = ({ data, reRender }) => {
 
   const [taskFormKey, setTaskFormKey] = useState(0);
 
-  const handleReRenderByModal = (isUpdate) => {
-    setTaskFormKey((prevKey) => prevKey + 1);
-  }
-
   return (
     <>
       <>

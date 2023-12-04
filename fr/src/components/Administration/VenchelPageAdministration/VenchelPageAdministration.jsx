@@ -7,6 +7,7 @@ import { VenchelFormV2 } from "./VenchelFormV2/VenchelFormV2.jsx";
 import { useAuthContext } from "../../../context/AuthProvider.js";
 import { HOST_ADDR } from "../../../utils/ApiHostAdres.js";
 import { VenchelTableView } from "./VenchelTableView/VenchelTableView.jsx";
+import { VenchelMenuAdminstration } from './VenchelMenuAdminstration/VenchelMenuAdminstration'
 
 const getAllVenchels = async (token, onSuccess) => {
   try {
@@ -25,15 +26,15 @@ const getAllVenchels = async (token, onSuccess) => {
       throw new Error("Server response was not ok or content type is not JSON");
     }
   } catch (error) {
-    onSuccess(error)
+    onSuccess(error);
   }
-}
+};
 
 export const VenchelPageAdministration = () => {
   const currentUser = useAuthContext();
   const [resStaus, setReqStatus] = useState(null);
 
-  const [venchels, setVenchels] = useState()
+  const [venchels, setVenchels] = useState();
   const [showModal, setShowModal] = useState(false);
 
   const openModal = () => {
@@ -47,10 +48,10 @@ export const VenchelPageAdministration = () => {
 
   const handleReRenderByModal = (isUpdate) => {
     setTaskFormKey((prevKey) => prevKey + 1);
-  }
+  };
 
   useEffect(() => {
-    console.log('re render')
+    console.log("re render");
     if (currentUser.login) {
       try {
         getAllVenchels(currentUser.token, setReqStatus).then((data) => {
@@ -72,10 +73,19 @@ export const VenchelPageAdministration = () => {
         <button onClick={openModal}>Add</button>
         {showModal && (
           <Modal isOpen={openModal} onClose={closeModal}>
-            <VenchelFormV2 keyProp={taskFormKey} reRender = {handleReRenderByModal}/>
+            <VenchelFormV2
+              keyProp={taskFormKey}
+              reRender={handleReRenderByModal}
+            />
           </Modal>
         )}
-        <VenchelTableView data = {venchels} reRender = {handleReRenderByModal}/>
+
+        {/* <div className="admin-venchel-page__container">
+          <VenchelMenuAdminstration/>
+        </div> */}
+
+        <VenchelTableView data={venchels} reRender={handleReRenderByModal} />
+
       </div>
     </div>
   );
