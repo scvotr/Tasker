@@ -1,13 +1,8 @@
 import { MainMenuAdministration } from "../MainMenuAdministration/MainMenuAdministration";
 import "./VenchelPageAdministration.css";
-import { Modal } from "../../Modal/Modal.jsx";
 import { useState, useEffect } from "react";
-import { VenchelForm } from "./VenchelForm/VenchelForm.jsx";
-import { VenchelFormV2 } from "./VenchelFormV2/VenchelFormV2.jsx";
 import { useAuthContext } from "../../../context/AuthProvider.js";
 import { HOST_ADDR } from "../../../utils/ApiHostAdres.js";
-import { VenchelTableView } from "./VenchelTableView/VenchelTableView.jsx";
-import { VenchelMenuAdminstration } from './VenchelMenuAdminstration/VenchelMenuAdminstration'
 import { VenchelButtonGroup } from "./VenchelButtonGroup/VenchelButtonGroup.jsx";
 import { VenchelTableComponent } from "./VenchelTableComponent/VenchelTableComponent.jsx";
 
@@ -38,23 +33,13 @@ const PE_ID = 4
 export const VenchelPageAdministration = () => {
   const currentUser = useAuthContext()
   const [resStaus, setReqStatus] = useState(null)
-  const [selectedButton, setSelectedButton] = useState() //!
+  const [selectedButton, setSelectedButton] = useState()
  
   const [venchels, setVenchels] = useState()
   const [ae_venchels, setAe_venchels] = useState()
   const [pe_venchels, setPe_venchels] = useState()
   const [aeCount, setAeCount] = useState()
   const [peCount, setPeCount] = useState()
-
-  // const [showModal, setShowModal] = useState(false)
-
-  // const openModal = () => {
-  //   setShowModal(true);
-  // };
-  // const closeModal = () => {
-  //   setShowModal(false);
-  // };
-
   const [taskFormKey, setTaskFormKey] = useState(0);
 
   const handleReRenderByModal = (isUpdate) => {
@@ -79,11 +64,11 @@ export const VenchelPageAdministration = () => {
     }
   }, [currentUser, taskFormKey]);
 
-  const handleMenuButtonClick = (button) =>{ //!
+  const handleMenuButtonClick = (button) =>{
     setSelectedButton(button)
   }
 
-  let venchelTableComponent;  //!
+  let venchelTableComponent
   if(selectedButton === 'dep_ae') {
     console.log('Алексики')
     venchelTableComponent = <VenchelTableComponent dep={AE_ID} current_dep={ae_venchels} reRender={handleReRenderByModal}/>
@@ -101,17 +86,6 @@ export const VenchelPageAdministration = () => {
         <MainMenuAdministration />
       </div>
       <div className="admin-venchel__body">
-        {/* <button onClick={openModal}>Add</button>
-        {showModal && (
-          <Modal isOpen={openModal} onClose={closeModal}>
-            <VenchelFormV2
-              keyProp={taskFormKey}
-              reRender={handleReRenderByModal}
-            />
-          </Modal>
-        )}
-        <VenchelTableView data={venchels} reRender={handleReRenderByModal} />    */}
-{/* ------------------------------------------------------------------ */}
         <VenchelButtonGroup
           handleButtonClick={handleMenuButtonClick}
           selectedButton={selectedButton}
