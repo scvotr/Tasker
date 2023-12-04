@@ -8,6 +8,8 @@ import { useAuthContext } from "../../../context/AuthProvider.js";
 import { HOST_ADDR } from "../../../utils/ApiHostAdres.js";
 import { VenchelTableView } from "./VenchelTableView/VenchelTableView.jsx";
 import { VenchelMenuAdminstration } from './VenchelMenuAdminstration/VenchelMenuAdminstration'
+import { VenchelButtonGroup } from "./VenchelButtonGroup/VenchelButtonGroup.jsx";
+import { VenchelTableComponent } from "./VenchelTableComponent/VenchelTableComponent.jsx";
 
 const getAllVenchels = async (token, onSuccess) => {
   try {
@@ -31,18 +33,22 @@ const getAllVenchels = async (token, onSuccess) => {
 };
 
 export const VenchelPageAdministration = () => {
-  const currentUser = useAuthContext();
-  const [resStaus, setReqStatus] = useState(null);
+  const currentUser = useAuthContext()
+  const [resStaus, setReqStatus] = useState(null)
+  const [selectedButton, setSelectedButton] = useState() //!
+ 
+  const [venchels, setVenchels] = useState()
+  const [ae_venchels, setAe_venchels] = useState()
+  const [pe_venchels, setPe_venchels] = useState()
 
-  const [venchels, setVenchels] = useState();
-  const [showModal, setShowModal] = useState(false);
+  // const [showModal, setShowModal] = useState(false)
 
-  const openModal = () => {
-    setShowModal(true);
-  };
-  const closeModal = () => {
-    setShowModal(false);
-  };
+  // const openModal = () => {
+  //   setShowModal(true);
+  // };
+  // const closeModal = () => {
+  //   setShowModal(false);
+  // };
 
   const [taskFormKey, setTaskFormKey] = useState(0);
 
@@ -51,15 +57,33 @@ export const VenchelPageAdministration = () => {
   };
 
   useEffect(() => {
-    console.log("re render");
-    if (currentUser.login) {
+     if (currentUser.login) {
       try {
         getAllVenchels(currentUser.token, setReqStatus).then((data) => {
           setVenchels(data);
         });
+        getAllVenchels(currentUser.token, setReqStatus).then(data => {
+          const ae_venshels = data.filter( (venchel) => venchel.department_id === 3)
+          setAe_venchels(ae_venshels)
+          const pe_venshels = data.filter( (venchel) => venchel.department_id === 4)
+          setPe_venchels(pe_venshels)
+        }) 
       } catch (error) {}
     }
   }, [currentUser, taskFormKey]);
+
+  const handleMenuButtonClick = (button) =>{ //!
+    setSelectedButton(button)
+  }
+
+  let venchelTableComponent;  //!
+  if(selectedButton === 'dep_ae') {
+    console.log('Алексики')
+    venchelTableComponent = <VenchelTableComponent data={ae_venchels} reRender={handleReRenderByModal}/>
+  } else if(selectedButton === 'dep_pe'){
+    console.log('Панфилово')
+    venchelTableComponent = <VenchelTableComponent data={pe_venchels} reRender={handleReRenderByModal}/>
+  }
 
   return (
     <div className="admin-venchel-page">
@@ -70,7 +94,7 @@ export const VenchelPageAdministration = () => {
         <MainMenuAdministration />
       </div>
       <div className="admin-venchel__body">
-        <button onClick={openModal}>Add</button>
+        {/* <button onClick={openModal}>Add</button>
         {showModal && (
           <Modal isOpen={openModal} onClose={closeModal}>
             <VenchelFormV2
@@ -79,13 +103,15 @@ export const VenchelPageAdministration = () => {
             />
           </Modal>
         )}
-
-        {/* <div className="admin-venchel-page__container">
-          <VenchelMenuAdminstration/>
-        </div> */}
-
-        <VenchelTableView data={venchels} reRender={handleReRenderByModal} />
-
+        <VenchelTableView data={venchels} reRender={handleReRenderByModal} />    */}
+{/* ------------------------------------------------------------------ */}
+        <VenchelButtonGroup
+          handleButtonClick={handleMenuButtonClick}
+          selectedButton={selectedButton}
+          venchelAeCount={ae_venchels.length}
+          venchelPeCount={pe_venchels.length}
+        />
+        {venchelTableComponent}
       </div>
     </div>
   );
