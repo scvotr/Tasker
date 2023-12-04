@@ -7,8 +7,8 @@ export const VenchelTableView = ({ data, reRender }) => {
   const [selectedVenchel, setSelectedVencel] = useState();
   const [modalOpen, setModalOpen] = useState(false);
 
-  const openModal = (task) => {
-    setSelectedVencel(task);
+  const openModal = (venchel) => {
+    setSelectedVencel(venchel);
     setModalOpen(true);
   };
   const closeModal = () => {
