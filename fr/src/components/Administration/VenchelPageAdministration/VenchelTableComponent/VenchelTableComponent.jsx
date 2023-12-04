@@ -3,9 +3,8 @@ import { Modal } from "../../../Modal/Modal";
 import { VenchelFormV2 } from "../VenchelFormV2/VenchelFormV2";
 import { VenchelTableView } from "../VenchelTableView/VenchelTableView";
 
-export const VenchelTableComponent = ({data, reRender}) => {
+export const VenchelTableComponent = ({current_dep, reRender}) => {
   const [showModal, setShowModal] = useState(false);
-  const [taskFormKey, setTaskFormKey] = useState(0);
 
   const openModal = () => {
     setShowModal(true);
@@ -20,13 +19,12 @@ export const VenchelTableComponent = ({data, reRender}) => {
       {showModal && (
         <Modal isOpen={openModal} onClose={closeModal}>
           <VenchelFormV2
-            keyProp={taskFormKey}
             reRender={reRender}
           />
         </Modal>
       )}
 
-      <VenchelTableView data={data}/>
+      <VenchelTableView data={current_dep} reRender = {reRender}/>
 
     </>
   );
