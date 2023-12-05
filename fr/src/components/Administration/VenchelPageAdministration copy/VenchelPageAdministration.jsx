@@ -1,4 +1,4 @@
-import { MainMenuAdministration } from "../MainMenuAdministration/MainMenuAdministration";
+import { MainMenuAdministration } from "../MainMenuAdministration/MainMenuAdministration.jsx";
 import "./VenchelPageAdministration.css";
 import { useState, useEffect } from "react";
 import { useAuthContext } from "../../../context/AuthProvider.js";
