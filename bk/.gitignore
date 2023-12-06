@@ -7,7 +7,7 @@
 /uploads/*
 !/uploads/.gitkeep
 /uploads/venchels/*
-!/venchels/.gitkeep
+!/uploads/venchels/.gitkeep
 /.pnp
 .pnp.js
 
