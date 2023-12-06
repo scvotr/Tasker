@@ -23,11 +23,9 @@ export const VenchelPageAdministration = () => {
     venchels: undefined,
     count: undefined,
   })
-
-  const handleMenuButtonClick = (button) => {
+    const handleMenuButtonClick = (button) => {
     setSelectedButton(button)
   }
-
   const  handleReRenderVPA = (isUpdated) => {
     setTaskFormKey((prevKey) => prevKey + 1)
   }

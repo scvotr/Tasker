@@ -8,7 +8,7 @@ import { sendDataToEndpoint } from "../../../../utils/sendDataToEndpoint";
 // import { DepartmentSelect } from "../../../SelectFields/HoldinStuct/Dep/DepartmentSelect";
 import { QRCodeSVG, QRCodeCanvas } from "qrcode.react";
 
-export const VenchelForm = ({ dep, sector, reRender, selectedVenchel }) => {
+export const VenchelForm = ({ dep, sector, reRender, selectedVenchel, closeModal }) => {
   const currentUser = useAuthContext();
   const initValue = {
     venchel_id: uuidv4(),
@@ -73,6 +73,7 @@ export const VenchelForm = ({ dep, sector, reRender, selectedVenchel }) => {
         setReqStatus,
       );
       reRender(true);
+      closeModal()
     } catch (error) {
       isLoading(false);
       reRender(false);

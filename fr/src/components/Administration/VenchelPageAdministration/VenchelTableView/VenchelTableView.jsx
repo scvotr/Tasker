@@ -23,7 +23,7 @@ export const VenchelTableView = ({ data, reRender }) => {
       <>
         {selectedVenchel && (
           <Modal isOpen={openModal} onClose={closeModal}>
-            <VenchelForm keyProp={taskFormKey} reRender = {reRender} selectedVenchel = {selectedVenchel}/>
+            <VenchelForm keyProp={taskFormKey} reRender = {reRender} selectedVenchel = {selectedVenchel} closeModal={closeModal}/>
           </Modal>
         )}
       </>
