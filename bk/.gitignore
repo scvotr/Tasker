@@ -2,8 +2,12 @@
 
 # dependencies
 /node_modules
-/uploads
-/uploads/venchels
+# /uploads
+# /uploads/venchels
+/uploads/*
+!/uploads/.gitkeep
+/venchels/*
+!/venchels/.gitkeep
 /.pnp
 .pnp.js
 
