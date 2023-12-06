@@ -75,7 +75,6 @@ export const VenchelForm = ({ dep, sector, reRender, selectedVenchel, closeModal
       reRender(true);
       closeModal()
     } catch (error) {
-      isLoading(false);
       reRender(false);
     }
   };
@@ -189,7 +188,7 @@ export const VenchelForm = ({ dep, sector, reRender, selectedVenchel, closeModal
                 Удалить
               </button>
               <button
-                className="form__btn-remove"
+                className="form__btn"
                 onClick={()=>closeForm()}
               >
                 закрыть
