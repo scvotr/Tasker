@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Modal } from "../../../Modal/Modal";
 import { VenchelTableView } from "../VenchelTableView/VenchelTableView"
 import { VenchelForm } from "../VenchelForm/VenchelForm";
+import {InTableVenchelForm} from "../VenchelTableView/InTableVenchelForm/InTableVenchelForm"
 
 export const VenchelTableComponent = ({ dep, sector, venchels, reRender }) => {
   const [showModal, setShowModal] = useState(false);
@@ -21,7 +22,9 @@ export const VenchelTableComponent = ({ dep, sector, venchels, reRender }) => {
         </Modal>
       )}
 
-      <VenchelTableView data={venchels} reRender={reRender}/>
+      {/* <VenchelTableView data={venchels} reRender={reRender}/> */}
+      <InTableVenchelForm  data={venchels} reRender={reRender}/>
+
     </>
   );
 };

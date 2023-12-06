@@ -8,7 +8,7 @@ import { sendDataToEndpoint } from "../../../../utils/sendDataToEndpoint";
 // import { DepartmentSelect } from "../../../SelectFields/HoldinStuct/Dep/DepartmentSelect";
 import { QRCodeSVG, QRCodeCanvas } from "qrcode.react";
 
-export const VenchelForm = ({ dep, sector, reRender, selectedVenchel, closeModal }) => {
+export const VenchelForm = ({ dep, sector, reRender, selectedVenchel, closeModal, closeForm }) => {
   const currentUser = useAuthContext();
   const initValue = {
     venchel_id: uuidv4(),
@@ -181,12 +181,20 @@ export const VenchelForm = ({ dep, sector, reRender, selectedVenchel, closeModal
               {selectedVenchel ? "Редактирование" : "Создать"}
             </button>
             {selectedVenchel && (
+              <>
               <button
                 className="form__btn-remove"
                 onClick={handleRemoveVenchel}
               >
                 Удалить
               </button>
+              <button
+                className="form__btn-remove"
+                onClick={()=>closeForm()}
+              >
+                закрыть
+              </button>
+              </>
             )}
             <p>{reqStatus}</p>
           </div>
