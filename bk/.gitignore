@@ -6,7 +6,7 @@
 # /uploads/venchels
 /uploads/*
 !/uploads/.gitkeep
-/venchels/*
+/uploads/venchels/*
 !/venchels/.gitkeep
 /.pnp
 .pnp.js
