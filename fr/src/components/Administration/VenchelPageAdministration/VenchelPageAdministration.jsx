@@ -57,9 +57,9 @@ export const VenchelPageAdministration = () => {
   let venchelByDepartment = undefined;
 
   if(selectedButton === 'dep_ae') {
-    venchelByDepartment = <VenchelViewByDep dep ={AE_ID} venchels={ae_venchels} reRender={handleReRenderVPA}/>
+    venchelByDepartment = <VenchelViewByDep dep={AE_ID} venchels={ae_venchels} reRender={handleReRenderVPA}/>
   } else if (selectedButton === 'dep_pe') {
-    venchelByDepartment = <VenchelViewByDep dep ={PE_ID} venchels={pe_venchels} reRender={handleReRenderVPA}/>
+    venchelByDepartment = <VenchelViewByDep dep={PE_ID} venchels={pe_venchels} reRender={handleReRenderVPA}/>
   }
 
   return (
