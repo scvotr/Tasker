@@ -2,9 +2,13 @@
 
 # dependencies
 /node_modules
-/uploads
+# /uploads
 /.pnp
 .pnp.js
+/uploads/*
+!/uploads/.gitkeep
+venchels/*
+!venchels/.gitkeep
 
 # testing
 /coverage
