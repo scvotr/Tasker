@@ -56,7 +56,6 @@ export const VenchelForm = ({ dep, sector, reRender, selectedVenchel }) => {
       } catch (error) {
         setIsLoading(false);
         reRender(false);
-        console.log("sendNewVenchelData", error);
       }
     }
   };

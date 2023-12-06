@@ -11,10 +11,7 @@ const dep_pe_4_ID = 6
 
 export const VenchelViewByDep = ({ dep, venchels, reRender }) => {
   const [selectedButton, setSelectedButton] = useState()
-
   const [aaa, setAaaa] = useState({})
-
-  console.log('aaa', aaa)
 
   useEffect(()=> {
     const sc_1 = venchels.venchels.filter(venchel => venchel.sector_id === dep_ae_1_ID)

@@ -4,7 +4,6 @@ import { VenchelForm } from "../VenchelForm/VenchelForm";
 
 
 export const VenchelTableView = ({ data, reRender }) => {
-  console.log('VenchelTableView')
   const [selectedVenchel, setSelectedVencel] = useState();
   const [modalOpen, setModalOpen] = useState(false);
 
