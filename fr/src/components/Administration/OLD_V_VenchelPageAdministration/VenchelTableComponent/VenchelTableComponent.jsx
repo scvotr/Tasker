@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Modal } from "../../../Modal/Modal";
 import { VenchelFormV2 } from "../VenchelFormV2/VenchelFormV2";
 import { VenchelTableView } from "../VenchelTableView/VenchelTableView";
