@@ -3,7 +3,6 @@
 # dependencies
 /node_modules
 # /uploads
-# /uploads/venchels
 /uploads/*
 !/uploads/.gitkeep
 /uploads/venchels/*
