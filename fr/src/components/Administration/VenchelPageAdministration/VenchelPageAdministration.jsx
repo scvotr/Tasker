@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useAuthContext } from "../../../context/AuthProvider.js";
 import { getDataFromEndpoint } from "../../../utils/getDataFromEndpoint.js";
 import { VenchelButtonGroup } from "./VenchelButtonGroup/VenchelButtonGroup.jsx";
+import { VenchelViewByDep } from "./VenchelViewByDep/VenchelViewByDep.jsx";
 
 const AE_ID = 3;
 const PE_ID = 4;
@@ -56,9 +57,9 @@ export const VenchelPageAdministration = () => {
   let venchelByDepartment = undefined;
 
   if(selectedButton === 'dep_ae') {
-    venchelByDepartment = 'aaaa'
+    venchelByDepartment = <VenchelViewByDep dep ={AE_ID} venchels={ae_venchels} reRender={handleReRenderVPA}/>
   } else if (selectedButton === 'dep_pe') {
-    venchelByDepartment = 'pppp'
+    venchelByDepartment = <VenchelViewByDep dep ={PE_ID} venchels={pe_venchels} reRender={handleReRenderVPA}/>
   }
 
   return (
