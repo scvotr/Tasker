@@ -429,6 +429,7 @@ const createVenchelTable = async () => {
            width TEXT NOT NULL,
            height TEXT NOT NULL,
            department_id INTEGER,
+           sector_id INTEGER,
            FOREIGN KEY (department_id) REFERENCES departments (id)
        )`
     )
