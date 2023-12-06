@@ -1,3 +1,5 @@
+
+
 export const VenchelButtonGroup = ({
   selectedButton,
   handleButtonClick,
@@ -5,21 +7,23 @@ export const VenchelButtonGroup = ({
   venchelPeCount,
 }) => {
   return (
-    <>
+     <>
       <div className="button-container">
         <button
           onClick={() => handleButtonClick("dep_ae")}
           style={{
-            backgroundColor: selectedButton === "dep_ae" ? "grey" : "",
+            backgroundColor:
+              selectedButton === "dep_ae" ? "grey" : "",
           }}
           className="user-menu__button"
         >
-          Алексиковский:{venchelAeCount}
+         Алексиковский:{venchelAeCount}
         </button>
         <button
           onClick={() => handleButtonClick("dep_pe")}
           style={{
-            backgroundColor: selectedButton === "dep_pe" ? "grey" : "",
+            backgroundColor:
+              selectedButton === "dep_pe" ? "grey" : "",
           }}
           className="user-menu__button"
         >
@@ -27,10 +31,10 @@ export const VenchelButtonGroup = ({
         </button>
       </div>
     </>
-  );
-};
+  )
+}
 
-VenchelButtonGroup.defaulProps = {
-  venchelAeCount : 0,
-  venchelPeCount : 0,
+VenchelButtonGroup.defaultProps = {
+  venchelAeCount: 0,
+  venchelPeCount: 0,
 }
