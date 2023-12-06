@@ -5,9 +5,10 @@
 # /uploads
 /.pnp
 .pnp.js
+
 /uploads/*
 !/uploads/.gitkeep
-venchels/*
+/uploads/venchels/*
 !venchels/.gitkeep
 
 # testing
