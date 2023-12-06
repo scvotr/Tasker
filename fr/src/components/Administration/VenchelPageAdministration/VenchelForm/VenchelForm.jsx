@@ -1,13 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
+import "./VenchelForm.css";
 import { ImageBlock } from "../../../Task/TaskForm/ImageBlock/ImageBlock";
 import { VenchelTextFields } from "./VenchelTextFields/VenchelTextFields";
 import { useAuthContext } from "../../../../context/AuthProvider";
 import { sendDataToEndpoint } from "../../../../utils/sendDataToEndpoint";
-import "./VenchelForm.css";
 // import { DepartmentSelect } from "../../../SelectFields/HoldinStuct/Dep/DepartmentSelect";
+import { QRCodeSVG, QRCodeCanvas } from "qrcode.react";
 
-export const VenchelForm = ({dep, sector, reRender}) => {
+export const VenchelForm = ({ dep, sector, reRender, selectedVenchel }) => {
   const currentUser = useAuthContext();
   const initValue = {
     venchel_id: uuidv4(),
@@ -31,7 +32,8 @@ export const VenchelForm = ({dep, sector, reRender}) => {
   const [formData, setFormData] = useState(initValue);
   const [isLoading, setIsLoading] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
-  const [reqStatus, setReqStatus] = useState(null); console.log('reqStatus', reqStatus)
+  const [reqStatus, setReqStatus] = useState(null);
+  const [qrCodeValue, setQrCodeValue] = useState(formData.venchel_id);
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -58,7 +60,25 @@ export const VenchelForm = ({dep, sector, reRender}) => {
       }
     }
   };
-  const handleRemoveItem = () => {};
+  const handleRemoveVenchel = async (e) => {
+    e.preventDefault();
+    const data = {
+      task_id: formData.id,
+    };
+    try {
+      await sendDataToEndpoint(
+        currentUser.token,
+        data,
+        "/venchel/removeVenchel",
+        "POST",
+        setReqStatus,
+      );
+      reRender(true);
+    } catch (error) {
+      isLoading(false);
+      reRender(false);
+    }
+  };
 
   const getInputData = async (e) => {
     e.preventDefault();
@@ -132,6 +152,12 @@ export const VenchelForm = ({dep, sector, reRender}) => {
 
   const removeCurrentFiles = (fileIndex) => {};
 
+  useEffect(() => {
+    if (selectedVenchel) {
+      setFormData({ ...formData, ...selectedVenchel });
+    }
+  }, [selectedVenchel]);
+
   return (
     <>
       {isLoading ? (
@@ -152,10 +178,13 @@ export const VenchelForm = ({dep, sector, reRender}) => {
           />
           <div className="add-edit__btn">
             <button className="form__btn" type="submit">
-              {isEdit ? "Редактирование" : "Создать"}
+              {selectedVenchel ? "Редактирование" : "Создать"}
             </button>
-            {isEdit && (
-              <button className="form__btn-remove" onClick={handleRemoveItem}>
+            {selectedVenchel && (
+              <button
+                className="form__btn-remove"
+                onClick={handleRemoveVenchel}
+              >
                 Удалить
               </button>
             )}
