@@ -1,6 +1,7 @@
 export const AeButtonGroup = ({
   selectedButton,
   handleButtonClick,
+  testLenght,
 }) => {
   return (
     <>
@@ -12,8 +13,7 @@ export const AeButtonGroup = ({
           }}
           className="user-menu__button"
         >
-          1 элеватор:
-          {/* Алексиковский:{venchelAeCount} */}
+          1 элеватор: {testLenght.sc_1_l}
         </button>
         <button
           onClick={() => handleButtonClick("dep_ae_2")}
@@ -22,8 +22,7 @@ export const AeButtonGroup = ({
           }}
           className="user-menu__button"
         >
-          2 элеватор: 
-          {/* Панфиловский: {venchelPeCount} */}
+          2 элеватор: {testLenght.sc_2_l}
         </button>
       </div>
     </>

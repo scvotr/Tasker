@@ -1,6 +1,7 @@
 export const PeButtonGroup = ({
   selectedButton,
   handleButtonClick,
+  testLenght,
 }) => {
   return (
     <>
@@ -12,7 +13,7 @@ export const PeButtonGroup = ({
           }}
           className="user-menu__button"
         >
-          1 элеватор:
+          1 элеватор: {testLenght.sc_3_l}
           {/* Алексиковский:{venchelAeCount} */}
         </button>
         <button
@@ -22,7 +23,7 @@ export const PeButtonGroup = ({
           }}
           className="user-menu__button"
         >
-          2 элеватор: 
+          2 элеватор: {testLenght.sc_4_l}
           {/* Панфиловский: {venchelPeCount} */}
         </button>
         <button
@@ -32,7 +33,7 @@ export const PeButtonGroup = ({
           }}
           className="user-menu__button"
         >
-          5 склад: 
+          5 склад: {testLenght.sc_5_l}
           {/* Панфиловский: {venchelPeCount} */}
         </button>
         <button
@@ -42,7 +43,7 @@ export const PeButtonGroup = ({
           }}
           className="user-menu__button"
         >
-          Склады: 
+          Склады: {testLenght.sc_6_l}
           {/* Панфиловский: {venchelPeCount} */}
         </button>
       </div>

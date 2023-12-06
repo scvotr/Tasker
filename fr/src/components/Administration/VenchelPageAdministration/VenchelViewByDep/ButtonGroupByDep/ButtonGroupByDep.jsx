@@ -5,6 +5,7 @@ export const ButtonGroupByDep = ({
   currentDep,
   selectedButton,
   handleButtonClick,
+  testLenght,
 }) => {
 
   let buttonGroup = undefined;
@@ -14,6 +15,7 @@ export const ButtonGroupByDep = ({
       <AeButtonGroup
         selectedButton={selectedButton}
         handleButtonClick={handleButtonClick}
+        testLenght={testLenght}
       />
     );
   } else if (currentDep === 4) {
@@ -21,6 +23,7 @@ export const ButtonGroupByDep = ({
       <PeButtonGroup
         selectedButton={selectedButton}
         handleButtonClick={handleButtonClick}
+        testLenght={testLenght}
       />
     );
   }

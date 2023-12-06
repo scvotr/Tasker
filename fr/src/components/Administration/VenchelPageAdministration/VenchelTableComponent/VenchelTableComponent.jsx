@@ -1,9 +1,18 @@
 import { useState } from "react";
 import { Modal } from "../../../Modal/Modal";
 import { VenchelFormV2 } from "../../VenchelPageAdministration222/VenchelFormV2/VenchelFormV2";
+import { VenchelTableView } from "../../VenchelPageAdministration222/VenchelTableView/VenchelTableView"
 
 export const VenchelTableComponent = ({ dep, sector, venchels, reRender }) => {
-  console.log("VenchelTableComponent      ", 'dep', dep, 'sector', sector,venchels);
+  console.log(
+    "VenchelTableComponent: ",
+    "dep",
+    dep,
+    "sector",
+    sector,
+    "++",
+    venchels
+  );
   const [showModal, setShowModal] = useState(false);
   const openModal = () => {
     setShowModal(true);
@@ -20,6 +29,7 @@ export const VenchelTableComponent = ({ dep, sector, venchels, reRender }) => {
           <VenchelFormV2 dep={dep} sector={sector} reRender={reRender} />
         </Modal>
       )}
+      <VenchelTableView data={venchels} reRender={reRender}/>
     </>
   );
 };
