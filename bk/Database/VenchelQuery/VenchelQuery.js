@@ -34,8 +34,8 @@ const createNewVenchel = async (data) => {
 const createNewVenchel_V02 = async (data) => {
   console.log('>>>>>>>>>>>>', data)
   const command = `
-    INSERT INTO venchels (id, position, type, pos_num, model, location, power, width, height, department_id)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+    INSERT INTO venchels (id, position, type, pos_num, model, location, power, width, height, department_id, sector)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, &);
   `
   try {
     await queryAsyncWraperParam(
@@ -51,6 +51,7 @@ const createNewVenchel_V02 = async (data) => {
         data.fields.width,
         data.fields.height,
         data.fields.department_id,
+        data.fields.sector,
       ],
       "run" //?
     )

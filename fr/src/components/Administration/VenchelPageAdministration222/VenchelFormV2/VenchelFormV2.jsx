@@ -7,7 +7,7 @@ import { sendDataToEndpoint } from "../../../../utils/sendDataToEndpoint";
 import "./VenchelFormV2.css";
 // import { DepartmentSelect } from "../../../SelectFields/HoldinStuct/Dep/DepartmentSelect";
 
-export const VenchelFormV2 = ({dep, reRender}) => {
+export const VenchelFormV2 = ({dep, sector, reRender}) => {
   const currentUser = useAuthContext();
   const initValue = {
     venchel_id: uuidv4(),
@@ -21,6 +21,7 @@ export const VenchelFormV2 = ({dep, reRender}) => {
     width: "",
     height: "",
     department_id: dep,
+    sector: sector,
     files: [],
     filePreviews: [],
     filesToRemove: [],
