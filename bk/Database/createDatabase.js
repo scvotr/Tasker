@@ -415,6 +415,26 @@ const createUsers = async (userDataArray) => {
   }
 }
 // ----------------------------------------------------------------------------
+const createTableWorkshops = async () => {
+  try {
+    await queryAsyncWraper(
+      `CREATE TABLE IF NOT EXISTS workshops (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        department_id INTEGER NOT NULL,
+        name TEXT NOT NULL,
+        FOREIGN KEY (department_id) REFERENCES departments(id)
+      )`, 'run');
+      
+    // Выполняем проверку наличия записей в таблице
+    const rows = await queryAsyncWraper('SELECT COUNT(*) FROM workshops', 'get');
+    if (rows['COUNT(*)'] === 0) { // Если записей нет, то выполняем вставку начальных значений
+      await queryAsyncWraper("INSERT INTO workshops (department_id, name) VALUES (1, 'Цех 1'), (1, 'Цех 2'), (2, 'Цех 3'), (2, 'Цех 4')", 'run');
+    }
+  } catch (error) {
+    console.error('createTableWorkshops ERROR: ', error);
+  }
+}
+
 const createVenchelTable = async () => {
   try {
     await queryAsyncWraper(
@@ -465,6 +485,7 @@ db.serialize(async () => {
   createTablePositions()
   createTableTasksComments()
   createTableTasksFiles()
+  createTableWorkshops()
   createVenchelTable()
   createTableVenchelFiles()
 })
