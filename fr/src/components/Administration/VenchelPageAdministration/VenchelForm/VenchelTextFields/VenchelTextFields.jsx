@@ -21,21 +21,24 @@ export const VenchelTextFields = ({
     <div className="text-fields__container">
       {fields &&
         fields.map((field) => (
-          <label key={field.name}>
-            {field.label}:
-            <input
-              type="text"
-              name={field.name}
-              value={value[field.name]}
-              onChange={getData}
-            />
-          </label>
+          <div className="wraper">
+            <label key={field.name} className="t-label">
+              {field.label}: 
+              <input
+                className="t-input"
+                type="text"
+                name={field.name}
+                value={value[field.name]}
+                onChange={getData}
+              />
+            </label>
+          </div>
         ))}
       <label>
         pic
-        <div>
+        <div className="wraper">
           <input
-            className="form-input__file"
+            className="t-input"
             type="file"
             onChange={getData}
             name={isEdit ? "append_new_files" : "add_new_files"}

@@ -163,12 +163,12 @@ export const VenchelForm = ({ dep, sector, reRender, selectedVenchel, closeModal
       {isLoading ? (
         <>Загрузка.....</>
       ) : (
-        <form className="form__container" onSubmit={handleFormSubmit}>
+        <form className="form__container-venchel" onSubmit={handleFormSubmit}>
           <VenchelTextFields
             getData={getInputData}
             value={formData}
             isEdit={isEdit}
-            handleFIleInput={handleFIleInput}
+            handleFileInput={handleFIleInput}
           />
           {/* <DepartmentSelect value = {formData.department_id} onChange = {getInputData}/> */}
           <ImageBlock
@@ -176,7 +176,7 @@ export const VenchelForm = ({ dep, sector, reRender, selectedVenchel, closeModal
             actionType="addNewTaskFiles"
             takeAddedIndex={removeAppendedFile}
           />
-          <div className="add-edit__btn">
+          <div className="container-btn">
             <button className="form__btn" type="submit">
               {selectedVenchel ? "Редактирование" : "Создать"}
             </button>
