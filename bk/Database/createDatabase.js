@@ -451,7 +451,9 @@ const createVenchelTable = async () => {
            height TEXT NOT NULL,
            department_id INTEGER,
            sector_id INTEGER,
-           FOREIGN KEY (department_id) REFERENCES departments (id)
+           workshop_id INTEGER,
+           FOREIGN KEY (department_id) REFERENCES departments (id),
+           FOREIGN KEY (workshop_id) REFERENCES workshops (id)
        )`
     )
   } catch (error) {
