@@ -22,6 +22,7 @@ export const VenchelForm = ({ dep, sector, reRender, selectedVenchel, closeModal
     width: "",
     height: "",
     department_id: dep,
+    workshop_id: sector,
     sector: sector,
     files: [],
     filePreviews: [],
