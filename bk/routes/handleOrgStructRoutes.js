@@ -4,6 +4,7 @@ const { protectRouteTkPl } = require("../utils/protectRouteTkPl");
 
 const routeHandlers = {
   "/orgStruct/getDepartments": OrgStructControler.getDepartments,
+  "/orgStruct/getDepartmentsFrom": OrgStructControler.getDepartmentsFrom,
   "/orgStruct/getSubDepartments": OrgStructControler.getSubDepartments,
   "/orgStruct/getPositions": OrgStructControler.getPositions,
 };

@@ -15,6 +15,7 @@ export const VenchelPageAdministration = () => {
   const [selectedButton, setSelectedButton] = useState()
   const [taskFormKey, setTaskFormKey] = useState(0);
 
+  const [dep, setDep] = useState({})
   const [ae_venchels, setAe_venchels] = useState({
     venchels: undefined,
     count: undefined,
@@ -33,6 +34,10 @@ export const VenchelPageAdministration = () => {
   useEffect(() => {
     if (currentUser.login) {
       try {
+        // --------------------------------------
+        getDataFromEndpoint(currentUser.token, "/orgStruct/getDepartmentsFrom", "POST", setReqStatus)
+        .then(data => console.log(data[1]))
+           // --------------------------------------
         getDataFromEndpoint(currentUser.token, "/venchel/getAllVenchels", "POST", setReqStatus)
         .then(venchels => {
           const ae_venchels = venchels.filter( venchel => venchel.department_id === AE_ID)

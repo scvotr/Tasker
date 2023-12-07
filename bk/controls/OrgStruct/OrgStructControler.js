@@ -1,5 +1,6 @@
 const {
   getDepartments,
+  getDepartmentsFrom,
   getSubDepartments,
   getPositions
 } = require('../../Database/OrgStructQuery/OrgStructQuery')
@@ -9,6 +10,25 @@ class OrgStructControler {
     try {
       const authDecodeUserData = req.user
       const data = await getDepartments()
+      if (data.length === 0) {
+        res.statusCode = 204
+      } else {
+        res.statusCode = 200
+        res.setHeader('Content-Type', 'application/json')
+        res.write(JSON.stringify(data))
+      }
+      res.end()
+    } catch (error) {
+      res.statusCode = 500
+      res.end(JSON.stringify({
+        error: 'getDepartments'
+      }))
+    }
+  }
+  async getDepartmentsFrom(req, res) {
+    try {
+      const authDecodeUserData = req.user
+      const data = await getDepartmentsFrom()
       if (data.length === 0) {
         res.statusCode = 204
       } else {
@@ -58,13 +78,54 @@ class OrgStructControler {
     } catch (error) {
       res.statusCode = 500
       res.end(JSON.stringify({
-        error: 'getDepartments'
+        error: 'getPositions'
       }))
     }
   }
 }
 
 module.exports = new OrgStructControler()
+
+
+// class OrgStructControler {
+//   async handleResponse(req, res, getData) {
+//     try {
+//       const authDecodeUserData = req.user
+//       const data = await getData()
+//       if (data.length === 0) {
+//         res.statusCode = 204
+//       } else {
+//         res.statusCode = 200
+//         res.setHeader('Content-Type', 'application/json')
+//         res.write(JSON.stringify(data))
+//       }
+//       res.end()
+//     } catch (error) {
+//       res.statusCode = 500
+//       res.end(JSON.stringify({
+//         error: error.message
+//       }))
+//     }
+//   }
+
+//   async getDepartments(req, res) {
+//     await this.handleResponse(req, res, getDepartments)
+//   }
+
+//   async getDepartmentsFrom(req, res) {
+//     await this.handleResponse(req, res, getDepartmentsFrom)
+//   }
+
+//   async getSubDepartments(req, res) {
+//     await this.handleResponse(req, res, getSubDepartments)
+//   }
+
+//   async getPositions(req, res) {
+//     await this.handleResponse(req, res, getPositions)
+//   }
+// }
+
+// module.exports = new OrgStructControler()
 
 // ! REFACTORING TO
 // const {

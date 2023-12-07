@@ -1,8 +1,16 @@
-const { queryAsyncWraper, queryAsyncWraperParam } = require ("../createDatabase");
+const { queryAsyncWraperParam } = require ("../createDatabase");
 
 const getDepartments = async () => {
 	try {
 		const command =`SELECT * FROM departments`;
+		return await queryAsyncWraperParam(command, [], 'all');
+	} catch (error) {
+		console.error("Error get all Departments:", error);
+	}
+}
+const getDepartmentsFrom = async () => {
+	try {
+		const command =`SELECT * FROM departments WHERE id >= 3`;
 		return await queryAsyncWraperParam(command, [], 'all');
 	} catch (error) {
 		console.error("Error get all Departments:", error);
@@ -29,6 +37,7 @@ const getPositions = async () => {
 
 module.exports = {
   getDepartments,
+	getDepartmentsFrom,
   getSubDepartments,
   getPositions,
 }
