@@ -183,16 +183,16 @@ export const VenchelForm = ({ dep, sector, reRender, selectedVenchel, closeModal
             {selectedVenchel && (
               <>
               <button
-                className="form__btn-remove"
-                onClick={handleRemoveVenchel}
-              >
-                Удалить
-              </button>
-              <button
                 className="form__btn"
                 onClick={()=>closeForm()}
               >
                 закрыть
+              </button>
+              <button
+                className="form__btn-remove"
+                onClick={handleRemoveVenchel}
+              >
+                Удалить
               </button>
               </>
             )}
