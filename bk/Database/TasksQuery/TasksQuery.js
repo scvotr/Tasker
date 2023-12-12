@@ -121,7 +121,9 @@ const readFileAsync = (file_path, encoding) => {
   });
 };
 // При запросе всех задачь пользователя отдаем только превью фотографий 16-08-23
-const getTaskThumbnailFiles = async (allTasks) => {
+// Вынести в утилиты так как универсалная
+const getThumbnailFiles = async (allTasks, folderName) => {
+  console.log('folderName', folderName)
   const currentDirectory = process.cwd();
   const tasks = [];
 
@@ -143,7 +145,7 @@ const getTaskThumbnailFiles = async (allTasks) => {
           file_path = file_name;
           file_content = file_path;
         } else {
-          file_path = `${currentDirectory}/uploads/${task.task_id}/thumbnail_${file_name}`;
+          file_path = folderName ? `${currentDirectory}/uploads/${folderName}/${task.task_id}/thumbnail_${file_name}` : `${currentDirectory}/uploads/${task.task_id}/thumbnail_${file_name}`;
           try {
             file_content = await readFileAsync(file_path, "base64");
           } catch (error) {
@@ -275,7 +277,7 @@ const getAllUserTasks = async (user_id) => {
   try {
     //16-08-23
     const taskFiles = await queryAsyncWraperParam(command, [user_id]);
-    return await getTaskThumbnailFiles(taskFiles);
+    return await getThumbnailFiles(taskFiles);
   } catch (error) {
     console.error("getAllUserTasksFiles ERROR: ", error);
   }
@@ -323,7 +325,7 @@ const getAllTasksByDep = async (dep_id) => {
   try {
     const taskFiles = await queryAsyncWraperParam(command, [dep_id]);
 
-    return await getTaskThumbnailFiles(taskFiles);
+    return await getThumbnailFiles(taskFiles);
   } catch (error) {
     console.error("getAllUserTasksFiles ERROR: ", error);
   }
@@ -369,7 +371,7 @@ const getAllTasksBySubDep = async (subDep_id) => {
 
   try {
     const taskFiles = await queryAsyncWraperParam(command, [subDep_id]);
-    return await getTaskThumbnailFiles(taskFiles);
+    return await getThumbnailFiles(taskFiles);
   } catch (error) {
     console.error("getAllUserTasksFiles ERROR: ", error);
   }
@@ -420,7 +422,7 @@ const getAllResponsibleTasksBySubDep = async (subDep_id) => {
   try {
     const taskFiles = await queryAsyncWraperParam(command, [subDep_id]);
 
-    return await getTaskThumbnailFiles(taskFiles);
+    return await getThumbnailFiles(taskFiles);
   } catch (error) {
     console.error("getAllUserTasksFiles ERROR: ", error);
   }
@@ -471,7 +473,7 @@ const getAllResponsibleTasksByDep = async (subDep_id) => {
   try {
     const taskFiles = await queryAsyncWraperParam(command, [subDep_id]);
 
-    return await getTaskThumbnailFiles(taskFiles);
+    return await getThumbnailFiles(taskFiles);
   } catch (error) {
     console.error("getAllUserTasksFiles ERROR: ", error);
   }
@@ -710,4 +712,5 @@ module.exports = {
   getFullFileContent,
   getPreviewFileContent,
   updateTaskRejectRequest,
+  getThumbnailFiles,
 };

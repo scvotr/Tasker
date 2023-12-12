@@ -20,7 +20,7 @@ const {
   getFullFileContent,
   getPreviewFileContent,
   updateTaskRejectRequest,
-} = require('../../Database/TasksQuery/TasksQuery.jsx');
+} = require('../../Database/TasksQuery/TasksQuery');
 
 const { saveAndConvert } = require('../../utils/files/saveAndConvert');
 

@@ -4,35 +4,9 @@ const {
 
 const fs = require("fs")
 const path = require("path")
-
+const {getThumbnailFiles} = require("../TasksQuery/TasksQuery")
 
 const createNewVenchel = async (data) => {
-  const command = `
-    INSERT INTO venchels (id, position, type, pos_num, model, location, power, width, height)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
-  `
-  try {
-    await queryAsyncWraperParam(
-      command,
-      [
-        data.id,
-        data.position,
-        data.type,
-        data.pos_num,
-        data.model,
-        data.location,
-        data.power,
-        data.width,
-        data.height,
-      ]
-    )
-  } catch (error) {
-    console.error("createNewVenchel ERROR: ", error)
-    return;
-  }
-}
-const createNewVenchel_V02 = async (data) => {
-  console.log('>>>>>>>>>>>>', data)
   const command = `
     INSERT INTO venchels (venchel_id, position, type, pos_num, model, location, power, width, height, department_id, sector_id, workshop_id)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
@@ -53,8 +27,7 @@ const createNewVenchel_V02 = async (data) => {
         data.fields.department_id,
         data.fields.sector,
         data.fields.workshop_id,
-      ],
-      "run" //?
+      ]
     )
 
     venchelID = data.fields.venchel_id //?
@@ -102,11 +75,12 @@ const getAllVenchels = async () => {
       LEFT JOIN departments AS d ON v.department_id = d.id
       LEFT JOIN workshops AS w ON v.workshop_id = w.id
       LEFT JOIN venchel_files as f ON v.venchel_id = f.venchel_id
-      GROUP BY v.venchel_id  
+    GROUP BY v.venchel_id  
   `
   // GROUP BY v.venchel_id гарантирует, что для каждой записи в таблице venchels будет возвращена соответствующая группа записей из других таблиц.
   try {
-    return await queryAsyncWraperParam(command);
+    const appendFile = await queryAsyncWraperParam(command);
+    return await getThumbnailFiles(appendFile, 'venchels')
   } catch (error) {
     console.error("getAllVenchels ERROR: ", error);
     return [];
@@ -136,7 +110,6 @@ const removeVenchel = async (id) => {
 
 module.exports = {
   createNewVenchel,
-  createNewVenchel_V02,
   getAllVenchels,
   removeVenchel,
   getAllVenchelsByDep,
