@@ -1,4 +1,5 @@
 import { useState } from "react";
+import './InTableVenchelForm.css'
 import { VenchelForm } from "../../VenchelForm/VenchelForm";
 
 export const InTableVenchelForm = ({ data, reRender }) => {
@@ -14,8 +15,8 @@ export const InTableVenchelForm = ({ data, reRender }) => {
 
   return (
     <>
-      <table>
-        <thead>
+      <table className="venchel-table__container">
+        <thead className="venchel-thead__container">
           <tr>
             <th>ID</th>
             <th>Высота</th>
