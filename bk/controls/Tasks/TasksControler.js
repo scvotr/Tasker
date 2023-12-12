@@ -242,7 +242,7 @@ class TasksControler {
       const data = await getPreviewFileContent(postPayload)
       sendResponseWithData(res, data)
     } catch (error) {
-      handleError(res, 'getPreviewFileContent11')
+      handleError(res, 'getPreviewFileContent')
     }
   }
 }

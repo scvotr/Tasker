@@ -63,7 +63,7 @@ export const VenchelForm = ({ dep, sector, reRender, selectedVenchel, closeModal
   const handleRemoveVenchel = async (e) => {
     e.preventDefault();
     const data = {
-      task_id: formData.id,
+      venchel_id: formData.venchel_id,
     };
     try {
       await sendDataToEndpoint(
@@ -154,7 +154,20 @@ export const VenchelForm = ({ dep, sector, reRender, selectedVenchel, closeModal
 
   useEffect(() => {
     if (selectedVenchel) {
+      console.log('selectedVenchel', selectedVenchel)
+      // запросить файлы изображений с сервера 
+      sendDataToEndpoint(
+        currentUser.token,
+        selectedVenchel,
+        "/venchel/getVenchelFiles",
+        "POST",
+        setReqStatus,
+      )
+      
+      // обьеденить задачу для редактирования с полученными файлами
+      // обьеденить полученное с formData для вывода на страницу
       setFormData({ ...formData, ...selectedVenchel });
+      setIsEdit(true)
     }
   }, [selectedVenchel]);
 

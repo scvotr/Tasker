@@ -240,6 +240,7 @@ const createTableTasksFiles = async () => {
 //!------------------------------------------------
 const createTableDepartments = async () => {
   try {
+    // ДОБАВИТЬ ПОТОМ dep_ID!!!!
     await queryAsyncWraper(
       `CREATE TABLE IF NOT EXISTS departments  (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -440,7 +441,8 @@ const createVenchelTable = async () => {
   try {
     await queryAsyncWraper(
       `CREATE TABLE IF NOT EXISTS venchels (
-           id TEXT PRIMARY KEY,
+           id INTEGER PRIMARY KEY AUTOINCREMENT,
+           venchel_id INTEGER NOT NULL,
            position TEXT NOT NULL,
            type TEXT NOT NULL,
            pos_num TEXT NOT NULL,
@@ -471,7 +473,7 @@ const createTableVenchelFiles = async () => {
         file_name TEXT,
         file_path TEXT,
         uploaded_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY(venchel_id) REFERENCES venchels(id)
+        FOREIGN KEY(venchel_id) REFERENCES venchels(venchel_id)
        )`, "run")
   } catch (error) {
     console.log('DB ERROR: ', error)

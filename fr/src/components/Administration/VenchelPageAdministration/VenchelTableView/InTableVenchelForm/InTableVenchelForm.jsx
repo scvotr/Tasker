@@ -3,6 +3,7 @@ import './InTableVenchelForm.css'
 import { VenchelForm } from "../../VenchelForm/VenchelForm";
 
 export const InTableVenchelForm = ({ data, reRender }) => {
+  console.log(data)
   const [selectedVenchel, setSelectedVencel] = useState(null);
 
   const openForm = (venchel) => {
@@ -33,8 +34,8 @@ export const InTableVenchelForm = ({ data, reRender }) => {
           {data &&
             data.map((item) => (
               <>
-                <tr key={item.id} onClick={() => openForm(item)}>
-                  <td>{item.id.substring(0, 3)}</td>
+                <tr key={item.venchel_id} onClick={() => openForm(item)}>
+                  <td>{item.venchel_id.substring(0, 3)}</td>
                   <td>{item.height}</td>
                   <td>{item.location}</td>
                   <td>{item.model}</td>
@@ -44,11 +45,11 @@ export const InTableVenchelForm = ({ data, reRender }) => {
                   <td>{item.type}</td>
                   <td>{item.width}</td>
                 </tr>
-                {selectedVenchel && selectedVenchel.id === item.id && (
+                {selectedVenchel && selectedVenchel.venchel_id === item.venchel_id && (
                   <tr>
                     <td colSpan={9}>
                       <VenchelForm
-                        keyProp={item.id}
+                        keyProp={item.venchel_id}
                         reRender={reRender}
                         selectedVenchel={selectedVenchel}
                         closeForm={closeForm}

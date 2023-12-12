@@ -11,7 +11,7 @@ const routeHandlers = {
   "/venchel/updateNewVenchel": VenchelControler.updateNewVenchel,
   "/venchel/getAllVenchelsByWorkshop": VenchelControler.getAllVenchelsByWorkshop,
   "/venchel/getAllVenchelsByDep": VenchelControler.getAllVenchelsByDep,//фильтрую на фронте
-  "/venchel/getVenchelsFile": VenchelControler.getVenchelsFile,
+  "/venchel/getVenchelFiles": VenchelControler.getVenchelFiles,
   "/venchel/getFullFileContent": VenchelControler.getFullFileContent,
 };
 

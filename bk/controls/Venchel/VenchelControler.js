@@ -71,12 +71,21 @@ class VenchelControler {
   async removeVenchel(req, res) {
     try {
       const fields = req.user.payLoad.fields;
-      await removeVenchel(fields.task_id)
+      await removeVenchel(fields.venchel_id)
       res.setHeader('Content-Type', 'application/json')
       res.write(JSON.stringify('Status venchel removed'))
       res.end()
     } catch (error) {
       handleError(res, error)
+    }
+  }
+
+  async getVenchelFiles(req, res) {
+    try {
+      const fields = req.user.payLoad;
+      console.log('getVenchelFiles', fields)
+    } catch (error) {
+      
     }
   }
 }

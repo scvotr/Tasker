@@ -34,7 +34,7 @@ const createNewVenchel = async (data) => {
 const createNewVenchel_V02 = async (data) => {
   console.log('>>>>>>>>>>>>', data)
   const command = `
-    INSERT INTO venchels (id, position, type, pos_num, model, location, power, width, height, department_id, sector_id, workshop_id)
+    INSERT INTO venchels (venchel_id, position, type, pos_num, model, location, power, width, height, department_id, sector_id, workshop_id)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
   `
   try {
@@ -68,7 +68,6 @@ const createNewVenchel_V02 = async (data) => {
       if (!file_name) {
         continue;
       }
-
       const command2 = `INSERT INTO venchel_files (venchel_id, file_name, file_path) VALUES (?, ?, ?);`;
       try {
         await queryAsyncWraperParam(command2, [venchelID, file_name], "run");
@@ -81,14 +80,38 @@ const createNewVenchel_V02 = async (data) => {
 }
 
 const getAllVenchels = async () => {
+  // без алиаса (AS V) v. тоже работает
+  const command = `
+    SELECT
+      v.venchel_id,
+      v.position,
+      v.type,
+      v.pos_num,
+      v.model,
+      v.location,
+      v.power,
+      v.width,
+      v.height,
+      v.department_id,
+      d.name AS department_name,
+      v.sector_id,
+      v.workshop_id,
+      w.name AS workshop_name,
+      GROUP_CONCAT(f.file_name, '|') AS file_names
+    FROM venchels AS v
+      LEFT JOIN departments AS d ON v.department_id = d.id
+      LEFT JOIN workshops AS w ON v.workshop_id = w.id
+      LEFT JOIN venchel_files as f ON v.venchel_id = f.venchel_id
+      GROUP BY v.venchel_id  
+  `
+  // GROUP BY v.venchel_id гарантирует, что для каждой записи в таблице venchels будет возвращена соответствующая группа записей из других таблиц.
   try {
-    const result = await queryAsyncWraperParam("SELECT * FROM venchels");
-    return result;
+    return await queryAsyncWraperParam(command);
   } catch (error) {
     console.error("getAllVenchels ERROR: ", error);
     return [];
   }
-};
+}
 
 const getAllVenchelsByDep = async (dep_id) => {
   const command = `SELECT * FROM venchels WHERE department_id = ?;`
@@ -102,7 +125,7 @@ const getAllVenchelsByDep = async (dep_id) => {
 
 const removeVenchel = async (id) => {
   const command = `
-    DELETE FROM venchels WHERE id = ?
+    DELETE FROM venchels WHERE venchel_id = ?
   `
   try {
     await queryAsyncWraperParam(command, [id])
