@@ -20,7 +20,7 @@ export const getThumbnailFiles = async (folder_id, files_names, folder_name) => 
                             : `${currentDirectory}/uploads/${folder_id}/thumbnail_${file.name}`
 
     try {
-      file_content = await readFileAsync(file_path, 'base64')
+      file_content = await readFileAsync(file_path)
     } catch (error) {
       
     }                        
