@@ -16,7 +16,10 @@ const {
   createNewVenchel,
   getAllVenchels,
   removeVenchel,
-} = require("../../Database/VenchelQuery/VenchelQuery")
+} = require("../../Database/VenchelQuery/VenchelQuery");
+
+
+const { getPreviewFileContent } = require('../../Database/TasksQuery/TasksQuery')
 
 const sendResponseWithData = (res, data) => {
   res.setHeader('Content-Type', 'application/json');
@@ -78,10 +81,13 @@ class VenchelControler {
     }
   }
 
-  async getVenchelFiles(req, res) {
+  async getPreviewFileContent(req, res) {
     try {
-      const fields = req.user.payLoad;
-      console.log('getVenchelFiles', fields)
+      const fields = req.user.payLoad.fields
+      // console.log('getPreviewFileContent', fields)
+      const data = await getPreviewFileContent(fields)
+      // console.log(data)
+      // sendResponseWithData(res, data)
     } catch (error) {
       
     }

@@ -5,6 +5,7 @@ import { ImageBlock } from "../../../Task/TaskForm/ImageBlock/ImageBlock";
 import { VenchelTextFields } from "./VenchelTextFields/VenchelTextFields";
 import { useAuthContext } from "../../../../context/AuthProvider";
 import { sendDataToEndpoint } from "../../../../utils/sendDataToEndpoint";
+
 // import { DepartmentSelect } from "../../../SelectFields/HoldinStuct/Dep/DepartmentSelect";
 import { QRCodeSVG, QRCodeCanvas } from "qrcode.react";
 
@@ -154,12 +155,11 @@ export const VenchelForm = ({ dep, sector, reRender, selectedVenchel, closeModal
 
   useEffect(() => {
     if (selectedVenchel) {
-      console.log('selectedVenchel', selectedVenchel)
       // запросить файлы изображений с сервера 
       sendDataToEndpoint(
         currentUser.token,
         selectedVenchel,
-        "/venchel/getVenchelFiles",
+        "/venchel/getPreviewFileContent",
         "POST",
         setReqStatus,
       )

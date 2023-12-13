@@ -123,7 +123,6 @@ const readFileAsync = (file_path, encoding) => {
 // При запросе всех задачь пользователя отдаем только превью фотографий 16-08-23
 // Вынести в утилиты так как универсалная
 const getThumbnailFiles = async (allTasks, folderName) => {
-  console.log('folderName', folderName)
   const currentDirectory = process.cwd();
   const tasks = [];
 
@@ -164,7 +163,6 @@ const getThumbnailFiles = async (allTasks, folderName) => {
       task.file_names = [];
       task.files = [];
     }
-
     tasks.push(task);
   }
   return tasks;
@@ -228,6 +226,8 @@ const getTaskPreviewFiles = async (task_id, files) => {
 };
 
 const getPreviewFileContent = async (task) => {
+  console.log('task', task.venchel_id, task.old_files)
+  // return await getTaskPreviewFiles(task.venchel_id, task.old_files);
   return await getTaskPreviewFiles(task.task_id, task.old_files);
 };
 
