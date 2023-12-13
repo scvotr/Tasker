@@ -12,6 +12,9 @@
   .t-input{
     display: flex;
   }
+  .wraper{
+    display: flex;
+  }
 }
 @media screen and (min-width: 768px) {
 }
