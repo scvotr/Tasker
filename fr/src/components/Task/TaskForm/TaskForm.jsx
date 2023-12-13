@@ -338,7 +338,7 @@ export const TaskForm = ({ taskToEdit, onTaskSubmit, keyProp }) => {
             <ImageBlock files={formData} actionType="addNewTaskFiles" takeAddedIndex={removeTaskAddedFiles} />
           </div>
 
-          <div className="add__edit__btn">
+          <div className="add__edit-btn">
             <button className="form__btn" type="submit">
               {isEdit ? "Редактирование" : "Создать"}
             </button>
