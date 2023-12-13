@@ -5,6 +5,7 @@
 /.pnp
 .pnp.js
 database.db
+*.drawio
 
 # testing
 /coverage
