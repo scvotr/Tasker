@@ -18,8 +18,6 @@ const {
   removeVenchel,
 } = require("../../Database/VenchelQuery/VenchelQuery");
 
-
-const { getPreviewFileContent } = require('../../Database/TasksQuery/TasksQuery');
 const { getThumbnailFiles } = require('../../utils/files/getThumbnailFiles');
 
 const sendResponseWithData = (res, data) => {
