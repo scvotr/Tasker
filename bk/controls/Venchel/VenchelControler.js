@@ -84,7 +84,7 @@ class VenchelControler {
     try {
       const authDecodeUserData = req.user
       const postPayload = JSON.parse(authDecodeUserData.payLoad)
-      const data = await getThumbnailFiles(postPayload.venchel_id ,postPayload,  'venchels')
+      const data = await getThumbnailFiles(postPayload.venchel_id ,postPayload, 'venchels')
       sendResponseWithData(res, data)
     } catch (error) {
       sendResponseWithData(res, error)
