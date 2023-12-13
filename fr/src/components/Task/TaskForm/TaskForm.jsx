@@ -162,16 +162,6 @@ export const TaskForm = ({ taskToEdit, onTaskSubmit, keyProp }) => {
         });
     }
   }, [taskToEdit]);
-  
-  // useEffect(() => {
-  //   if (taskToEdit) {
-  //     getPreviewFileContent(currentUser.token, taskToEdit, setReqStatus)
-  //       .then(data => console.log(data))
-
-  //     setIsEdit(true);
-  //     setFormData({ ...initValue, ...taskToEdit });
-  //   }
-  // }, [taskToEdit]);
 
   const removeTaskExistingFiles = (index) => {
     const updatedFiles = [...formData.old_files]; //! поле для фалов с сервера

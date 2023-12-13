@@ -3,7 +3,6 @@ import pdfIco from "../../../../image/icon/pdf-icon.png";
 // При открытии мен нужно запросить файлы с сервера 
 
 export const ImageBlock = ({ files, actionType, takeExistIndex, takeAddedIndex }) => {
-  console.log('ddd',files)
   return (
     <>
       {actionType === "tableViewOnly" ? (

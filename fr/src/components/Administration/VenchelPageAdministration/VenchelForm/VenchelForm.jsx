@@ -56,7 +56,7 @@ export const VenchelForm = ({ dep, sector, reRender, selectedVenchel, closeModal
     task_files: [],
   };
 
-  const [formData, setFormData] = useState(initValue);
+  const [formData, setFormData] = useState(initValue); console.log(formData)
   const [isLoading, setIsLoading] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [reqStatus, setReqStatus] = useState(null);
@@ -209,12 +209,18 @@ export const VenchelForm = ({ dep, sector, reRender, selectedVenchel, closeModal
             handleFileInput={handleFIleInput}
           />
           {/* <DepartmentSelect value = {formData.department_id} onChange = {getInputData}/> */}
-          <ImageBlock
-            files={formData.old_files}
-            actionType="addNewTaskFiles"
-            // actionType="tableViewOnly"
-            takeAddedIndex={removeAppendedFile}
-          />
+          {/* ----------------------------------------- */}
+          <div className="task-form-image__prewiev">
+            {isEdit && (
+              <ImageBlock
+                files={formData.old_files}
+                actionType="tableViewOnly"
+                takeExistIndex={removeAppendedFile}
+              />
+            )}
+            <ImageBlock files={formData} actionType="addNewTaskFiles" takeAddedIndex={removeAppendedFile} />
+          </div>
+          {/* ----------------------------------------- */}
           <div className="container-btn">
             <button className="form__btn" type="submit">
               {selectedVenchel ? "Редактирование" : "Создать"}
