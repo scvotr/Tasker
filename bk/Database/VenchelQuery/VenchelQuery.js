@@ -5,6 +5,7 @@ const {
 const fs = require("fs")
 const path = require("path")
 const {getThumbnailFiles} = require("../TasksQuery/TasksQuery")
+const { fetchAllFileNames } = require("../../utils/files/fetchAllFileNames")
 
 const createNewVenchel = async (data) => {
   const command = `
@@ -79,8 +80,8 @@ const getAllVenchels = async () => {
   `
   // GROUP BY v.venchel_id гарантирует, что для каждой записи в таблице venchels будет возвращена соответствующая группа записей из других таблиц.
   try {
-    const appendFile = await queryAsyncWraperParam(command);
-    return await getThumbnailFiles(appendFile, 'venchels')
+    const appendFileNames = await queryAsyncWraperParam(command);
+    return await fetchAllFileNames(appendFileNames, 'venchels')
   } catch (error) {
     console.error("getAllVenchels ERROR: ", error);
     return [];

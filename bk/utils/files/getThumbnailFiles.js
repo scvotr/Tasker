@@ -1,18 +1,18 @@
 /*
   Функция возвращает превью всех файлов по ID
 */
-import { readFileAsync } from "./readFileAsync";
+const {readFileAsync} = require('./readFileAsync')
 
-export const getThumbnailFiles = async (folder_id, files_names, folder_name) => {
-  const currentDirectory = process.cwd();
+const getThumbnailFiles = async (folder_id, postPayload, folder_name) => {
+  const currentDirectory = process.cwd()
   const filesThumbnailContent = []
 
-  for (let i = 0; i < files_names.length; i++) {
+  for (let i = 0; i < postPayload.old_files.length; i++) {
     let file_path
     let file_content
-    const file = files_names[i]
+    const file = postPayload.old_files[i]
 
-    file_path = folder_name ? `${currentDirectory}/uploads/${folder_name}/${folder_id}/thumbnail_${file.name}`
+    file_path = folder_name ? `${currentDirectory}/uploads/${folder_name}/${folder_id}/thumbnail_${folder_id}`
                             : `${currentDirectory}/uploads/${folder_id}/thumbnail_${file.name}`
 
     try {
@@ -28,4 +28,8 @@ export const getThumbnailFiles = async (folder_id, files_names, folder_name) => 
     })                     
   }
   return filesThumbnailContent
+}
+
+module.exports = {
+  getThumbnailFiles,
 }

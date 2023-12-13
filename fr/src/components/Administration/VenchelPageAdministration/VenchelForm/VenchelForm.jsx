@@ -9,6 +9,31 @@ import { sendDataToEndpoint } from "../../../../utils/sendDataToEndpoint";
 // import { DepartmentSelect } from "../../../SelectFields/HoldinStuct/Dep/DepartmentSelect";
 import { QRCodeSVG, QRCodeCanvas } from "qrcode.react";
 
+import { HOST_ADDR } from "../../../../utils/ApiHostAdres";
+
+export const getPreviewFileContent = async (token, data, onSuccess) => {
+  try {
+    const res = await fetch(HOST_ADDR + "/venchel/getPreviewFileContent", {
+      method: "POST",
+      headers: {
+        Authorization: token,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    if (res.ok) {
+      const responseData = await res.json();
+      onSuccess(responseData);
+      return responseData
+    } else {
+      throw new Error("Server response was not ok");
+    }
+  } catch (error) {
+    onSuccess(error);
+  }
+};
+
+
 export const VenchelForm = ({ dep, sector, reRender, selectedVenchel, closeModal, closeForm }) => {
   const currentUser = useAuthContext();
   const initValue = {
@@ -37,11 +62,27 @@ export const VenchelForm = ({ dep, sector, reRender, selectedVenchel, closeModal
   const [reqStatus, setReqStatus] = useState(null);
   const [qrCodeValue, setQrCodeValue] = useState(formData.venchel_id);
 
+  useEffect(() => {
+    if (selectedVenchel) {
+      getPreviewFileContent(currentUser.token, selectedVenchel, setReqStatus)
+        .then(data => {
+          setIsEdit(true);
+          const updatedTaskToEdit = { ...selectedVenchel, old_files: data };
+          setFormData({ ...initValue, ...updatedTaskToEdit });
+        })
+        .catch(error => {
+          // Обработка ошибки, если необходимо
+        });
+    }
+  }, [selectedVenchel]);
+
+
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     if (isEdit) {
       try {
+        console.log('Edit action')
       } catch (error) {}
     } else {
       try {
@@ -153,23 +194,7 @@ export const VenchelForm = ({ dep, sector, reRender, selectedVenchel, closeModal
 
   const removeCurrentFiles = (fileIndex) => {};
 
-  useEffect(() => {
-    if (selectedVenchel) {
-      // запросить файлы изображений с сервера 
-      sendDataToEndpoint(
-        currentUser.token,
-        selectedVenchel,
-        "/venchel/getPreviewFileContent",
-        "POST",
-        setReqStatus,
-      )
-      
-      // обьеденить задачу для редактирования с полученными файлами
-      // обьеденить полученное с formData для вывода на страницу
-      setFormData({ ...formData, ...selectedVenchel });
-      setIsEdit(true)
-    }
-  }, [selectedVenchel]);
+
 
   return (
     <>
@@ -185,8 +210,9 @@ export const VenchelForm = ({ dep, sector, reRender, selectedVenchel, closeModal
           />
           {/* <DepartmentSelect value = {formData.department_id} onChange = {getInputData}/> */}
           <ImageBlock
-            files={formData}
+            files={formData.old_files}
             actionType="addNewTaskFiles"
+            // actionType="tableViewOnly"
             takeAddedIndex={removeAppendedFile}
           />
           <div className="container-btn">
@@ -209,7 +235,6 @@ export const VenchelForm = ({ dep, sector, reRender, selectedVenchel, closeModal
               </button>
               </>
             )}
-            <p>{reqStatus}</p>
           </div>
         </form>
       )}

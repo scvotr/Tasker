@@ -1,6 +1,6 @@
-const path = require('path')
+const path = require('path');
 
-export const fetchAllFileNames = (dataset, folder_name) => {
+const fetchAllFileNames = (dataset, folder_name) => {
   const currentDirectory = process.cwd();
   const result = []
 
@@ -30,4 +30,8 @@ export const fetchAllFileNames = (dataset, folder_name) => {
     result.push(current_data)
   }
   return result
+}
+
+module.exports = {
+  fetchAllFileNames,
 }

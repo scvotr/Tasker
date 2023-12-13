@@ -3,7 +3,6 @@ import './InTableVenchelForm.css'
 import { VenchelForm } from "../../VenchelForm/VenchelForm";
 
 export const InTableVenchelForm = ({ data, reRender }) => {
-  console.log(data)
   const [selectedVenchel, setSelectedVencel] = useState(null);
 
   const openForm = (venchel) => {

@@ -19,7 +19,8 @@ const {
 } = require("../../Database/VenchelQuery/VenchelQuery");
 
 
-const { getPreviewFileContent } = require('../../Database/TasksQuery/TasksQuery')
+const { getPreviewFileContent } = require('../../Database/TasksQuery/TasksQuery');
+const { getThumbnailFiles } = require('../../utils/files/getThumbnailFiles');
 
 const sendResponseWithData = (res, data) => {
   res.setHeader('Content-Type', 'application/json');
@@ -83,13 +84,12 @@ class VenchelControler {
 
   async getPreviewFileContent(req, res) {
     try {
-      const fields = req.user.payLoad.fields
-      // console.log('getPreviewFileContent', fields)
-      const data = await getPreviewFileContent(fields)
-      // console.log(data)
-      // sendResponseWithData(res, data)
+      const authDecodeUserData = req.user
+      const postPayload = JSON.parse(authDecodeUserData.payLoad)
+      const data = await getThumbnailFiles(postPayload.venchel_id ,postPayload,  'venchels')
+      sendResponseWithData(res, data)
     } catch (error) {
-      
+      sendResponseWithData(res, error)
     }
   }
 }

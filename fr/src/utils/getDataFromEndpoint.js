@@ -6,7 +6,6 @@ export const getDataFromEndpoint = async (
   method,
   onSuccess
 ) => {
-  console.log('!!++++!!!!!!!!!!!!!', endpoint)
   try {
     const res = await fetch(HOST_ADDR + endpoint, {
       method: method,
