@@ -76,38 +76,45 @@ export const VenchelForm = ({ dep, sector, reRender, selectedVenchel, closeModal
     }
   }, [selectedVenchel]);
 
+  const handleRemoveCurrentFiles = (fileIndex) => {
+    const currentFiles = [...formData.old_files]
+    const currentFilesName = [...formData.file_names]
+    currentFiles.splice(fileIndex, 1)
+    const filesNamesToRemove = currentFilesName.splice(fileIndex, 1)
+    const filesToRemove = [...formData.files_to_remove, filesNamesToRemove]
 
-  const handleFormSubmit = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-    if (isEdit) {
+    setFormData( prev => ({
+      ...prev,
+      old_files: currentFiles,
+      file_names:  currentFilesName,
+      files_to_remove: filesToRemove,
+    }))
+  };
+
+  const handleRemoveAppendedFile = (fileIndex) => {
+    if (formData.files && formData.filePreviews) {
       try {
-        console.log('Edit action')
-      } catch (error) {}
-    } else {
-      try {
-        await sendDataToEndpoint(
-          currentUser.token,
-          formData,
-          "/venchel/addNewVenchel",
-          "POST",
-          setReqStatus
-        );
-        setFormData(initValue);
-        setIsLoading(false);
-        reRender(true);
+        const currentFiles = [...formData.files];
+        const currentPrewievs = [...formData.filePreviews];
+        currentFiles.splice(fileIndex, 1);
+        currentPrewievs.splice(fileIndex, 1);
+        setFormData((prev) => ({
+          ...prev,
+          files: currentFiles,
+          filePreviews: currentPrewievs,
+        }));
       } catch (error) {
-        setIsLoading(false);
-        reRender(false);
+        console.error("Ошибка при удалении файла", error);
       }
     }
   };
+
   const handleRemoveVenchel = async (e) => {
     e.preventDefault();
     const data = {
       venchel_id: formData.venchel_id,
-      file_names: formData.file_names,
-    };
+      files_names: formData.file_names,
+    }
     try {
       await sendDataToEndpoint(
         currentUser.token,
@@ -117,13 +124,12 @@ export const VenchelForm = ({ dep, sector, reRender, selectedVenchel, closeModal
         setReqStatus,
       );
       reRender(true);
-      closeModal()
     } catch (error) {
       reRender(false);
     }
   };
 
-  const getInputData = async (e) => {
+  const handleGetInputData = async (e) => {
     e.preventDefault();
     const { name, value, files } = e.target;
     if (name === "add_new_files" || name === "append_new_files") {
@@ -167,45 +173,38 @@ export const VenchelForm = ({ dep, sector, reRender, selectedVenchel, closeModal
     }
   };
 
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    if (isEdit) {
+      try {
+        console.log('Edit action')
+      } catch (error) {}
+    } else {
+      try {
+        await sendDataToEndpoint(
+          currentUser.token,
+          formData,
+          "/venchel/addNewVenchel",
+          "POST",
+          setReqStatus
+        );
+        setFormData(initValue);
+        setIsLoading(false);
+        reRender(true);
+      } catch (error) {
+        setIsLoading(false);
+        reRender(false);
+      }
+    }
+  };
+
   const handleFIleInput = (e) => {
     const input = e.target;
     if (input.files.length > 5) {
       alert("Максимальное количество файлов - 5");
       input.value = "";
     }
-  };
-
-  const removeAppendedFile = (fileIndex) => {
-    if (formData.files && formData.filePreviews) {
-      try {
-        const currentFiles = [...formData.files];
-        const currentPrewievs = [...formData.filePreviews];
-        currentFiles.splice(fileIndex, 1);
-        currentPrewievs.splice(fileIndex, 1);
-        setFormData((prev) => ({
-          ...prev,
-          files: currentFiles,
-          filePreviews: currentPrewievs,
-        }));
-      } catch (error) {
-        console.error("Ошибка при удалении файла", error);
-      }
-    }
-  };
-
-  const removeCurrentFiles = (fileIndex) => {
-    const currentFiles = [...formData.old_files]
-    const currentFilesName = [...formData.file_names]
-    currentFiles.splice(fileIndex, 1)
-    const filesNamesToRemove = currentFilesName.splice(fileIndex, 1)
-    const filesToRemove = [...formData.files_to_remove, filesNamesToRemove]
-
-    setFormData( prev => ({
-      ...prev,
-      old_files: currentFiles,
-      file_names:  currentFilesName,
-      files_to_remove: filesToRemove,
-    }))
   };
 
   return (
@@ -215,23 +214,23 @@ export const VenchelForm = ({ dep, sector, reRender, selectedVenchel, closeModal
       ) : (
         <form className="form__container-venchel" onSubmit={handleFormSubmit}>
           <VenchelTextFields
-            getData={getInputData}
+            getData={handleGetInputData}
             value={formData}
             isEdit={isEdit}
             handleFileInput={handleFIleInput}
           />
-          {/* <DepartmentSelect value = {formData.department_id} onChange = {getInputData}/> */}
+          {/* <DepartmentSelect value = {formData.department_id} onChange = {handleGetInputData}/> */}
 
           {/* ----------------------------------------- */}
           <div className="task-form-image__prewiev">
-            {isEdit && (
+            {isEdit && formData.old_files.length > 0 && (
               <ImageBlock
                 files={formData.old_files}
                 actionType="tableViewOnly"
-                takeExistIndex={removeCurrentFiles}
+                takeExistIndex={handleRemoveCurrentFiles}
               />
             )}
-            <ImageBlock files={formData} actionType="addNewTaskFiles" takeAddedIndex={removeAppendedFile} />
+            <ImageBlock files={formData} actionType="addNewTaskFiles" takeAddedIndex={handleRemoveAppendedFile} />
           </div>
           {/* ----------------------------------------- */}
           
