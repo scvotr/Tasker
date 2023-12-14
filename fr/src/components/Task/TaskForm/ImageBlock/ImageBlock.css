@@ -1,4 +1,10 @@
 @media screen and (min-width: 320px) {
+  .file-preview-container{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    border: 1px solid;
+  }
   .container-img{
     display: flex;
     justify-content: center;

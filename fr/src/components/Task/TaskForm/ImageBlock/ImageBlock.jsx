@@ -6,7 +6,7 @@ export const ImageBlock = ({ files, actionType, takeExistIndex, takeAddedIndex }
   return (
     <>
       {actionType === "tableViewOnly" ? (
-        <>
+        <div className="container-img">
           {files && files.map((file, index) => (
             <div key={index} className="file-preview-container">
               {file.type === ".pdf" ? (
@@ -31,11 +31,11 @@ export const ImageBlock = ({ files, actionType, takeExistIndex, takeAddedIndex }
               )}
             </div>
           ))}
-        </>
+        </div>
       ) : actionType === "addNewTaskFiles" ? (
         <div className="container-img">
           {files && files.filePreviews && files.filePreviews.map((preview, index) => (
-            <div key={index}>
+            <div key={index} className="file-preview-container">
               {preview.startsWith("data:application/pdf") ? (
                 <div className="pdf__container" onClick={() => takeAddedIndex(index)}>
                   <img key={index} src={pdfIco} alt="PDF Icon" width={50} />
