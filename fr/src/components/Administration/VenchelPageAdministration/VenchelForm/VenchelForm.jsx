@@ -56,6 +56,7 @@ export const VenchelForm = ({ dep, sector, reRender, selectedVenchel, closeModal
   };
 
   const [formData, setFormData] = useState(initValue);
+  console.log('VenchelForm-formData', formData)
   const [isLoading, setIsLoading] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [reqStatus, setReqStatus] = useState(null);

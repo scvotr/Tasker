@@ -39,6 +39,7 @@ export const VenchelPageAdministration = () => {
         // --------------------------------------
         getDataFromEndpoint(currentUser.token, "/venchel/getAllVenchels", "POST", setReqStatus)
         .then(venchels => {
+          console.log('venchels', venchels)
           const ae_venchels = venchels.filter( venchel => venchel.department_id === AE_ID)
           setAe_venchels( prev => ({
             ...prev,

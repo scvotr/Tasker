@@ -39,6 +39,7 @@ class VenchelControler {
   async addNewVenchel(req, res) {
     try {
       const fields = req.user.payLoad.fields
+      console.log('payLoad', req.user.payLoad)
       const files = req.user.payLoad.files
       const venchelFolderName = fields.venchel_id
       const fileNames = []
