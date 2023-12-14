@@ -16,6 +16,7 @@ const {
   createNewVenchel,
   getAllVenchels,
   removeVenchel,
+  updateVenchel,
 } = require("../../Database/VenchelQuery/VenchelQuery");
 
 const { getThumbnailFiles } = require('../../utils/files/getThumbnailFiles');
@@ -72,17 +73,35 @@ class VenchelControler {
     try {
       const fields = req.user.payLoad.fields;
       await removeVenchel(fields.venchel_id)
-      res.setHeader('Content-Type', 'application/json')
-      res.write(JSON.stringify('Status venchel removed'))
-      res.end()
+      sendResponseWithData(res, 'removeVenchel ok')
     } catch (error) {
       handleError(res, error)
     }
   }
 
   async updateVenchel(req, res) {
-    const fields = req.user.payLoad.fields;
-    console.log('updateVenchel', fields)
+    try {
+      const {fields, files} = req.user.payLoad
+      const folderName = fields.venchel_id
+      console.log(fields.files_to_remove)
+      const filesToRemove = fields.files_to_remove
+
+      if(filesToRemove) {
+        const filesNames = filesToRemove.split(",")
+        for(const [key] of Object.entries(filesNames)) {
+          // console.log('remove', filesNames[key], folderName )
+        } 
+      }
+      if(files) {
+        for(const [key, file] of Object.entries(files)){
+          // console.log('Add new', file, folderName)
+        }
+      }
+      await updateVenchel(fields, files)
+      sendResponseWithData(res, 'updateVenchel ok')
+    } catch (error) {
+      sendResponseWithData(res, error)
+    }
   }
 
   async getPreviewFileContent(req, res) {

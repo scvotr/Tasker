@@ -4,8 +4,12 @@ const {
 
 const fs = require("fs")
 const path = require("path")
-const {getThumbnailFiles} = require("../TasksQuery/TasksQuery")
-const { fetchAllFileNames } = require("../../utils/files/fetchAllFileNames")
+const {
+  getThumbnailFiles
+} = require("../TasksQuery/TasksQuery")
+const {
+  fetchAllFileNames
+} = require("../../utils/files/fetchAllFileNames")
 
 const createNewVenchel = async (data) => {
   const command = `
@@ -109,9 +113,77 @@ const removeVenchel = async (id) => {
   }
 };
 
+const updateVenchel = async (fields, files) => {
+  const {
+    venchel_id,
+    type,
+    position,
+    pos_num,
+    model,
+    location,
+    power,
+    length,
+    width,
+    height,
+    department_name,
+    workshop_name,
+  } = fields
+
+  const command = `
+    UPDATE venchels
+      SET
+      position = ?,
+      type = ?,
+      pos_num = ?,
+      model = ?,
+      location = ?,
+      power = ?,
+      width = ?,
+      height = ?
+    WHERE venchel_id = ?   
+  `
+  const command2 = `
+    DELETE FROM venchel_files
+    WHERE file_name = ?
+  `
+  const command3 = `INSERT INTO venchel_files (venchel_id, file_name, file_path) VALUES (?, ?, ?)`
+
+  if (files.length > 0) {
+    try {
+      for (const fileName of files) {
+        await queryAsyncWraperParam(command3, [venchel_id, fileName])
+      }
+    } catch (error) {}
+  }
+
+  try {
+    console.log('111')
+    await queryAsyncWraperParam(command, [
+      position,
+      type,
+      pos_num,
+      model,
+      location,
+      power,
+      width,
+      height,
+      venchel_id
+    ])
+
+    const parseData = files.files_to_remove.split(",")
+    for (const file_name of parseData) {
+      await queryAsyncWraperParam(command2, [file_name])
+    }
+  } catch (error) {
+    console.log("updateVenchel", error);
+  }
+
+}
+
 module.exports = {
   createNewVenchel,
   getAllVenchels,
-  removeVenchel,
   getAllVenchelsByDep,
+  removeVenchel,
+  updateVenchel,
 }

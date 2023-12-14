@@ -24,7 +24,7 @@ export const getPreviewFileContent = async (token, data, onSuccess) => {
     if (res.ok) {
       const responseData = await res.json();
       onSuccess(responseData);
-      return responseData
+      return responseData;
     } else {
       throw new Error("Server response was not ok");
     }
@@ -33,8 +33,7 @@ export const getPreviewFileContent = async (token, data, onSuccess) => {
   }
 };
 
-
-export const VenchelForm = ({ dep, sector, reRender, selectedVenchel, closeModal, closeForm }) => {
+export const VenchelForm = ({ dep, sector, reRender, selectedVenchel, closeModal, closeForm,}) => {
   const currentUser = useAuthContext();
   const initValue = {
     venchel_id: uuidv4(),
@@ -56,7 +55,7 @@ export const VenchelForm = ({ dep, sector, reRender, selectedVenchel, closeModal
     task_files: [],
   };
 
-  const [formData, setFormData] = useState(initValue); console.log(formData)
+  const [formData, setFormData] = useState(initValue);
   const [isLoading, setIsLoading] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [reqStatus, setReqStatus] = useState(null);
@@ -64,31 +63,32 @@ export const VenchelForm = ({ dep, sector, reRender, selectedVenchel, closeModal
 
   useEffect(() => {
     if (selectedVenchel) {
+      console.log('dsdsa')
       getPreviewFileContent(currentUser.token, selectedVenchel, setReqStatus)
-        .then(data => {
+        .then((data) => {
           setIsEdit(true);
           const updatedTaskToEdit = { ...selectedVenchel, old_files: data };
           setFormData({ ...initValue, ...updatedTaskToEdit });
         })
-        .catch(error => {
+        .catch((error) => {
           // Обработка ошибки, если необходимо
         });
     }
   }, [selectedVenchel]);
 
   const handleRemoveCurrentFiles = (fileIndex) => {
-    const currentFiles = [...formData.old_files]
-    const currentFilesName = [...formData.file_names]
-    currentFiles.splice(fileIndex, 1)
-    const filesNamesToRemove = currentFilesName.splice(fileIndex, 1)
-    const filesToRemove = [...formData.files_to_remove, filesNamesToRemove]
+    const currentFiles = [...formData.old_files];
+    const currentFilesName = [...formData.file_names];
+    currentFiles.splice(fileIndex, 1);
+    const filesNamesToRemove = currentFilesName.splice(fileIndex, 1);
+    const filesToRemove = [...formData.files_to_remove, filesNamesToRemove];
 
-    setFormData( prev => ({
+    setFormData((prev) => ({
       ...prev,
       old_files: currentFiles,
-      file_names:  currentFilesName,
+      file_names: currentFilesName,
       files_to_remove: filesToRemove,
-    }))
+    }));
   };
 
   const handleRemoveAppendedFile = (fileIndex) => {
@@ -114,14 +114,14 @@ export const VenchelForm = ({ dep, sector, reRender, selectedVenchel, closeModal
     const data = {
       venchel_id: formData.venchel_id,
       files_names: formData.file_names,
-    }
+    };
     try {
       await sendDataToEndpoint(
         currentUser.token,
         data,
         "/venchel/removeVenchel",
         "POST",
-        setReqStatus,
+        setReqStatus
       );
       reRender(true);
     } catch (error) {
@@ -133,36 +133,41 @@ export const VenchelForm = ({ dep, sector, reRender, selectedVenchel, closeModal
     e.preventDefault();
     const { name, value, files } = e.target;
     if (name === "add_new_files" || name === "append_new_files") {
-      setIsLoading(true);
-      const allowedTypes = ["image/jpeg", "image/png"];
-      const data = Array.from(files).filter((file) =>
-        allowedTypes.includes(file.type)
-      );
-      const previews = await Promise.all(
-        data.map((file) => {
-          return new Promise((resolve) => {
-            const fileReader = new FileReader();
-            fileReader.onload = (e) => {
-              if (file.type.startsWith("image/")) {
-                const image = new Image();
-                image.src = e.target.result;
-                image.onload = () => {
+      try {
+        setIsLoading(true);
+        const allowedTypes = ["image/jpeg", "image/png"];
+        const data = Array.from(files).filter((file) =>
+          allowedTypes.includes(file.type)
+        );
+        const previews = await Promise.all(
+          data.map((file) => {
+            return new Promise((resolve) => {
+              const fileReader = new FileReader();
+              fileReader.onload = (e) => {
+                if (file.type.startsWith("image/")) {
+                  const image = new Image();
+                  image.src = e.target.result;
+                  image.onload = () => {
+                    resolve(e.target.result);
+                  };
+                } else if (fileReader.type.startsWith("application/pdf")) {
                   resolve(e.target.result);
-                };
-              } else if (fileReader.type.startsWith("application/pdf")) {
-                resolve(e.target.result);
-              }
-            };
-            fileReader.readAsDataURL(file);
-          });
-        })
-      );
-      setIsLoading(false);
-      setFormData((prev) => ({
-        ...prev,
-        files: [...prev.files, ...data],
-        filePreviews: [...prev.filePreviews, ...previews],
-      }));
+                }
+              };
+              fileReader.readAsDataURL(file);
+            });
+          })
+        );
+        setFormData((prev) => ({
+          ...prev,
+          filePreviews: [...prev.filePreviews, ...previews],
+          files: [...prev.files, ...data],
+        }));
+      } catch (error) {
+        console.error("An error occurred while processing files:", error);
+      } finally {
+        setIsLoading(false);
+      }
     } else if (name === "") {
     } else if (name === "2") {
     } else {
@@ -185,7 +190,9 @@ export const VenchelForm = ({ dep, sector, reRender, selectedVenchel, closeModal
           "POST",
           setReqStatus
         );
-        setIsLoading(false)
+        reRender(true)
+        setIsLoading(false);
+        setFormData({ ...formData, filePreviews: [] })
       } catch (error) {}
     } else {
       try {
@@ -204,8 +211,8 @@ export const VenchelForm = ({ dep, sector, reRender, selectedVenchel, closeModal
         reRender(false);
       }
     }
-  };
-
+  }
+  
   const handleFIleInput = (e) => {
     const input = e.target;
     if (input.files.length > 5) {
@@ -237,28 +244,29 @@ export const VenchelForm = ({ dep, sector, reRender, selectedVenchel, closeModal
                 takeExistIndex={handleRemoveCurrentFiles}
               />
             )}
-            <ImageBlock files={formData} actionType="addNewTaskFiles" takeAddedIndex={handleRemoveAppendedFile} />
+            <ImageBlock
+              files={formData}
+              actionType="addNewTaskFiles"
+              takeAddedIndex={handleRemoveAppendedFile}
+            />
           </div>
           {/* ----------------------------------------- */}
-          
+
           <div className="container-btn">
             <button className="form__btn" type="submit">
               {selectedVenchel ? "Редактирование" : "Создать"}
             </button>
             {selectedVenchel && (
               <>
-              <button
-                className="form__btn"
-                onClick={()=>closeForm()}
-              >
-                закрыть
-              </button>
-              <button
-                className="form__btn-remove"
-                onClick={handleRemoveVenchel}
-              >
-                Удалить
-              </button>
+                <button className="form__btn" onClick={() => closeForm()}>
+                  закрыть
+                </button>
+                <button
+                  className="form__btn-remove"
+                  onClick={handleRemoveVenchel}
+                >
+                  Удалить
+                </button>
               </>
             )}
           </div>
