@@ -106,6 +106,7 @@ export const VenchelForm = ({ dep, sector, reRender, selectedVenchel, closeModal
     e.preventDefault();
     const data = {
       venchel_id: formData.venchel_id,
+      file_names: formData.file_names,
     };
     try {
       await sendDataToEndpoint(
