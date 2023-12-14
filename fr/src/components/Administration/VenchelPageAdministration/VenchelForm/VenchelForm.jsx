@@ -52,7 +52,7 @@ export const VenchelForm = ({ dep, sector, reRender, selectedVenchel, closeModal
     sector: sector,
     files: [],
     filePreviews: [],
-    filesToRemove: [],
+    files_to_remove: [],
     task_files: [],
   };
 
@@ -192,9 +192,20 @@ export const VenchelForm = ({ dep, sector, reRender, selectedVenchel, closeModal
     }
   };
 
-  const removeCurrentFiles = (fileIndex) => {};
+  const removeCurrentFiles = (fileIndex) => {
+    const currentFiles = [...formData.old_files]
+    const currentFilesName = [...formData.file_names]
+    currentFiles.splice(fileIndex, 1)
+    const filesNamesToRemove = currentFilesName.splice(fileIndex, 1)
+    const filesToRemove = [...formData.files_to_remove, filesNamesToRemove]
 
-
+    setFormData( prev => ({
+      ...prev,
+      old_files: currentFiles,
+      file_names:  currentFilesName,
+      files_to_remove: filesToRemove,
+    }))
+  };
 
   return (
     <>
@@ -216,7 +227,7 @@ export const VenchelForm = ({ dep, sector, reRender, selectedVenchel, closeModal
               <ImageBlock
                 files={formData.old_files}
                 actionType="tableViewOnly"
-                takeExistIndex={removeAppendedFile}
+                takeExistIndex={removeCurrentFiles}
               />
             )}
             <ImageBlock files={formData} actionType="addNewTaskFiles" takeAddedIndex={removeAppendedFile} />
