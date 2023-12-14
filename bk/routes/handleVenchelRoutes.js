@@ -8,7 +8,7 @@ const routeHandlers = {
   "/venchel/addNewVenchel": VenchelControler.addNewVenchel,
   "/venchel/getAllVenchels": VenchelControler.getAllVenchels,
   "/venchel/removeVenchel": VenchelControler.removeVenchel,
-  "/venchel/updateNewVenchel": VenchelControler.updateNewVenchel,
+  "/venchel/updateVenchel": VenchelControler.updateVenchel,
   "/venchel/getAllVenchelsByWorkshop": VenchelControler.getAllVenchelsByWorkshop,
   "/venchel/getAllVenchelsByDep": VenchelControler.getAllVenchelsByDep,//фильтрую на фронте
   "/venchel/getPreviewFileContent": VenchelControler.getPreviewFileContent,

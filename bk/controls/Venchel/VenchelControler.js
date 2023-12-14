@@ -80,6 +80,11 @@ class VenchelControler {
     }
   }
 
+  async updateVenchel(req, res) {
+    const fields = req.user.payLoad.fields;
+    console.log('updateVenchel', fields)
+  }
+
   async getPreviewFileContent(req, res) {
     try {
       const authDecodeUserData = req.user

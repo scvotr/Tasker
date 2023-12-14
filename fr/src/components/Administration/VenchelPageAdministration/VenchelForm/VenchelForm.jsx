@@ -178,7 +178,14 @@ export const VenchelForm = ({ dep, sector, reRender, selectedVenchel, closeModal
     setIsLoading(true);
     if (isEdit) {
       try {
-        console.log('Edit action')
+        await sendDataToEndpoint(
+          currentUser.token,
+          formData,
+          "/venchel/updateVenchel",
+          "POST",
+          setReqStatus
+        );
+        setIsLoading(false)
       } catch (error) {}
     } else {
       try {
