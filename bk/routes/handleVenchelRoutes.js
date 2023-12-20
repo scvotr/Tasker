@@ -17,7 +17,6 @@ const routeHandlers = {
 
 const handleVenchelRoutes = async (req, res) => {
   const { url, method } = req;
-  // console.log('handleVenchelRoutes', url, method );
   
   try {
     if (url.startsWith("/venchel")) {

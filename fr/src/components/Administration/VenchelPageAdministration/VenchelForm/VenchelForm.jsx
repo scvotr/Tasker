@@ -56,7 +56,6 @@ export const VenchelForm = ({ dep, sector, reRender, selectedVenchel, closeModal
   };
 
   const [formData, setFormData] = useState(initValue);
-  console.log('VenchelForm-formData', formData)
   const [isLoading, setIsLoading] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [reqStatus, setReqStatus] = useState(null);
@@ -64,7 +63,7 @@ export const VenchelForm = ({ dep, sector, reRender, selectedVenchel, closeModal
 
   useEffect(() => {
     if (selectedVenchel) {
-      console.log('dsdsa')
+      //! не запрашивать если файлов нет
       getPreviewFileContent(currentUser.token, selectedVenchel, setReqStatus)
         .then((data) => {
           setIsEdit(true);
@@ -191,10 +190,19 @@ export const VenchelForm = ({ dep, sector, reRender, selectedVenchel, closeModal
           "POST",
           setReqStatus
         );
+        setFormData({ 
+          ...formData,
+          filePreviews: [], //[...prev.filePreviews, ...previews]
+          files_to_remove: [],
+        })
+        // ! не обновляються файлы при редактирвоании
         reRender(true)
         setIsLoading(false);
-        setFormData({ ...formData, filePreviews: [] })
-      } catch (error) {}
+        closeForm()
+      } catch (error) {
+        reRender(false)
+        setIsLoading(false);
+      }
     } else {
       try {
         await sendDataToEndpoint(

@@ -39,7 +39,6 @@ class VenchelControler {
   async addNewVenchel(req, res) {
     try {
       const fields = req.user.payLoad.fields
-      console.log('payLoad', req.user.payLoad)
       const files = req.user.payLoad.files
       const venchelFolderName = fields.venchel_id
       const fileNames = []
@@ -74,6 +73,7 @@ class VenchelControler {
     try {
       const fields = req.user.payLoad.fields;
       await removeVenchel(fields.venchel_id)
+      await removeFolder(fields.venchel_id, 'uploads\\venchels')
       sendResponseWithData(res, 'removeVenchel ok')
     } catch (error) {
       handleError(res, error)
@@ -84,21 +84,32 @@ class VenchelControler {
     try {
       const {fields, files} = req.user.payLoad
       const folderName = fields.venchel_id
-      console.log(fields.files_to_remove)
       const filesToRemove = fields.files_to_remove
-
+      const fileNames = [];
+  
       if(filesToRemove) {
         const filesNames = filesToRemove.split(",")
+        console.log(filesNames)
         for(const [key] of Object.entries(filesNames)) {
-          // console.log('remove', filesNames[key], folderName )
+          console.log('remove: ', filesNames[key], folderName )
+          try {
+            await deleteFile(filesNames[key], folderName, 'uploads\\venchels')
+          } catch (error) {
+            throw new Error()
+          }
         } 
       }
       if(files) {
         for(const [key, file] of Object.entries(files)){
-          // console.log('Add new', file, folderName)
+          try {
+            const fileName = await saveFile(file, folderName, 'uploads\\venchels')
+            fileNames.push(fileName.fileName)
+          } catch (error) {
+            throw new Error()
+          }
         }
       }
-      await updateVenchel(fields, files)
+      await updateVenchel(fields, fileNames)
       sendResponseWithData(res, 'updateVenchel ok')
     } catch (error) {
       sendResponseWithData(res, error)

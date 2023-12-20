@@ -191,6 +191,7 @@ class TasksControler {
       const fileNames = [];
       const taskFolderName = postPayload.fields.task_id
       const filesToRemoveName = postPayload.fields.filesToRemove
+      
       if (filesToRemoveName) {
         const arrFilesToRemove = filesToRemoveName.split(",")
         for (const [key] of Object.entries(arrFilesToRemove)) {

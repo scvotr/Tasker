@@ -106,14 +106,18 @@ const removeVenchel = async (id) => {
   const command = `
     DELETE FROM venchels WHERE venchel_id = ?
   `
+  const command2 = `
+    DELETE FROM venchel_files WHERE venchel_id = ?
+  `
   try {
     await queryAsyncWraperParam(command, [id])
+    await queryAsyncWraperParam(command2, [id])
   } catch (error) {
     console.error("removeVenchel ERROR: ", error)
   }
 };
 
-const updateVenchel = async (fields, files) => {
+const updateVenchel = async (fields, fileNames) => {
   const {
     venchel_id,
     type,
@@ -147,17 +151,16 @@ const updateVenchel = async (fields, files) => {
     WHERE file_name = ?
   `
   const command3 = `INSERT INTO venchel_files (venchel_id, file_name, file_path) VALUES (?, ?, ?)`
-
-  if (files.length > 0) {
+//-----------------------------------------------------------------------------------
+  if (fileNames.length > 0) {
     try {
-      for (const fileName of files) {
+      for (const fileName of fileNames) {
         await queryAsyncWraperParam(command3, [venchel_id, fileName])
       }
     } catch (error) {}
   }
 
   try {
-    console.log('111')
     await queryAsyncWraperParam(command, [
       position,
       type,
@@ -170,7 +173,7 @@ const updateVenchel = async (fields, files) => {
       venchel_id
     ])
 
-    const parseData = files.files_to_remove.split(",")
+    const parseData = fields.files_to_remove.split(",")
     for (const file_name of parseData) {
       await queryAsyncWraperParam(command2, [file_name])
     }

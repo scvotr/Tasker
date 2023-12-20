@@ -58,6 +58,7 @@ const saveFile = async (file, folder = null, folderPath = defaultPath) => {
 
 
 const deleteFile = async (fileName, folder = null, folderPath = defaultPath) => {
+  console.log('folderPath', folderPath)
   try {
     const file_ext = path.extname(fileName);
     const fullFilePath = path.join(folderPath, folder);
