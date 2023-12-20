@@ -7,6 +7,8 @@ const routeHandlers = {
   "/orgStruct/getDepartmentsFrom": OrgStructControler.getDepartmentsFrom,
   "/orgStruct/getSubDepartments": OrgStructControler.getSubDepartments,
   "/orgStruct/getPositions": OrgStructControler.getPositions,
+  "/orgStruct/getAllWorkshops": OrgStructControler.getAllWorkshops,
+  "/orgStruct/getWorkshopsByDepID": OrgStructControler.getWorkshopsByDepID,
 };
 
 const handleOrgStructRoutes = async (req, res) => {

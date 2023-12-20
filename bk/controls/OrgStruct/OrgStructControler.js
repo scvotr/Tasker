@@ -2,8 +2,10 @@ const {
   getDepartments,
   getDepartmentsFrom,
   getSubDepartments,
-  getPositions
+  getPositions,
+  getWorkshopsByDepID,
 } = require('../../Database/OrgStructQuery/OrgStructQuery')
+
 // ! за рефаторить. Вынести в отлеьную функцию fetchData
 class OrgStructControler {
   async getDepartments(req, res) {
@@ -79,6 +81,25 @@ class OrgStructControler {
       res.statusCode = 500
       res.end(JSON.stringify({
         error: 'getPositions'
+      }))
+    }
+  }
+  async getWorkshopsByDepID(req, res) {
+    try {
+      const dep_id = req.user.payLoad
+      const data = await getWorkshopsByDepID(dep_id)
+      if (data.length === 0) {
+        res.statusCode = 204
+      } else {
+        res.statusCode = 200
+        res.setHeader('Content-Type', 'application/json')
+        res.write(JSON.stringify(data))
+      }
+      res.end()
+    } catch (error) {
+      res.statusCode = 500
+      res.end(JSON.stringify({
+        error: 'getWorkshopsByDepID'
       }))
     }
   }

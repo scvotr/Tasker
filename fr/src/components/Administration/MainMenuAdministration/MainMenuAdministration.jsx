@@ -16,6 +16,9 @@ export const MainMenuAdministration = ({currentUser}) => {
           <NavLink to='/venchelPageAdministration' className={({ isActive }) => (isActive ? "active" : "")}>
             <button className="admin-menu__button">Оборудование</button>
           </NavLink>
+          <NavLink to='/venchelPageAdministrationV2' className={({ isActive }) => (isActive ? "active" : "")}>
+            <button className="admin-menu__button">Оборудование 2.0</button>
+          </NavLink>
           <NavLink to='/depsPageAdministration' className={({ isActive }) => (isActive ? "active" : "")}>
             <button className="admin-menu__button">Отделы и службы</button>
           </NavLink>
