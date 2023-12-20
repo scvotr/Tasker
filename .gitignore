@@ -6,6 +6,7 @@
 .pnp.js
 database.db
 *.drawio
+*.rar
 
 # testing
 /coverage
