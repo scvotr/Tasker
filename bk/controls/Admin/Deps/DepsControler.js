@@ -46,6 +46,14 @@ class DepsControler {
       );
     }
   }
+  async createNewSubDep(req, res) {
+    try {
+      const fields = req.user.payLoad.fields
+      console.log(fields)
+    } catch (error) {
+      
+    }
+  }
 }
 
 module.exports = new DepsControler();

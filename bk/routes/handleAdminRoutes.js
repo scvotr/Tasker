@@ -9,6 +9,7 @@ const routeHandlers = {
   "/admin/getAllTasks": UserControler.getAllTasks,
   "/admin/createNewDep": DepsControler.createNewDep,
   "/admin/removeDep": DepsControler.removeDep,
+  "/admin/createNewSubDep": DepsControler.createNewSubDep,
 };
 
 const handleAdminRoutes = async (req, res) => {

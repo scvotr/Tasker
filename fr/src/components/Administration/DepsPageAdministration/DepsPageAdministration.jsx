@@ -6,6 +6,7 @@ import "./DepsPageAdministration.css";
 import { DepartmentSelect } from "../../SelectFields/HoldinStuct/Dep/DepartmentSelect";
 import { SubDepartmenSelect } from "../../SelectFields/HoldinStuct/SubDep/SubDepartmenSelect";
 import { PositionSelect } from "../../SelectFields/HoldinStuct/Position/PositionSelect";
+import { sendDataToEndpoint } from "../../../utils/sendDataToEndpoint";
 
 export const sendNewDep = async (token, dep_name, apiHostAddr, onSuccess) => {
   try {
@@ -131,6 +132,18 @@ export const DepsPageAdministration = () => {
         subDep_name: newSubDepName,
       };
       console.log("Создать", data);
+      // добавить новый отдел
+      try {
+        await sendDataToEndpoint(
+          currentUser.token,
+          data,
+          "/admin/createNewSubDep",
+          "POST",
+          setReqStatus
+        )
+      } catch (error) {
+        
+      }
     }
     console.log("Не выбрано");
   };
