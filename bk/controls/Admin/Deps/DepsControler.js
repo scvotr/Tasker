@@ -4,6 +4,7 @@ const {
 } = require('../../../Database/AdminQueryes/depQueryAdm')
 
 const { createNewSubDep } = require('../../../Database/AdminQueryes/subDepQueryAdm')
+const { createNewPosition } = require('../../../Database/AdminQueryes/positionQueryAdm')
 
 class DepsControler {
   async createNewDep(req, res) {
@@ -63,6 +64,28 @@ class DepsControler {
         }
         console.log(fields)
         await createNewSubDep(fields)
+    } catch (error) {
+      console.log(error);
+      res.statusCode = 500;
+      res.end(
+        JSON.stringify({
+          error: "createNewSubDep - ERROR",
+        })
+      );
+    }
+  }
+  async createNewPosition(req, res) {
+    try {
+      const fields = req.user.payLoad.fields
+      if (req.user.role !== "admin") {
+        return res.end(
+          JSON.stringify({
+            updateUserData: "Нет прав на доступ",
+          })
+          );
+        }
+        console.log(fields)
+        await createNewPosition(fields)
     } catch (error) {
       console.log(error);
       res.statusCode = 500;

@@ -10,6 +10,7 @@ const routeHandlers = {
   "/admin/createNewDep": DepsControler.createNewDep,
   "/admin/removeDep": DepsControler.removeDep,
   "/admin/createNewSubDep": DepsControler.createNewSubDep,
+  "/admin/createNewPosition": DepsControler.createNewPosition,
 };
 
 const handleAdminRoutes = async (req, res) => {

@@ -140,10 +140,30 @@ export const DepsPageAdministration = () => {
           "/admin/createNewSubDep",
           "POST",
           setReqStatus
-        )
-      } catch (error) {
-        
-      }
+        );
+      } catch (error) {}
+    }
+    console.log("Не выбрано");
+  };
+
+  const addNewPosition = async (e) => {
+    e.preventDefault();
+    if (edit.department_id &&  edit.subdepartment_id) {
+      const data = {
+        name: newPositionName,
+        dep_id: edit.department_id,
+        subDep_id: edit.subdepartment_id,
+      };
+      console.log("Создать должность", data);
+      try {
+        await sendDataToEndpoint(
+          currentUser.token,
+          data,
+          "/admin/createNewPosition",
+          "POST",
+          setReqStatus
+        );
+      } catch (error) {}
     }
     console.log("Не выбрано");
   };
@@ -248,7 +268,25 @@ export const DepsPageAdministration = () => {
         </form>
         {/* -------------------------------------------------------------------- */}
         <p>Добавить Должность</p>
-        <form onSubmit={(e) => addNewSubDep(e)}>
+        <form onSubmit={(e) => addNewPosition(e)}>
+          <DepartmentSelect
+            value={edit.department_id}
+            onChange={handleGetDataFormSelect}
+          />
+          <SubDepartmenSelect
+            value={edit.subdepartment_id}
+            onChange={handleGetDataFormSelect}
+            filterBy={edit.department_id}
+          />
+          <input
+            type="text"
+            value={newPositionName}
+            onChange={(e) => setNewPositionName(e.target.value)}
+          />
+          <button type="submit">создать</button>
+        </form>
+        
+        {/* <form onSubmit={(e) => addNewSubDep(e)}>
           <select
             value={selectedSubDepartment}
             onChange={(e) => setSelectedSubDepartment(e.target.value)}
@@ -267,7 +305,7 @@ export const DepsPageAdministration = () => {
             onChange={(e) => setNewPositionName(e.target.value)}
           />
           <button type="submit">создать</button>
-        </form>
+        </form> */}
       </div>
       {/* ----------------------------------------------------------------- */}
       <div>
