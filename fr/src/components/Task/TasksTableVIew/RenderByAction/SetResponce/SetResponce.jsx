@@ -46,6 +46,7 @@ export const SetResponce = ({ task, reRenderUp }) => {
         responce_user_id: selectedPosition,
         setResponseUser_on: true,
         task_status: "inWork",
+        responsible_user_id: 'need user id', //! 10.01.2024
       };
       try {
         await updateTaskResponceSubDep(currentUser.token, transferData, setReqStatus);

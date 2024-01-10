@@ -492,7 +492,8 @@ const updateTaskStatus = async (data) => {
 };
 
 const updateTaskResponceSubDep = async (data) => {
-  const { responce_user_id, task_status, task_id } = data;
+  const { responce_user_id, task_status, task_id, responsible_user_id } = data;
+  console.log(responce_user_id, task_status, task_id, responsible_user_id)
   const command = `
     UPDATE tasks
     SET responsible_position_id = ?, task_status = ?, setResponseSubDep_on = CURRENT_TIMESTAMP
