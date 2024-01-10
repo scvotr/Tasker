@@ -1,4 +1,9 @@
-const { createNewDep, removeDep } = require('../../../Database/AdminQueryes/depQueryAdm')
+const {
+  createNewDep,
+  removeDep
+} = require('../../../Database/AdminQueryes/depQueryAdm')
+
+const { createNewSubDep } = require('../../../Database/AdminQueryes/subDepQueryAdm')
 
 class DepsControler {
   async createNewDep(req, res) {
@@ -49,9 +54,23 @@ class DepsControler {
   async createNewSubDep(req, res) {
     try {
       const fields = req.user.payLoad.fields
-      console.log(fields)
+      if (req.user.role !== "admin") {
+        return res.end(
+          JSON.stringify({
+            updateUserData: "Нет прав на доступ",
+          })
+          );
+        }
+        console.log(fields)
+        await createNewSubDep(fields)
     } catch (error) {
-      
+      console.log(error);
+      res.statusCode = 500;
+      res.end(
+        JSON.stringify({
+          error: "createNewSubDep - ERROR",
+        })
+      );
     }
   }
 }
