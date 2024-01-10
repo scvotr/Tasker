@@ -1,4 +1,4 @@
-const { queryAsyncWraper, queryAsyncWraperParam } = require('../createDatabase')
+const { queryAsyncWraperParam } = require('../createDatabase')
 
 const createNewSubDep = async (fields) => {
   const { dep_id, subDep_name } = fields;
