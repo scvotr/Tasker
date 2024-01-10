@@ -61,8 +61,9 @@ export const SetResponce = ({ task, reRenderUp }) => {
       <FullTaskInfo task={task} />
       <form className="task-field" onSubmit={() => handleSetResponceSubDep(task)}>
         <PositionSelect filterBy={currentUser.subDep} onChange={handlePositionChange} value={selectedPosition} />
+        {/* добавить выбор пользователя 10.01.2024*/}
         <button className="confirm-btn" type="submit">
-          назаначить
+          назначить
         </button>
       </form>
     </div>

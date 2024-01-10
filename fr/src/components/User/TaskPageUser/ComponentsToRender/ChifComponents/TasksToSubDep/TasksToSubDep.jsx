@@ -23,13 +23,13 @@ export const TasksToSubDep = ({ tasks, onTaskSubmit }) => {
 
   const filterTasksByStatus = (data, status) => data.filter((task) => task.task_status.toString() === status);
 
-  const [needResponser, setNeedResponser] = useState([]);
+  const [needToApprove, setneedToApprove] = useState([]);
   const [tasksInWork, setTasksInWork] = useState([]);
   const [needConfirm, setNeedConfirm] = useState([]);
   const [closedTasks, setClosedTasks] = useState([]);
 
   useEffect(() => {
-    setNeedResponser(filterTasksByStatus(tasks, "approved"));
+    setneedToApprove(filterTasksByStatus(tasks, "approved"));
     setTasksInWork(filterTasksByStatus(tasks, "inWork"));
     setNeedConfirm(filterTasksByStatus(tasks, "needToConfirm"));
     setClosedTasks(filterTasksByStatus(tasks, "closed"));
@@ -38,9 +38,9 @@ export const TasksToSubDep = ({ tasks, onTaskSubmit }) => {
   }, [tasks, taskFormKey, selectedButton]);
 
   let taskTableComponent;
-  if (selectedButton === "needResponser") {
+  if (selectedButton === "needToApprove") {
     taskTableComponent = (
-      <RenderTasksTable tasks={needResponser} actionType="setResponce" onTaskSubmit={handleTaskOnModalSubmit} />
+      <RenderTasksTable tasks={needToApprove} actionType="setResponce" onTaskSubmit={handleTaskOnModalSubmit} />
     );
   } else if (selectedButton === "inWork") {
     taskTableComponent = (
@@ -61,7 +61,7 @@ export const TasksToSubDep = ({ tasks, onTaskSubmit }) => {
       <ButtonMenuGroup
         handleButtonClick={handleMenuButtonClick}
         selectedButton={selectedButton}
-        notResponcer={needResponser.length}
+        notResponcer={needToApprove.length}
         workingNow={tasksInWork.length}
         onConfirm={needConfirm.length}
         wasClosed={closedTasks.length}

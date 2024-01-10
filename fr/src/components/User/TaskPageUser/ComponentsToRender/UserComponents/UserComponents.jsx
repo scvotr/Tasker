@@ -132,5 +132,5 @@ export const UserComponents = ({updateUp}) => {
 };
 
 UserComponents.defaultProps = {
-  updateUp: ()=> {}
+  updateUp: () => {}
 }

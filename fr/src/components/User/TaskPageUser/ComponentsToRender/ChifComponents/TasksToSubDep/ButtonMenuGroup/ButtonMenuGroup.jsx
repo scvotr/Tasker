@@ -13,10 +13,10 @@ export const ButtonMenuGroup = ({selectedButton, handleButtonClick, notResponcer
         В работе {workingNow}
       </button>
       <button
-        onClick={()=>handleButtonClick('needResponser')}
+        onClick={()=>handleButtonClick('needToApprove')}
         style={{
           backgroundColor:
-            selectedButton === "needResponser" ? "green" : "",
+            selectedButton === "needToApprove" ? "green" : "",
         }}
       >
        Не назначен исполнитель {notResponcer}
