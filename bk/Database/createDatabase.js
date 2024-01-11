@@ -337,6 +337,47 @@ const createTableUsers = async () => {
     console.error('createTableUsers ERROR: ', error);
   }
 }
+const createUsers = async (userDataArray) => {
+  // console.log(userDataArray)
+  try {
+    // добавление пользователей при создании БД 13.07.23
+    for (const userData of userDataArray) {
+      const {
+        id,
+        name,
+        email,
+        password,
+        role,
+        department_id,
+        subdepartment_id,
+        position_id
+      } = userData;
+
+      // Генерация токена для каждого пользователя
+      const objUser = {
+        id,
+        name,
+        email,
+        role: role || 'user'
+      };
+      const token = jwt.sign(objUser, SECRET_KEY);
+
+      console.log(`User ${userData.id} successfully created.`);
+
+      // Хеширование пароля
+      const hashedPassword = await bcrypt.hash(password, HASH_SALT);
+
+      const command = `INSERT INTO users(id, name, email, password, role, department_id, subdepartment_id, position_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
+      await queryAsyncWraperParam(command, [id, name, email, hashedPassword, role || 'user', department_id, subdepartment_id, position_id]);
+
+      // Вставка токена в таблицу "tokens"
+      const tokenCommand = `INSERT INTO tokens(user_id, token) VALUES (?, ?)`;
+      await queryAsyncWraperParam(tokenCommand, [id, token], `run`);
+    }
+  } catch (error) {
+    console.error("Error creating tokens table:", error);
+  }
+}
 //!------------------------------------------------
 const createTableTokens = async () => {
   try {
@@ -375,46 +416,6 @@ const createTableTokens = async () => {
   }
 };
 
-
-const createUsers = async (userDataArray) => {
-  // console.log(userDataArray)
-  try {
-    // добавление пользователей при создании БД 13.07.23
-    for (const userData of userDataArray) {
-      const {
-        id,
-        name,
-        email,
-        password,
-        role,
-        department_id,
-        subdepartment_id,
-        position_id
-      } = userData;
-
-      // Генерация токена для каждого пользователя
-      const objUser = {
-        id,
-        name,
-        email,
-        role: role || 'user'
-      };
-      const token = jwt.sign(objUser, SECRET_KEY);
-
-      // Хеширование пароля
-      const hashedPassword = await bcrypt.hash(password, HASH_SALT);
-
-      const command = `INSERT INTO users(id, name, email, password, role, department_id, subdepartment_id, position_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
-      await queryAsyncWraperParam(command, [id, name, email, hashedPassword, role || 'user', department_id, subdepartment_id, position_id]);
-
-      // Вставка токена в таблицу "tokens"
-      const tokenCommand = `INSERT INTO tokens(user_id, token) VALUES (?, ?)`;
-      await queryAsyncWraperParam(tokenCommand, [id, token], `run`);
-    }
-  } catch (error) {
-    console.error("Error creating tokens table:", error);
-  }
-}
 // ----------------------------------------------------------------------------
 const createTableWorkshops = async () => {
   try {

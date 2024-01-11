@@ -501,12 +501,12 @@ const updateTaskResponceSubDep = async (data) => {
     WHERE task_id = ?
   `;
   try {
-    // await queryAsyncWraperParam(command, [
-    //   responce_user_id,
-    //   task_status,
-    //   responsible_user_id,
-    //   task_id,
-    // ]);
+    await queryAsyncWraperParam(command, [
+      responce_user_id,
+      task_status,
+      responsible_user_id,
+      task_id,
+    ]);
   } catch (error) {}
 };
 // обьеденить в один запрос 13.07.23 менять метки и статусы
