@@ -11,6 +11,7 @@ const {
   getAllTasksBySubDep,
   getAllResponsibleTasksByDep,
   getAllResponsibleTasksBySubDep,
+  getAllResponsibleTasksByUserId,
   updateTaskStatus,
   updateTaskResponceSubDep,
   updateTaskConfirmRequest,
@@ -124,6 +125,17 @@ class TasksControler {
       sendResponseWithData(res, data)
     } catch (error) {
       handleError(res, 'getAllResponsibleTasksBySubDep')
+    }
+  }
+  //! Все задачи для пользователя по id
+  async getAllResponsibleTasksByUserId(req, res) {
+    try {
+      const authDecodeUserData = req.user
+      const user_id = authDecodeUserData.id
+      const data = await getAllResponsibleTasksByUserId(user_id)
+      sendResponseWithData(res, data)
+    } catch (error) {
+      handleError(res, 'getAllResponsibleTasksByUserId')
     }
   }
   // 29_06_23 Обновить статус задачи

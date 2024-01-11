@@ -6,6 +6,7 @@ export const UserButtonGroup = ({
   onConfirmLenght,
   createdTasks,
   tasksInWork,
+  responsibleTask,
   onApproval,
   approvedTasks,
   closed,
@@ -36,6 +37,14 @@ export const UserButtonGroup = ({
         }}
       >
         В работе {tasksInWork}
+      </button>
+      <button
+        onClick={() => handleButtonClick("responsibleTask")}
+        style={{
+          backgroundColor: selectedButton === "responsibleTask" ? "green" : "",
+        }}
+      >
+        Мои задачи {responsibleTask}
       </button>
       <button
         onClick={() => handleButtonClick("needChekTask")}
