@@ -67,6 +67,7 @@ export const UserComponents = ({updateUp}) => {
       try {
         getAllUserTasks(HOST_ADDR, currentUser.token, setReqStatus).then((data) => {
           if (data.length) {
+            console.log('>>>>>', data)
             setUsersCreatedTask(filterTasksByStatus(data, "new")); // Новые созданые задачи +
             setApprovedTasks(filterTasksByStatus(data, "approved")); // Согласованные задачи начальник отдела ОТВЕТСВЕННЫЙ НЕ НА ЗНАЧЕН +
             setTaskInWork(filterTasksByStatus(data, "inWork")); // Назначен ответсвенный задача в работе+
@@ -77,6 +78,7 @@ export const UserComponents = ({updateUp}) => {
         getDataFromEndpoint(currentUser.token ,'/tasks/getAllResponsibleTasksByUserId', 'POST', null, setReqStatus)  
           .then((data) => {
             if(data.length){
+              console.log("!!!!", data)
               setUserResponsibleTasks(data)
             }
           })
