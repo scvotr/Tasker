@@ -5,7 +5,7 @@ export const getDataFromEndpoint = async (
   endpoint,
   method,
   data = null,
-  onSuccess
+  onSuccess,
 ) => {
   try {
     const res = await fetch(HOST_ADDR + endpoint, {
@@ -18,6 +18,7 @@ export const getDataFromEndpoint = async (
     });
     if (res.ok) {
       const resData = await res.json();
+      onSuccess(null);
       return resData;
     } else {
       throw new Error("Server response was not ok or content type is not JSON");

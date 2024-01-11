@@ -4,7 +4,7 @@ const { protectRouteTkPl } = require("../utils/protectRouteTkPl");
 
 const routeHandlers = {
   "/user/getUserIdByPosition": UserControler.getUserIdByPosition,
-  "/user/getUserIdBySubDep": UserControler.getUserIdByPosition,
+  "/user/getUsersBySubDepId": UserControler.getUsersBySubDepId,
   "/user/getUserIdByDep": UserControler.getUserIdByPosition,
 };
 
