@@ -55,6 +55,7 @@ export const PositionSelect = (props) => {
   const curentUser = useAuthContext();
   const [reqStatus, setRegStatus] = useState(null); //console.log('reqStatus', reqStatus)
   const [filteredPositions, setFilteredPositions] = useState([]);
+  const [usersByPositionId, setUsersByPositionId] = useState([]); console.log('usersByPositionId', usersByPositionId)
 
   useEffect(() => {
     if (curentUser.login) {
@@ -69,9 +70,9 @@ export const PositionSelect = (props) => {
               );
               // -----------------------------------------------
               if (value) {
-                console.log('value', value)
+                console.log("value", value);
                 getUsersBySubDepId(curentUser.token, value, setRegStatus)
-                  .then((data) => console.log("!!!", data))
+                  .then((data) => setUsersByPositionId(data))
                   .catch((error) =>
                     console.error("Error fetching users data:", error)
                   );
@@ -87,17 +88,31 @@ export const PositionSelect = (props) => {
   }, [curentUser, filterBy, value]);
 
   return (
-    <select value={value} onChange={onChange} name="position_id" required>
-      <option value="" disabled>
-        Выберите Должность:
-      </option>
-      {filteredPositions &&
-        filteredPositions.map((postion) => (
-          <option key={postion.id} value={postion.id}>
-            {postion.name}
+    <>
+      <select value={value} onChange={onChange} name="position_id" required>
+        <option value="" disabled>
+          Выберите Должность:
+        </option>
+        {filteredPositions &&
+          filteredPositions.map((postion) => (
+            <option key={postion.id} value={postion.id}>
+              {postion.name}
+            </option>
+          ))}
+      </select>
+      {usersByPositionId && usersByPositionId.length > 0 &&(
+        <select required>
+          <option value="" disabled>
+            Выберите сотрудника:
           </option>
-        ))}
-    </select>
+          {usersByPositionId && usersByPositionId.map((user) => (
+            <option key = {user.id} value={user.id}>
+              {user.name}
+            </option>
+          ))}
+        </select>
+      )}
+    </>
   );
 };
 
