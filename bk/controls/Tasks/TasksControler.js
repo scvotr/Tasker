@@ -133,7 +133,6 @@ class TasksControler {
       const authDecodeUserData = req.user
       const user_id = authDecodeUserData.id
       const data = await getAllResponsibleTasksByUserId(user_id)
-      console.log('getAllResponsibleTasksByUserId', data)
       sendResponseWithData(res, data)
     } catch (error) {
       handleError(res, 'getAllResponsibleTasksByUserId')

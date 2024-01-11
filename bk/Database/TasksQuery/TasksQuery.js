@@ -429,7 +429,6 @@ const getAllResponsibleTasksBySubDep = async (subDep_id) => {
 };
 // все задачи назначеные на пользователя
 const getAllResponsibleTasksByUserId = async (user_id) => {
-  console.log('!!!!!!!!!', user_id)
   //WHERE t.appoint_user = ? OR t.responsible_user = ? получить задачи, созданные пользователем и задачи, назначенные ему,
   const command = `
       SELECT 
@@ -469,7 +468,7 @@ const getAllResponsibleTasksByUserId = async (user_id) => {
       LEFT JOIN subdepartments AS responsible_subdepartments ON t.responsible_subdepartment_id = responsible_subdepartments.id
       LEFT JOIN positions AS responsible_position ON t.responsible_position_id = responsible_position.id
       LEFT JOIN task_files f ON t.task_id = f.task_id
-    WHERE t.responsible_user_id = ? --AND  t.task_status = 'approved'
+    WHERE t.responsible_user_id = ? AND  t.task_status = 'approved'
     GROUP BY t.task_id`;
   try {
     const taskFiles = await queryAsyncWraperParam(command, [user_id]);

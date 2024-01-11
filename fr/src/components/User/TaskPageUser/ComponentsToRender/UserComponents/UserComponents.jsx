@@ -101,6 +101,11 @@ export const UserComponents = ({updateUp}) => {
       // ? Назначен ответсвеный task_status = "inWork" "В РАБОТЕ"
       <RenderTasksTable tasks={tasksInWork} actionType="viewOnly" onTaskSubmit={handleTaskOnModalSubmit} />
     );
+  } else if (selectedButton === "responsibleTask") {
+    taskTableComponent = (
+      // ! Назначен ответсвеный responsible_user_id = "user_id" "МОИ ЗАДАЧИ"
+      <RenderTasksTable tasks={userResponsibleTasks} actionType="sendToClose" onTaskSubmit={handleTaskOnModalSubmit} />
+    );
   } else if (selectedButton === "needChekTask") {
     taskTableComponent = (
       // ? Задача выполнена нужно подтвердить исполнение task_status = "needToConfirm"  "НА ПРОВЕРКЕ"
@@ -131,6 +136,7 @@ export const UserComponents = ({updateUp}) => {
         createdTasks={userCreatedTasks.length}
         approvedTasks={approvedTasks.length}
         tasksInWork={tasksInWork.length}
+        responsibleTask={userResponsibleTasks.length}
         onConfirmLenght={needApproveToCloseTasks.length}
         closed={closedTasks.length}
       />
