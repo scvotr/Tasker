@@ -53,9 +53,9 @@ export const PositionSelect = (props) => {
   const { value, onChange, filterBy } = props;
 
   const curentUser = useAuthContext();
-  const [reqStatus, setRegStatus] = useState(null); //console.log('reqStatus', reqStatus)
+  const [reqStatus, setRegStatus] = useState(null); 
   const [filteredPositions, setFilteredPositions] = useState([]);
-  const [usersByPositionId, setUsersByPositionId] = useState([]); console.log('usersByPositionId', usersByPositionId)
+  const [usersByPositionId, setUsersByPositionId] = useState([]); 
 
   useEffect(() => {
     if (curentUser.login) {
@@ -70,7 +70,6 @@ export const PositionSelect = (props) => {
               );
               // -----------------------------------------------
               if (value) {
-                console.log("value", value);
                 getUsersBySubDepId(curentUser.token, value, setRegStatus)
                   .then((data) => setUsersByPositionId(data))
                   .catch((error) =>
@@ -86,7 +85,7 @@ export const PositionSelect = (props) => {
       } catch (error) {}
     }
   }, [curentUser, filterBy, value]);
-
+  
   return (
     <>
       <select value={value} onChange={onChange} name="position_id" required>
@@ -101,12 +100,12 @@ export const PositionSelect = (props) => {
           ))}
       </select>
       {usersByPositionId && usersByPositionId.length > 0 &&(
-        <select required>
-          <option value="" disabled>
+        <select onChange={onChange} name="user_id" required>
+          <option value="" >
             Выберите сотрудника:
           </option>
           {usersByPositionId && usersByPositionId.map((user) => (
-            <option key = {user.id} value={user.id}>
+            <option key={user.id} value={user.id}>
               {user.name}
             </option>
           ))}

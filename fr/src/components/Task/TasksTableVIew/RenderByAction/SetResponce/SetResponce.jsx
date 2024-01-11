@@ -7,6 +7,7 @@ import { FullTaskInfo } from "../../../../Task/FullTaskInfo/FullTaskInfo";
 import { HOST_ADDR } from "../../../../../utils/ApiHostAdres";
 
 export const updateTaskResponceSubDep = async (token, data, onSuccess) => {
+  console.log(data)
   try {
     const res = await fetch(HOST_ADDR + "/tasks/updateTaskResponceSubDep", {
       method: "POST",
@@ -32,21 +33,34 @@ export const SetResponce = ({ task, reRenderUp }) => {
   const currentUser = useAuthContext();
 
   const [regStatus, setReqStatus] = useState(null);
-  const [selectedPosition, setSelectedPosition] = useState();
+  const [selectedPosition, setSelectedPosition] = useState({}); 
+  console.log('selectedPosition', selectedPosition)
 
   const handlePositionChange = (event) => {
-    const selectedValue = event.target.value;
-    setSelectedPosition(selectedValue);
+    const name = event.target.name;
+    const value = event.target.value;
+
+    if (name === "position_id") {
+      setSelectedPosition((prevData) => ({
+        ...prevData,
+        position_id: value,
+      }));
+    } else if (name === "user_id") {
+      setSelectedPosition((prevData) => ({
+        ...prevData,
+        user_id: value,
+      }));
+    }
   };
 
   const handleSetResponceSubDep = async (task) => {
     if (currentUser.login) {
       const transferData = {
         task_id: task.task_id,
-        responce_user_id: selectedPosition,
+        responce_user_id: selectedPosition.position_id,
         setResponseUser_on: true,
         task_status: "inWork",
-        responsible_user_id: 'need user id', //! 10.01.2024
+        responsible_user_id: selectedPosition.user_id,
       };
       try {
         await updateTaskResponceSubDep(currentUser.token, transferData, setReqStatus);
@@ -61,8 +75,7 @@ export const SetResponce = ({ task, reRenderUp }) => {
     <div className=" approve-form">
       <FullTaskInfo task={task} />
       <form className="task-field" onSubmit={() => handleSetResponceSubDep(task)}>
-        <PositionSelect filterBy={currentUser.subDep} onChange={handlePositionChange} value={selectedPosition} />
-        {/* добавить выбор пользователя 10.01.2024*/}
+        <PositionSelect filterBy={currentUser.subDep} onChange={handlePositionChange} value={selectedPosition.position_id} />
         <button className="confirm-btn" type="submit">
           назначить
         </button>
