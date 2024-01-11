@@ -9,6 +9,7 @@ const routeHandlers = {
   "/tasks/getAllTasksBySubDep": TasksControler.getAllTasksBySubDep,
   "/tasks/getAllResponsibleTasksByDep": TasksControler.getAllResponsibleTasksByDep,
   "/tasks/getAllResponsibleTasksBySubDep": TasksControler.getAllResponsibleTasksBySubDep,
+  "/tasks/getAllResponsibleTasksByUserId": TasksControler.getAllResponsibleTasksByUserId,
   "/tasks/updateTaskStatus": TasksControler.updateTaskStatus,
   "/tasks/updateTaskResponceSubDep": TasksControler.updateTaskResponceSubDep,
   "/tasks/updateTaskConfirmRequest": TasksControler.updateTaskConfirmRequest,

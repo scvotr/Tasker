@@ -7,9 +7,10 @@ import { getAllUserTasks } from "./API/getAllUserTasks";
 import { Modal } from "../../../../Modal/Modal";
 import { TaskForm } from "../../../../Task/TaskForm/TaskForm";
 import { RenderTasksTable } from "../../../../Task/RenderTasksTable/RenderTasksTable";
+import { getDataFromEndpoint } from "../../../../../utils/getDataFromEndpoint";
 
 export const UserComponents = ({updateUp}) => {
-  const currentUser = useAuthContext();
+  const currentUser = useAuthContext(); 
   const [resStaus, setReqStatus] = useState(null);
   //! -----------select button actions---------------start
   const [selectedButton, setSelectedButton] = useState(
@@ -57,9 +58,10 @@ export const UserComponents = ({updateUp}) => {
   const [tasksInWork, setTaskInWork] = useState([]); // Назаначен исполнитель задачи +
   const [needApproveToCloseTasks, setneedApproveToCloseTasks] = useState([]); // Требуют подтверждения на закрытие +
   const [closedTasks, setClosedTask] = useState([]); // Закрытые задачи +
+  const [userResponsibleTasks, setUserResponsibleTasks] = useState([]); console.log('userResponsibleTasks', userResponsibleTasks)
 
   const filterTasksByStatus = (data, status) => data.filter((task) => task.task_status.toString() === status);
-
+  
   useEffect(() => {
     if (currentUser.login) {
       try {
@@ -72,6 +74,12 @@ export const UserComponents = ({updateUp}) => {
             setClosedTask(filterTasksByStatus(data, "closed")); // Закрытые задачи +
           } else {
           }
+        getDataFromEndpoint(currentUser.token ,'/tasks/getAllResponsibleTasksByUserId', 'POST', null, setReqStatus)  
+          .then((data) => {
+            if(data.length){
+              setUserResponsibleTasks(data)
+            }
+          })
         });
       } catch (error) {}
     }
