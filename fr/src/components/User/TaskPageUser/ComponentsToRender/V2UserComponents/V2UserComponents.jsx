@@ -3,6 +3,8 @@ import { useAuthContext } from "../../../../../context/AuthProvider";
 import { getDataFromEndpoint } from "../../../../../utils/getDataFromEndpoint";
 import { V2UserButtonGroup } from "./V2UserButtonGroup/V2UserButtonGroup";
 import { RenderTasksTable } from "../../../../Task/RenderTasksTable/RenderTasksTable";
+import { Modal } from "../../../../Modal/Modal";
+import { TaskForm } from "../../../../Task/TaskForm/TaskForm";
 
 const filterTasksByStatus = (data, status) => {
   return data.filter((task) => task.task_status && task.task_status.toString() === status);
@@ -145,7 +147,7 @@ export const V2UserComponents = ({ updateToTop }) => {
     },
     needChekTask : {
       tasks : needApproveToCloseAppoinTasks,
-      actionType : "viewOnly"
+      actionType : "confirmTask"
     },
     closedTask : {
       tasks : closedAppointTasks,
@@ -153,7 +155,7 @@ export const V2UserComponents = ({ updateToTop }) => {
     },
     res_inWorkTask : {
       tasks : responsibleTasksInWork,
-      actionType : "viewOnly"
+      actionType : "sendToClose"
     },
     res_approved : {
       tasks : approvedResponsibleTasks,
@@ -172,7 +174,6 @@ export const V2UserComponents = ({ updateToTop }) => {
   let taskTableComponent;
   if(selectedButton in tableDataMapping) {
     const {tasks, actionType} = tableDataMapping[selectedButton]
-    
     taskTableComponent = (
       <RenderTasksTable
         tasks={tasks}
@@ -192,7 +193,24 @@ export const V2UserComponents = ({ updateToTop }) => {
           <button onClick={markNotificationAsRead}>Отметить как прочитанное</button>
         </>
       ) : (<></>)}
-      
+      {/* --------------------------------------------------- */}
+      <div>
+        <button
+          onClick={toggleForm}
+          style={{ display: showCreateButton ? "block" : "none"}}
+        >
+          Новая задача
+        </button>
+        {showForm && (
+          <Modal isOpen={modalOpen} onClose={closeModal}>
+            <TaskForm
+              keyProp={taskFormKey}
+              onTaskSubmit={handleTaskOnModalSubmit}
+            />
+          </Modal>  
+        )}
+      </div>
+      {/* --------------------------------------------------- */}
       <V2UserButtonGroup
         handleButtonClick={handleMenuButtonClick}
         selectedButton={selectedButton}

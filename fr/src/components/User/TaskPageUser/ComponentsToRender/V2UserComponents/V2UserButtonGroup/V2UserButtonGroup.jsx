@@ -34,7 +34,7 @@ export const V2UserButtonGroup = ({
           key={button.key}
           onClick={()=> handleButtonClick(button.key)}
           style={{
-            backgroundColor: selectedButton === button.key ? "green" : button.color
+            backgroundColor: selectedButton === button.key ? "green" : ""
           }}
         >
           {button.label} {button.value}
