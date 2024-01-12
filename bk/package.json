@@ -15,6 +15,7 @@
     "formidable": "^2.1.1",
     "jsonwebtoken": "^9.0.0",
     "sharp": "^0.32.4",
+    "socket.io": "^4.7.3",
     "sqlite3": "^5.1.6"
   }
 }
