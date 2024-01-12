@@ -58,29 +58,43 @@ export const UserComponents = ({ updateUp }) => {
   const [closedTasks, setClosedTask] = useState([]); // Закрытые задачи +
   const [userResponsibleTasks, setUserResponsibleTasks] = useState([]);
   console.log("userResponsibleTasks", userResponsibleTasks);
+  // Создаем состояние для хранения информации о последнем обновлении данных
+  const [lastUpdate, setLastUpdate] = useState([]); console.log('lastUpdate', lastUpdate)
+  
 
   const filterTasksByStatus = (data, status) =>
     data.filter((task) => task.task_status.toString() === status);
 
+  // Функция для сравнения двух массивов
+  const arraysAreEqual = (array1, array2) => {
+    return JSON.stringify(array1) === JSON.stringify(array2);
+  };
+
   useEffect(() => {
-    // возможно нужно проверять данные на сервере и только после этого выполнять запрос
     const fetchData = async () => {
       if (currentUser.login) {
         try {
           getAllUserTasks(HOST_ADDR, currentUser.token, setReqStatus).then(
             (data) => {
               if (data.length) {
-                setUsersCreatedTask(filterTasksByStatus(data, "new")); // Новые созданые задачи +
-                setApprovedTasks(filterTasksByStatus(data, "approved")); // Согласованные задачи начальник отдела ОТВЕТСВЕННЫЙ НЕ НА ЗНАЧЕН +
-                setTaskInWork(filterTasksByStatus(data, "inWork")); // Назначен ответсвенный задача в работе+
-                setneedApproveToCloseTasks(filterTasksByStatus(data, "needToConfirm")); // Проверить и подвердить выполнение +
-                setClosedTask(filterTasksByStatus(data, "closed")); // Закрытые задачи +
-              } else {
-              }
+                // Сравниваем новые данные с предыдущим состоянием
+                if (!arraysAreEqual(data, lastUpdate)) {
+                  setLastUpdate(data);
+                  setUsersCreatedTask(filterTasksByStatus(data, "new")); // Новые созданые задачи +
+                  setApprovedTasks(filterTasksByStatus(data, "approved")); // Согласованные задачи начальник отдела ОТВЕТСВЕННЫЙ НЕ НА ЗНАЧЕН +
+                  setTaskInWork(filterTasksByStatus(data, "inWork")); // Назначен ответсвенный задача в работе+
+                  setneedApproveToCloseTasks(filterTasksByStatus(data, "needToConfirm")); // Проверить и подвердить выполнение +
+                  setClosedTask(filterTasksByStatus(data, "closed")); // Закрытые задачи +
+                }  
+              } 
               getDataFromEndpoint(currentUser.token,"/tasks/getAllResponsibleTasksByUserId", "POST", null, setReqStatus)
                 .then((data) => {
                   if (data.length) {
-                    setUserResponsibleTasks(data);
+                    // Сравниваем новые данные с предыдущим состоянием
+                    if (!arraysAreEqual(data, lastUpdate)) {
+                      setLastUpdate(data);
+                      setUserResponsibleTasks(data);
+                    }
                   }
               });
             }
