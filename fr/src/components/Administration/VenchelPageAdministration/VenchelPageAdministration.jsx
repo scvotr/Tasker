@@ -34,10 +34,10 @@ export const VenchelPageAdministration = () => {
     if (currentUser.login) {
       try {
         // --------------------------------------
-        getDataFromEndpoint(currentUser.token, "/orgStruct/getDepartmentsFrom", "POST", setReqStatus)
+        getDataFromEndpoint(currentUser.token, "/orgStruct/getDepartmentsFrom", "POST", null,setReqStatus)
         .then(data => ([]))
         // --------------------------------------
-        getDataFromEndpoint(currentUser.token, "/venchel/getAllVenchels", "POST", setReqStatus)
+        getDataFromEndpoint(currentUser.token, "/venchel/getAllVenchels", "POST", null,setReqStatus)
         .then(venchels => {
           console.log('venchels', venchels)
           const ae_venchels = venchels.filter( venchel => venchel.department_id === AE_ID)

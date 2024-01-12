@@ -9,6 +9,14 @@ import { TaskForm } from "../../../../Task/TaskForm/TaskForm";
 import { RenderTasksTable } from "../../../../Task/RenderTasksTable/RenderTasksTable";
 import { getDataFromEndpoint } from "../../../../../utils/getDataFromEndpoint";
 
+const filterTasksByStatus = (data, status) =>
+data.filter((task) => task.task_status.toString() === status);
+
+// Функция для сравнения двух массивов
+const arraysAreEqual = (array1, array2) => {
+return JSON.stringify(array1) === JSON.stringify(array2);
+};
+
 export const UserComponents = ({ updateUp }) => {
   const currentUser = useAuthContext();
   const [resStaus, setReqStatus] = useState(null);
@@ -57,19 +65,10 @@ export const UserComponents = ({ updateUp }) => {
   const [needApproveToCloseTasks, setneedApproveToCloseTasks] = useState([]); // Требуют подтверждения на закрытие +
   const [closedTasks, setClosedTask] = useState([]); // Закрытые задачи +
   const [userResponsibleTasks, setUserResponsibleTasks] = useState([]);
-  console.log("userResponsibleTasks", userResponsibleTasks);
+  // console.log("userResponsibleTasks", userResponsibleTasks);
   // Создаем состояние для хранения информации о последнем обновлении данных
-  const [lastUpdate, setLastUpdate] = useState([]); console.log('lastUpdate', lastUpdate)
+  const [lastUpdate, setLastUpdate] = useState([]);// console.log('lastUpdate', lastUpdate)
   
-
-  const filterTasksByStatus = (data, status) =>
-    data.filter((task) => task.task_status.toString() === status);
-
-  // Функция для сравнения двух массивов
-  const arraysAreEqual = (array1, array2) => {
-    return JSON.stringify(array1) === JSON.stringify(array2);
-  };
-
   useEffect(() => {
     const fetchData = async () => {
       if (currentUser.login) {

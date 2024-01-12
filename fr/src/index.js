@@ -8,7 +8,7 @@ import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <div className='print-only'>
       <div className='container'>
         <AuthProvider>
@@ -16,6 +16,6 @@ root.render(
         </AuthProvider>
       </div>
     </div>  
-  </React.StrictMode>
+  // </React.StrictMode>
 );
 reportWebVitals();

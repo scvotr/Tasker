@@ -15,7 +15,7 @@ export const VenchelPageAdministrationV2 = () => {
   useEffect(() => {
     if (currentUser.login) {
       try {
-        getDataFromEndpoint(currentUser.token, "/orgStruct/getDepartmentsFrom", "POST", setReqStatus)
+        getDataFromEndpoint(currentUser.token, "/orgStruct/getDepartmentsFrom", "POST", null, setReqStatus)
           .then((data) => {
             setDepList(data);
             const workshopRequests = data.map((dep) =>
