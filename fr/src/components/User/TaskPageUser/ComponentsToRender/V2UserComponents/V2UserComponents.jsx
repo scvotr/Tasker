@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAuthContext } from "../../../../../context/AuthProvider";
 import { getDataFromEndpoint } from "../../../../../utils/getDataFromEndpoint";
+import { V2UserButtonGroup } from "./V2UserButtonGroup/V2UserButtonGroup";
 
 const filterTasksByStatus = (data, status) => {
   return data.filter((task) => task.task_status && task.task_status.toString() === status);
@@ -14,16 +15,19 @@ const filterTasksByAppointSide = (data, user_id) => {
   return data.filter((task) => task.appoint_user_id && task.appoint_user_id.toString() === user_id);
 };
 
-// Функция для сравнения двух массивов
 const arraysAreEqual = (array1, array2) => {
   return JSON.stringify(array1) === JSON.stringify(array2);
 };
 
+const defaultSelect =  localStorage.getItem("selectedUserMenuButton") || "createdTasks"
+
 export const V2UserComponents = ({ updateToTop }) => {
   const currentUser = useAuthContext();
   const [resStatus, setReqStatus] = useState(null);
+
   const [msg, setMsg] = useState('')
   const [unreadNotification, setUnreadNotification] = useState(false); // Новое состояние для отслеживания статуса уведомления
+  const markNotificationAsRead = () => { setUnreadNotification(false) }
 
   const [prevUserAppointTasks, setPrevUserAppointTasks] = useState([]);
   const [prevUserResponsibleTasks, setPrevUserResponsibleTasks] = useState([]);
@@ -40,6 +44,43 @@ export const V2UserComponents = ({ updateToTop }) => {
   const [needApproveToCloseResponsibleTasks, setNeedApproveToCloseResponsibleTasks] = useState([]); //console.log('needApproveToCloseResponsibleTasks', needApproveToCloseResponsibleTasks)
   const [approvedResponsibleTasks, setApprovedResponsibleTasks] = useState([]); //console.log('approvedResponsibleTasks', approvedResponsibleTasks)
   const [responsibleTasksInWork, setResponsibleTaskInWork] = useState([]);// console.log('responsibleTasksInWork', responsibleTasksInWork)
+
+
+  const [selectedButton, setSelectedButton] = useState(defaultSelect);
+
+  const handleMenuButtonClick = (button) => { setSelectedButton(button) };
+
+  useEffect(()=> {
+    localStorage.setItem("selectedUserMenuButton", selectedButton);
+  }, [selectedButton])
+
+  const [isTaskSubmitted, setIsTaskSubmitted] = useState(false);
+  const [taskFormKey, setTaskFormKey] = useState(0);
+
+  const handleTaskOnModalSubmit = (isSuccess) => {
+    setIsTaskSubmitted(isSuccess);
+    setTaskFormKey((prevKey) => prevKey + 1);
+    updateToTop((prevKey) => prevKey + 1);
+  };
+
+  const [selectedTask, setSelectedTask] = useState(null);
+  const [showForm, setShowForm] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const showCreateButton = !showForm && !selectedTask;
+
+  const toggleForm = () => {
+    if (selectedTask) {
+      setSelectedTask(null);
+    }
+    setShowForm(!showForm);
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setSelectedTask(null);
+    setModalOpen(false);
+    setShowForm(false);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -86,11 +127,11 @@ export const V2UserComponents = ({ updateToTop }) => {
     // Если вы хотите обновлять данные с определенной периодичностью, раскомментируйте следующие строки
     const fetchDataInterval = setInterval(fetchData, 15000);
     return () => clearInterval(fetchDataInterval);
-  }, [currentUser, prevUserAppointTasks, prevUserResponsibleTasks]);
+  }, [currentUser, prevUserAppointTasks, prevUserResponsibleTasks, taskFormKey]);
 
-  const markNotificationAsRead = () => {
-    setUnreadNotification(false);
-  }
+  let taskTableComponent;
+
+
 
   return (
     <>
@@ -101,6 +142,23 @@ export const V2UserComponents = ({ updateToTop }) => {
           <button onClick={markNotificationAsRead}>Отметить как прочитанное</button>
         </>
       ) : (<></>)}
+      
+      <V2UserButtonGroup
+        handleButtonClick={handleMenuButtonClick}
+        selectedButton={selectedButton}
+        
+        appoinNewTasks={appoinNewTasks.length}
+        approvedAppoinTasks={approvedAppoinTasks.length}
+        appoinTasksInWork={appoinTasksInWork.length}
+        needApproveToCloseAppoinTasks={needApproveToCloseAppoinTasks.length}
+        closedAppointTasks={closedAppointTasks.length}
+
+        responsibleTasksInWork={responsibleTasksInWork.length}
+        approvedResponsibleTasks={approvedResponsibleTasks.length}
+        needApproveToCloseResponsibleTasks={needApproveToCloseResponsibleTasks.length}
+        closedResponsibleTasks={closedResponsibleTasks.length}
+      />
+      
     </>
   );
 };
