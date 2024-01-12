@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useAuthContext } from "../../../../../context/AuthProvider";
 import { getDataFromEndpoint } from "../../../../../utils/getDataFromEndpoint";
 import { V2UserButtonGroup } from "./V2UserButtonGroup/V2UserButtonGroup";
+import { RenderTasksTable } from "../../../../Task/RenderTasksTable/RenderTasksTable";
 
 const filterTasksByStatus = (data, status) => {
   return data.filter((task) => task.task_status && task.task_status.toString() === status);
@@ -129,8 +130,57 @@ export const V2UserComponents = ({ updateToTop }) => {
     return () => clearInterval(fetchDataInterval);
   }, [currentUser, prevUserAppointTasks, prevUserResponsibleTasks, taskFormKey]);
 
-  let taskTableComponent;
+  const tableDataMapping = {
+    createdTasks: {
+      tasks: appoinNewTasks,
+      actionType : "editTask"
+    },
+    approved : {
+      tasks : approvedAppoinTasks,
+      actionType : "viewOnly"
+    },
+    inWorkTask : {
+      tasks : appoinTasksInWork,
+      actionType : "viewOnly"
+    },
+    needChekTask : {
+      tasks : needApproveToCloseAppoinTasks,
+      actionType : "viewOnly"
+    },
+    closedTask : {
+      tasks : closedAppointTasks,
+      actionType : "viewOnly"
+    },
+    res_inWorkTask : {
+      tasks : responsibleTasksInWork,
+      actionType : "viewOnly"
+    },
+    res_approved : {
+      tasks : approvedResponsibleTasks,
+      actionType : "viewOnly"
+    },
+    res_needChekTask : {
+      tasks : needApproveToCloseResponsibleTasks,
+      actionType : "viewOnly"
+    },
+    res_closedTask : {
+      tasks : closedResponsibleTasks,
+      actionType : "viewOnly"
+    },
+  }
 
+  let taskTableComponent;
+  if(selectedButton in tableDataMapping) {
+    const {tasks, actionType} = tableDataMapping[selectedButton]
+    
+    taskTableComponent = (
+      <RenderTasksTable
+        tasks={tasks}
+        actionType={actionType}
+        onTaskSubmit={handleTaskOnModalSubmit}
+      />
+    )
+  }
 
 
   return (
@@ -146,7 +196,7 @@ export const V2UserComponents = ({ updateToTop }) => {
       <V2UserButtonGroup
         handleButtonClick={handleMenuButtonClick}
         selectedButton={selectedButton}
-        
+
         appoinNewTasks={appoinNewTasks.length}
         approvedAppoinTasks={approvedAppoinTasks.length}
         appoinTasksInWork={appoinTasksInWork.length}
@@ -158,7 +208,7 @@ export const V2UserComponents = ({ updateToTop }) => {
         needApproveToCloseResponsibleTasks={needApproveToCloseResponsibleTasks.length}
         closedResponsibleTasks={closedResponsibleTasks.length}
       />
-      
+      {taskTableComponent}
     </>
   );
 };

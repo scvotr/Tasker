@@ -16,11 +16,11 @@ export const V2UserButtonGroup = ({
   closedResponsibleTasks,
 }) => {
   const buttonData = [
-    {key: 'createdTasks', label: 'Исх. Созданые', value: appoinNewTasks, color: '#0066CC'},
-    {key: 'approved', label: 'Исх Согласованные', value: approvedAppoinTasks , color: '#0066CC'},
-    {key: 'inWorkTask', label: 'Исх В работе', value: appoinTasksInWork, color: '#0066CC'},
-    {key: 'needChekTask', label: 'Исх Подтвердить', value: needApproveToCloseAppoinTasks, color: '#0066CC'},
-    {key: 'closedTask', label: 'Исх Закрытые', value: closedAppointTasks, color: '#0066CC'},
+    {key: 'createdTasks', label: 'Исх. Созданые', value: appoinNewTasks, color: '#0099CC'},
+    {key: 'approved', label: 'Исх Согласованные', value: approvedAppoinTasks , color: '#0099CC'},
+    {key: 'inWorkTask', label: 'Исх В работе', value: appoinTasksInWork, color: '#0099CC'},
+    {key: 'needChekTask', label: 'Исх Подтвердить', value: needApproveToCloseAppoinTasks, color: '#0099CC'},
+    {key: 'closedTask', label: 'Исх Закрытые', value: closedAppointTasks, color: '#0099CC'},
     // 
     {key: 'res_inWorkTask', label: 'Вхд. в работе', value: responsibleTasksInWork, color: '#FF78AE'},
     {key: 'res_approved', label: 'Вхд согласованные', value: approvedResponsibleTasks, color: '#FF78AE' },
