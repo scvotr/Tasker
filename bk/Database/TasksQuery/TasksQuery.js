@@ -232,7 +232,6 @@ const getPreviewFileContent = async (task) => {
 };
 
 const getAllUserTasks = async (user_id) => {
-  console.log(user_id)
   //WHERE t.appoint_user = ? OR t.responsible_user = ? получить задачи, созданные пользователем и задачи, назначенные ему,
   const command = `
     SELECT 
