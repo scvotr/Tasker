@@ -9,10 +9,18 @@ import { TaskForm } from "../../../../Task/TaskForm/TaskForm";
 import { RenderTasksTable } from "../../../../Task/RenderTasksTable/RenderTasksTable";
 import { getDataFromEndpoint } from "../../../../../utils/getDataFromEndpoint";
 
-export const UserComponents = ({updateUp}) => {
-  const currentUser = useAuthContext(); 
+const filterTasksByStatus = (data, status) =>
+data.filter((task) => task.task_status.toString() === status);
+
+// Функция для сравнения двух массивов
+const arraysAreEqual = (array1, array2) => {
+return JSON.stringify(array1) === JSON.stringify(array2);
+};
+
+export const UserComponents = ({ updateUp }) => {
+  const currentUser = useAuthContext();
   const [resStaus, setReqStatus] = useState(null);
-  //! -----------select button actions---------------start
+
   const [selectedButton, setSelectedButton] = useState(
     localStorage.getItem("selectedUserMenuButton") || "createdTasks"
   );
@@ -22,15 +30,14 @@ export const UserComponents = ({updateUp}) => {
   const handleMenuButtonClick = (button) => {
     setSelectedButton(button);
   };
-  // -----------select button actions---------------end
-  //! -----------Modal window action---------------start
+
   const [isTaskSubmitted, setIsTaskSubmitted] = useState(false);
   const [taskFormKey, setTaskFormKey] = useState(0);
 
   const handleTaskOnModalSubmit = (isSuccess) => {
     setIsTaskSubmitted(isSuccess);
     setTaskFormKey((prevKey) => prevKey + 1);
-    updateUp((prevKey) => prevKey + 1)
+    updateUp((prevKey) => prevKey + 1);
   };
 
   const [selectedTask, setSelectedTask] = useState(null);
@@ -51,83 +58,127 @@ export const UserComponents = ({updateUp}) => {
     setModalOpen(false);
     setShowForm(false);
   };
-  // -----------Modal window action---------------end
-  // -------------TASKS FILTER BY STATUS----------------
+
   const [userCreatedTasks, setUsersCreatedTask] = useState([]); // новые созданые задачи +
   const [approvedTasks, setApprovedTasks] = useState([]); // Согласованные задачи +
   const [tasksInWork, setTaskInWork] = useState([]); // Назаначен исполнитель задачи +
   const [needApproveToCloseTasks, setneedApproveToCloseTasks] = useState([]); // Требуют подтверждения на закрытие +
   const [closedTasks, setClosedTask] = useState([]); // Закрытые задачи +
-  const [userResponsibleTasks, setUserResponsibleTasks] = useState([]); console.log('userResponsibleTasks', userResponsibleTasks)
-
-  const filterTasksByStatus = (data, status) => data.filter((task) => task.task_status.toString() === status);
+  const [userResponsibleTasks, setUserResponsibleTasks] = useState([]);
+  // console.log("userResponsibleTasks", userResponsibleTasks);
+  // Создаем состояние для хранения информации о последнем обновлении данных
+  const [lastUpdate, setLastUpdate] = useState([]);// console.log('lastUpdate', lastUpdate)
   
   useEffect(() => {
-    if (currentUser.login) {
-      try {
-        getAllUserTasks(HOST_ADDR, currentUser.token, setReqStatus).then((data) => {
-          if (data.length) {
-            console.log('>>>>>', data)
-            setUsersCreatedTask(filterTasksByStatus(data, "new")); // Новые созданые задачи +
-            setApprovedTasks(filterTasksByStatus(data, "approved")); // Согласованные задачи начальник отдела ОТВЕТСВЕННЫЙ НЕ НА ЗНАЧЕН +
-            setTaskInWork(filterTasksByStatus(data, "inWork")); // Назначен ответсвенный задача в работе+
-            setneedApproveToCloseTasks(filterTasksByStatus(data, "needToConfirm")); // Проверить и подвердить выполнение +
-            setClosedTask(filterTasksByStatus(data, "closed")); // Закрытые задачи +
-          } else {
-          }
-        getDataFromEndpoint(currentUser.token ,'/tasks/getAllResponsibleTasksByUserId', 'POST', null, setReqStatus)  
-          .then((data) => {
-            if(data.length){
-              console.log("!!!!", data)
-              setUserResponsibleTasks(data)
+    const fetchData = async () => {
+      if (currentUser.login) {
+        try {
+          getAllUserTasks(HOST_ADDR, currentUser.token, setReqStatus).then(
+            (data) => {
+              if (data.length) {
+                // Сравниваем новые данные с предыдущим состоянием
+                if (!arraysAreEqual(data, lastUpdate)) {
+                  setLastUpdate(data);
+                  setUsersCreatedTask(filterTasksByStatus(data, "new")); // Новые созданые задачи +
+                  setApprovedTasks(filterTasksByStatus(data, "approved")); // Согласованные задачи начальник отдела ОТВЕТСВЕННЫЙ НЕ НА ЗНАЧЕН +
+                  setTaskInWork(filterTasksByStatus(data, "inWork")); // Назначен ответсвенный задача в работе+
+                  setneedApproveToCloseTasks(filterTasksByStatus(data, "needToConfirm")); // Проверить и подвердить выполнение +
+                  setClosedTask(filterTasksByStatus(data, "closed")); // Закрытые задачи +
+                }  
+              } 
+              getDataFromEndpoint(currentUser.token,"/tasks/getAllResponsibleTasksByUserId", "POST", null, setReqStatus)
+                .then((data) => {
+                  if (data.length) {
+                    // Сравниваем новые данные с предыдущим состоянием
+                    if (!arraysAreEqual(data, lastUpdate)) {
+                      setLastUpdate(data);
+                      setUserResponsibleTasks(data);
+                    }
+                  }
+              });
             }
-          })
-        });
-      } catch (error) {}
-    }
+          );
+        } catch (error) {}
+      }
+    };
+    // Вызываем fetchData при первоначальной загрузке
+    fetchData();
+
+    const fetchDataInterval = setInterval(fetchData, 15000);
+    return () => clearInterval(fetchDataInterval);
   }, [currentUser, taskFormKey]);
 
   let taskTableComponent;
   if (selectedButton === "createdTasks") {
     taskTableComponent = (
       // ? Новые созданые задачи от текущего пользователя task_status = "new"  "СОЗДАНЫЕ ЗАДАЧИ" +
-      <RenderTasksTable tasks={userCreatedTasks} actionType="editTask" onTaskSubmit={handleTaskOnModalSubmit} />
+      <RenderTasksTable
+        tasks={userCreatedTasks}
+        actionType="editTask"
+        onTaskSubmit={handleTaskOnModalSubmit}
+      />
     );
-   } else if (selectedButton === "approved") {
+  } else if (selectedButton === "approved") {
     taskTableComponent = (
       // ? Согласованые задачи начальником отдела task_status = "approved"  "СОГЛАСОВАННЫ"
-      <RenderTasksTable tasks={approvedTasks} actionType="viewOnly" onTaskSubmit={handleTaskOnModalSubmit} />
+      <RenderTasksTable
+        tasks={approvedTasks}
+        actionType="viewOnly"
+        onTaskSubmit={handleTaskOnModalSubmit}
+      />
     );
   } else if (selectedButton === "inWorkTask") {
     taskTableComponent = (
       // ? Назначен ответсвеный task_status = "inWork" "В РАБОТЕ"
-      <RenderTasksTable tasks={tasksInWork} actionType="viewOnly" onTaskSubmit={handleTaskOnModalSubmit} />
+      <RenderTasksTable
+        tasks={tasksInWork}
+        actionType="viewOnly"
+        onTaskSubmit={handleTaskOnModalSubmit}
+      />
     );
   } else if (selectedButton === "responsibleTask") {
     taskTableComponent = (
       // ! Назначен ответсвеный responsible_user_id = "user_id" "МОИ ЗАДАЧИ"
-      <RenderTasksTable tasks={userResponsibleTasks} actionType="sendToClose" onTaskSubmit={handleTaskOnModalSubmit} />
+      <RenderTasksTable
+        tasks={userResponsibleTasks}
+        actionType="sendToClose"
+        onTaskSubmit={handleTaskOnModalSubmit}
+      />
     );
   } else if (selectedButton === "needChekTask") {
     taskTableComponent = (
       // ? Задача выполнена нужно подтвердить исполнение task_status = "needToConfirm"  "НА ПРОВЕРКЕ"
-      <RenderTasksTable tasks={needApproveToCloseTasks} actionType="confirmTask" onTaskSubmit={handleTaskOnModalSubmit} />
+      <RenderTasksTable
+        tasks={needApproveToCloseTasks}
+        actionType="confirmTask"
+        onTaskSubmit={handleTaskOnModalSubmit}
+      />
     );
   } else if (selectedButton === "closedTask") {
     taskTableComponent = (
       // ? Задача закрыта task_status = "closed"  "ЗАКРЫТЕ ЗАДАЧИ"
-      <RenderTasksTable tasks={closedTasks} actionType="viewOnly" onTaskSubmit={handleTaskOnModalSubmit} />
+      <RenderTasksTable
+        tasks={closedTasks}
+        actionType="viewOnly"
+        onTaskSubmit={handleTaskOnModalSubmit}
+      />
     );
-  } 
+  }
   return (
     <div>
       <div className="test">
-        <button onClick={toggleForm} style={{ display: showCreateButton ? "block" : "none" }}>
+        <button
+          onClick={toggleForm}
+          style={{ display: showCreateButton ? "block" : "none" }}
+        >
           Создать
         </button>
         {showForm && (
           <Modal isOpen={modalOpen} onClose={closeModal}>
-            <TaskForm keyProp={taskFormKey} onTaskSubmit={handleTaskOnModalSubmit} />
+            <TaskForm
+              keyProp={taskFormKey}
+              onTaskSubmit={handleTaskOnModalSubmit}
+            />
           </Modal>
         )}
       </div>
@@ -148,5 +199,5 @@ export const UserComponents = ({updateUp}) => {
 };
 
 UserComponents.defaultProps = {
-  updateUp: () => {}
-}
+  updateUp: () => {},
+};

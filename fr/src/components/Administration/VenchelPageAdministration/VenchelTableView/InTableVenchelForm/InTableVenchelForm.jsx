@@ -45,7 +45,7 @@ export const InTableVenchelForm = ({ data, reRender }) => {
                   <td>{item.width}</td>
                 </tr>
                 {selectedVenchel && selectedVenchel.venchel_id === item.venchel_id && (
-                  <tr>
+                  <tr key={item.venchel_id}>
                     <td colSpan={9}>
                       <VenchelForm
                         keyProp={item.venchel_id}

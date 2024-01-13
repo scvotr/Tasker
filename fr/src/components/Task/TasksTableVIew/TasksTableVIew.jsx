@@ -22,7 +22,7 @@ export const TasksTableVIew = ({ tasks, actionType, test }) => {
   console.log("sortedTasks", sortedTasks);
   // ----------------------PAGINATION---------------------------------------------------------------
   // задаем количество задач на странице
-  const tasksPerPage = 30;
+  const tasksPerPage = 10;
   // используем хук useParams для получения текущего номера страницы из URL
   const page = useParams();
   const [currentPage, setCurrentPage] = useState(parseInt(page) || 1);

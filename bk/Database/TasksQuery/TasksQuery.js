@@ -232,7 +232,6 @@ const getPreviewFileContent = async (task) => {
 };
 
 const getAllUserTasks = async (user_id) => {
-  console.log(user_id)
   //WHERE t.appoint_user = ? OR t.responsible_user = ? получить задачи, созданные пользователем и задачи, назначенные ему,
   const command = `
     SELECT 
@@ -272,7 +271,7 @@ const getAllUserTasks = async (user_id) => {
     LEFT JOIN subdepartments AS responsible_subdepartments ON t.responsible_subdepartment_id = responsible_subdepartments.id
     LEFT JOIN positions AS responsible_position ON t.responsible_position_id = responsible_position.id
     LEFT JOIN task_files f ON t.task_id = f.task_id
-  WHERE t.appoint_user_id = ? OR t.responsible_user_id = ?
+  WHERE t.appoint_user_id = ? OR t.responsible_user_id
   GROUP BY t.task_id`;
 
   try {

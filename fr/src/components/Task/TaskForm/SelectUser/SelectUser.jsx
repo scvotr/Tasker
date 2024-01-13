@@ -71,7 +71,7 @@ export const SelectUser = (props) => {
               />
             </div>
           )}
-          {selectData.responsible_subdepartment_id !== "" && selectData.responsible_subdepartment_id === "2" && (
+          {selectData.responsible_subdepartment_id !== "" && selectData.responsible_subdepartment_id === "12" && (
             <div className="select-section">
               <PositionSelect
                 onChange={handleGetDataFormSelect}

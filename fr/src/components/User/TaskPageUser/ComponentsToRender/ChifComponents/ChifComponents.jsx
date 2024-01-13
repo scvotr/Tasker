@@ -6,6 +6,7 @@ import { HOST_ADDR } from "../../../../../utils/ApiHostAdres";
 import { TasksFromSubDep } from "./TasksFromSubDep/TasksFromSubDep";
 import { TasksToSubDep } from "./TasksToSubDep/TasksToSubDep"
 import "./ChifComponents.css";
+import { V2UserComponents } from "../V2UserComponents/V2UserComponents";
 
 //! ----------------------------------------
 export const getAllTasksBySubDep = async (token, onSuccess) => {
@@ -102,7 +103,8 @@ export const ChifComponents = () => {
 
   return (
     <>
-      <UserComponents updateUp={setTaskFormKey}/>
+      {/* <UserComponents updateUp={setTaskFormKey}/> */}
+      <V2UserComponents updateToTop={setTaskFormKey}/>
 
       <div className="mobile">
         <ChifButtonGroup
