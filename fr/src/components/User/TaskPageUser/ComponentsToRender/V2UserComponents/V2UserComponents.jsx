@@ -60,10 +60,12 @@ export const V2UserComponents = ({ updateToTop }) => {
   const [isTaskSubmitted, setIsTaskSubmitted] = useState(false);
   const [taskFormKey, setTaskFormKey] = useState(0);
 
-  const handleTaskOnModalSubmit = (isSuccess) => {
+  const handleTaskOnModalSubmit = async(isSuccess) => {
     setIsTaskSubmitted(isSuccess);
     setTaskFormKey((prevKey) => prevKey + 1);
-    updateToTop((prevKey) => prevKey + 1);
+    if(updateToTop) {
+      await updateToTop((prevKey) => prevKey + 1)
+    }
   };
 
   const [selectedTask, setSelectedTask] = useState(null);
@@ -183,7 +185,6 @@ export const V2UserComponents = ({ updateToTop }) => {
     )
   }
 
-
   return (
     <>
       {msg ? (<>{msg}</>):(<></>)}
@@ -230,3 +231,7 @@ export const V2UserComponents = ({ updateToTop }) => {
     </>
   );
 };
+
+V2UserButtonGroup.defaultProps = {
+  updateToTop : () => {},
+}

@@ -8,6 +8,7 @@ import { Deadline } from "./TaskTableComponents/Deadline/Deadline";
 import { TaskStatus } from "./TaskTableComponents/TaskStatus/TaskStatus";
 
 export const TasksTableVIew = ({ tasks, actionType, test }) => {
+  console.log('test', test)
   const [sortedColumn, setSortedColumn] = useState(null);
   const [sortDirection, setSortDirection] = useState("asc");
 
