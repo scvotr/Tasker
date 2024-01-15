@@ -122,6 +122,7 @@ export const getUserByPosition = async (token, pos_id, onSuccess) => {
 // !------------------------------------------------------------------
 
 export const TaskForm = ({ taskToEdit, onTaskSubmit, keyProp }) => {
+  console.log('!!!!!!!!!!!!!', onTaskSubmit)
   const currentUser = useAuthContext();
   const initValue = {
     task_id: uuidv4(),
