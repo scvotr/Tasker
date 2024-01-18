@@ -18,7 +18,8 @@ export const sendDataToEndpoint = async (
   formData,
   endpoint,
   method,
-  onSuccess
+  responseType, // Аргумент для указания типа обработки ответа
+  onSuccess,
 ) => {
   if (formData.hasOwnProperty("filePreviews")) {
     delete formData.filePreviews;
@@ -33,7 +34,15 @@ export const sendDataToEndpoint = async (
       body: data,
     });
     if (res.ok) {
-      const responseData = await res.json();
+      let responseData;
+      if(responseType === "json"){
+        responseData = await res.json();
+      } else if ( responseType === 'blob'){
+        const fileBlob = await res.blob()
+        const fileUrl = URL.createObjectURL(fileBlob)
+        responseData = fileUrl
+      } 
+      // const responseData = await res.json();
       onSuccess(responseData);
     } else {
       throw new Error("Server response was not ok");

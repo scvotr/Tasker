@@ -54,8 +54,8 @@ class DocsControler {
       ]);
 
       // Отправляем измененный документ в ответ
-      // sendResponseWithData(res, 'testDocData OK!!');
       sendFileResponse(res, modifiedContent, 'modified_document.docx')
+      // sendResponseWithData(res, 'testDocData OK!!');
     } catch (error) {
       // Обрабатываем ошибку и отправляем соответствующий статус ответа
       handleError(res, `testDocData: ${error}`);

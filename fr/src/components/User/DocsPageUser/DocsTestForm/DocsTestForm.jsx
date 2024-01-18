@@ -18,6 +18,7 @@ export const DocsTestForm = () => {
   const [formData, setFormData] = useState(initVal);
   console.log(formData);
   const [reqStatus, setReqStatus] = useState(null);
+  console.log('reqStatus', reqStatus)
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -100,24 +101,3 @@ export const DocsTestForm = () => {
     </>
   );
 };
-
-{
-  /* <label>
-            Имя:
-            <input
-              name="name"
-              type="time"
-              value={formData.name}
-              onChange={handleGetData}
-            />
-          </label>
-          <label>
-            Какого числа:
-            <input
-              name="age"
-              type="date"
-              value={formData.age}
-              onChange={handleGetData}
-            />
-          </label> */
-}
