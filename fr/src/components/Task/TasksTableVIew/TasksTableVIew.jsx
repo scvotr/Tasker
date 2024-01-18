@@ -7,8 +7,9 @@ import { RenderByAction } from "./RenderByAction/RenderByAction";
 import { Deadline } from "./TaskTableComponents/Deadline/Deadline";
 import { TaskStatus } from "./TaskTableComponents/TaskStatus/TaskStatus";
 
-export const TasksTableVIew = ({ tasks, actionType, test }) => {
+export const TasksTableVIew = ({ tasks, actionType, test, rowForPage }) => {
   console.log('test', test)
+  console.log('rowForPage', rowForPage)
   const [sortedColumn, setSortedColumn] = useState(null);
   const [sortDirection, setSortDirection] = useState("asc");
 
@@ -23,7 +24,7 @@ export const TasksTableVIew = ({ tasks, actionType, test }) => {
   console.log("sortedTasks", sortedTasks);
   // ----------------------PAGINATION---------------------------------------------------------------
   // задаем количество задач на странице
-  const tasksPerPage = 10;
+  const tasksPerPage = rowForPage;
   // используем хук useParams для получения текущего номера страницы из URL
   const page = useParams();
   const [currentPage, setCurrentPage] = useState(parseInt(page) || 1);

@@ -46,8 +46,7 @@ export const TaskPageAdministration = () => {
         }
       }
     }
-
-    fetchData()
+     fetchData()
   }, [currentUser, userUpdated]);
 
   return (

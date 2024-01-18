@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import "./GeneralSpComponents.css";
 import { useAuthContext } from "../../../../../context/AuthProvider";
 import { getDataFromEndpoint } from "../../../../../utils/getDataFromEndpoint";
+import { RenderTasksTable } from "../../../../Task/RenderTasksTable/RenderTasksTable";
 
 export const GeneralSpComponents = () => {
   const currentUser = useAuthContext();
@@ -36,7 +37,7 @@ export const GeneralSpComponents = () => {
         <>
           {reqStatus === "ok" ? (
             <div>
-
+              <RenderTasksTable tasks={allTasks} actionType='viewOnly' rowForPage='15'/>
             </div>
           ) : (
             <div>
