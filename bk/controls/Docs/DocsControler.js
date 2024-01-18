@@ -37,7 +37,7 @@ class DocsControler {
       const new_f = 'modified_document.docx';
 
       // Модифицируем шаблон документа с использованием данных пользователя
-      await ModifyDocxTemplate(templateFileName, new_f, [
+      const modifiedContent = await ModifyDocxTemplate(templateFileName, new_f, [
         {key: 'USERNAME', value: userData.fields.name},
         {key: 'CURRENTDATE', value: userData.fields.currentData},
         {key: 'SDATE', value: userData.fields.selectData},
