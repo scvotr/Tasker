@@ -8,8 +8,6 @@ import { Deadline } from "./TaskTableComponents/Deadline/Deadline";
 import { TaskStatus } from "./TaskTableComponents/TaskStatus/TaskStatus";
 
 export const TasksTableVIew = ({ tasks, actionType, test, rowForPage }) => {
-  console.log('test', test)
-  console.log('rowForPage', rowForPage)
   const [sortedColumn, setSortedColumn] = useState(null);
   const [sortDirection, setSortDirection] = useState("asc");
 
@@ -21,7 +19,6 @@ export const TasksTableVIew = ({ tasks, actionType, test, rowForPage }) => {
     });
   }, [tasks]);
 
-  console.log("sortedTasks", sortedTasks);
   // ----------------------PAGINATION---------------------------------------------------------------
   // задаем количество задач на странице
   const tasksPerPage = rowForPage;
@@ -102,7 +99,7 @@ export const TasksTableVIew = ({ tasks, actionType, test, rowForPage }) => {
 
   return (
     <>
-      {!sortedTasks.length > 0 && <div>Задач нет.</div>}
+      {!sortedTasks.length > 0 && <div className="no-tasks">Задач нет.</div>}
 
       {selectedTask && (
         <Modal isOpen={modalOpen} onClose={closeModal}>

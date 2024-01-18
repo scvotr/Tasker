@@ -8,7 +8,7 @@ import { V2UserComponents } from "../V2UserComponents/V2UserComponents";
 export const GeneralSpComponents = () => {
   const currentUser = useAuthContext();
   const [reqStatus, setReqStatus] = useState(null);
-  const [allTasks, setAllTasks] = useState(); console.log('allTasks', allTasks)
+  const [allTasks, setAllTasks] = useState();
   const [taskFormKey, setTaskFormKey] = useState(0);
 
   useEffect(() => {

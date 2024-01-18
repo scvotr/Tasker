@@ -166,6 +166,7 @@ export const FullTaskInfo = ({ task }) => {
         <div>
           {old_files &&
             old_files.map((file, index) => {
+              console.log(index)
               if (file.type === ".jpg" || file.type === ".png") {
                 return (
                   <>
