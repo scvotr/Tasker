@@ -11,8 +11,15 @@ const sendResponseWithData = (res, data) => {
   res.end();
 };
 
+const sendFileResponse = (res, fileContent, fileName) => {
+  res.writeHead(200, {
+    'Content-Type': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    'Content-Disposition': `attachment; filename=${fileName}`
+  });
+  res.end(fileContent, 'binary');
+};
+
 const handleError = (res, error) => {
-  console.log('handleError', error);
   res.statusCode = 500;
   res.end(JSON.stringify({
     error: error
@@ -20,27 +27,38 @@ const handleError = (res, error) => {
 };
 
 class DocsControler {
+  /**
+   * Обрабатывает запрос на создание тестовых документов.
+   * @param {Object} req - Объект запроса. Содержит информацию о запросе, включая данные пользователя и другие параметры.
+   * @param {Object} res - Объект ответа. Используется для отправки ответа клиенту, в том числе модифицированного документа или сообщения об ошибке.
+   * @returns {Promise<void>} - Асинхронная функция, которая не возвращает явного значения.
+   */
   async testDocData(req, res) {
     try {
+      // Извлекаем данные пользователя из запроса
       const authDecodeUserData = req.user;
       const userData = authDecodeUserData.payLoad;
-      const templateFileName = 'template.docx'
-      const new_f = 'modified_document.docx'
-      const data = {
-        name: userData.fields.name,
-        age: userData.fields.age,
-      }
-      await ModifyDocxTemplate(templateFileName, new_f, [
+
+      // Указываем названия файлов шаблона и нового документа
+      const templateFileName = 'template.docx';
+      const new_f = 'modified_document.docx';
+
+      // Модифицируем шаблон документа с использованием данных пользователя
+      const modifiedContent = await ModifyDocxTemplate(templateFileName, new_f, [
         {key: 'USERNAME', value: userData.fields.name},
-        {key: 'AGE', value: userData.fields.age},
-        {key: 'DATE', value: new Date(Date.now())},
-        {key: 'TIMESTART', value: '8.00'},
-        {key: 'TIMEEND', value: '13.00'},
-        {key: 'CURRENTDATE', value: new Date(Date.now())},
-      ])
-      sendResponseWithData(res, 'testDocData OK!!')
+        {key: 'CURRENTDATE', value: userData.fields.currentData},
+        {key: 'SDATE', value: userData.fields.selectData},
+        {key: 'TIMESTART', value: userData.fields.timeStart},
+        {key: 'TIMEEND', value: userData.fields.timeEnd},
+        {key: 'DATEONCREATE', value: new Date(Date.now())},
+      ]);
+
+      // Отправляем измененный документ в ответ
+      sendFileResponse(res, modifiedContent, 'modified_document.docx')
+      // sendResponseWithData(res, 'testDocData OK!!');
     } catch (error) {
-      handleError(res, `testDocData: ${error}`)
+      // Обрабатываем ошибку и отправляем соответствующий статус ответа
+      handleError(res, `testDocData: ${error}`);
     }
   }
 }

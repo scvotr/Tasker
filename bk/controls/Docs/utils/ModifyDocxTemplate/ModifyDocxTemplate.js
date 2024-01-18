@@ -1,24 +1,17 @@
-/**
- * Modifies a .docx template file with the specified modifications and saves the result to the output file.
- * @param {string} inputFilePath - The path of the input .docx file.
- * @param {string} outputFilePath - The path where the modified .docx file will be saved.
- * @param {Array} modifications - An array of objects containing key-value pairs for modifications.
- * @returns {Promise<void>} - A Promise that resolves when the file is successfully modified and saved.
- */
-/**
- * Модифицирует файл шаблона .docx с указанными изменениями и сохраняет результат в выходной файл.
- * @param {string} inputFilePath - Путь к входному файлу .docx.
- * @param {string} outputFilePath - Путь, по которому будет сохранен измененный файл .docx.
- * @param {Array} modifications - Массив объектов, содержащих пары ключ-значение для модификаций.
- * @returns {Promise<void>} - Промис, который разрешается, когда файл успешно модифицирован и сохранен.
- */
-
 'use strict'
 
 const fs = require('fs').promises;
 const path = require('path');
 const JSZip = require('jszip');
 const xml2js = require('xml2js');
+
+/**
+ * Модифицирует файл шаблона .docx с указанными изменениями и сохраняет результат в выходной файл.
+ * @param {string} inputFilePath - Путь к входному файлу .docx.
+ * @param {string} outputFilePath - Путь, по которому будет сохранен измененный файл .docx.
+ * @param {Array} modifications - Массив объектов, содержащих пары ключ-значение для модификаций.
+ * @returns {Promise<void>} - Промис, который разрешается, когда файл успешно модифицирован и сохранен.
+*/
 
 const ModifyDocxTemplate = async (inputFilePath, outputFilePath, modifications) => {
   const currentDirectory = process.cwd(); // Получаем текущую директорию
@@ -45,6 +38,7 @@ const ModifyDocxTemplate = async (inputFilePath, outputFilePath, modifications) 
     // Сохранение измененного файла
     const content = await zip.generateAsync({ type: 'nodebuffer' });
     await fs.writeFile(modifyFullPath, content);
+    return content; //? Возвращаем содержимое файла
   } catch (error) {
     console.error('An error occurred:', error);
   }
