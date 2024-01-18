@@ -3,12 +3,13 @@ import "./GeneralSpComponents.css";
 import { useAuthContext } from "../../../../../context/AuthProvider";
 import { getDataFromEndpoint } from "../../../../../utils/getDataFromEndpoint";
 import { RenderTasksTable } from "../../../../Task/RenderTasksTable/RenderTasksTable";
+import { V2UserComponents } from "../V2UserComponents/V2UserComponents";
 
 export const GeneralSpComponents = () => {
   const currentUser = useAuthContext();
   const [reqStatus, setReqStatus] = useState(null);
   const [allTasks, setAllTasks] = useState();
-  console.log(allTasks);
+  const [taskFormKey, setTaskFormKey] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -27,7 +28,7 @@ export const GeneralSpComponents = () => {
       }
     };
     fetchData();
-  }, [currentUser]);
+  }, [currentUser, taskFormKey]);
 
   return (
     <>
@@ -36,9 +37,14 @@ export const GeneralSpComponents = () => {
       ) : (
         <>
           {reqStatus === "ok" ? (
-            <div>
-              <RenderTasksTable tasks={allTasks} actionType='viewOnly' rowForPage='15'/>
-            </div>
+            <>
+              <div>
+                {/* <V2UserComponents updateToTop={setTaskFormKey}/> */}
+              </div>
+              <div>
+                <RenderTasksTable tasks={allTasks} actionType='viewOnly' rowForPage='15'/>
+              </div>
+            </>
           ) : (
             <div>
               {reqStatus} {/* Отображение сообщения об ошибке */}
