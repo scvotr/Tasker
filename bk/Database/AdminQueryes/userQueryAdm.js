@@ -122,19 +122,24 @@ const getAllTasks = async () => {
       t.deadline,
       t.appoint_user_id,
       t.created_on,
-      t.approved_on, -- Дата согласования задачи
+      approved_on ,                              -- Дата согласования задачи
+      reject_on ,                                -- Дата отклонения задачи
+      confirmation_on ,                          -- Дата запрос на подтверждение задачи
+      closed_on ,                                -- Дата закрытия задачи
+      setResponseSubDep_on ,                     -- Дата назначения отдела
+      setResponseUser_on ,                       -- Дата назначения пользователя
       appoint_user.name AS appoint_user_name,
       t.appoint_department_id, 
       appoint_departments.name AS appoint_department_name,
       t.appoint_subdepartment_id,
       appoint_subdepartments.name AS appoint_subdepartment_name,
-      t.responsible_user_id,
+      t.responsible_user_id, -- ПОЛЬЗОВТЕЛЬ
       responsible_user.name AS responsible_user_name,
-      t.responsible_department_id, 
+      t.responsible_department_id,  -- ДЕПАРТАМЕНТ
       responsible_departments.name AS responsible_department_name,
-      t.responsible_subdepartment_id,
+      t.responsible_subdepartment_id, -- ПОДРАЗДЕЛЕНИ
       responsible_subdepartments.name AS responsible_subdepartment_name,
-      t.responsible_position_id,
+      t.responsible_position_id, -- ОТДЕЛ
       responsible_position.name AS responsible_position_name,
       GROUP_CONCAT(f.file_name, '|') AS file_names
     FROM tasks t

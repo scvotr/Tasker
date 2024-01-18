@@ -8,7 +8,7 @@ import { GeneralButtonGroup } from './GeneralButtonGroup/GeneralButtonGroup'
 
 export const getAllTasksByDep = async (token, onSuccess) => {
   try {
-    const res = await fetch(HOST_ADDR + "/tasks/getAllTasksByDep", {
+    const res = await fetch(HOST_ADDR + "/tasks/getAllAppointTasksFromDep", {
       method: "POST",
       headers: {
         Authorization: token,
