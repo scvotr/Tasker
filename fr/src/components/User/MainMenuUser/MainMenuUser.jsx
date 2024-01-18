@@ -15,6 +15,12 @@ export const MainMenuUser = () => {
           >
             <button className="user-menu__button">Задачи</button>
           </NavLink>
+          <NavLink
+            to="/docsPageUser"
+            className={({ isActive }) => (isActive ? "active" : "")}
+          >
+            <button className="user-menu__button">Документы</button>
+          </NavLink>
         </div>
 
         <div className="user-menu__body">

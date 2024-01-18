@@ -51,10 +51,11 @@ class UserControler {
     try {
       const authDecodeUserData = req.user;
       // const user_id = authDecodeUserData.id;// если нужно ID пользовтеля
-      if (authDecodeUserData.role !== "admin") {
+      //! Переписать временное разрешения для доступа ко всем задачам
+      if (authDecodeUserData.role !== "admin" && authDecodeUserData.role !== "generalSp") {
         return res.end(
           JSON.stringify({
-            getAllUsers: "Нет прав на доступ",
+            getAllTasks: "Нет прав на доступ",
           })
         );
       }

@@ -9,6 +9,7 @@ const { handleOrgStructRoutes } = require("./routes/handleOrgStructRoutes");
 const { handleTaskRoutes } = require("./routes/handleTaskRoutes");
 const { handleUserRoutes } = require("./routes/handleUserRoutes");
 const { handleVenchelRoutes } = require("./routes/handleVenchelRoutes");
+const { handleDocsRoutes } = require("./routes/handleDocsRouters")
 
 const routeHandlers = [
   { prefix: "/auth", handler: handleAuthRoutes },
@@ -17,6 +18,7 @@ const routeHandlers = [
   { prefix: "/tasks", handler: handleTaskRoutes },
   { prefix: "/user", handler: handleUserRoutes },
   { prefix: "/venchel", handler: handleVenchelRoutes },
+  { prefix: "/docs", handler: handleDocsRoutes },
 ];
 
 const server = http.createServer(async (req, res) => {

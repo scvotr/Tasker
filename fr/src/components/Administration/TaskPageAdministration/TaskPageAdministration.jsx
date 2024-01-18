@@ -35,13 +35,18 @@ export const TaskPageAdministration = () => {
   const [tasks, setTasks] = useState([]); console.log('tasks', tasks)
 
   useEffect(() => {
-    if (currentUser.login) {
-      try {
-        getAllTasks(currentUser.token, HOST_ADDR, setReqStatus)
-          .then((data) => setTasks(data))
-          .catch((error) => setReqStatus(error));
-      } catch (error) {}
+    const fetchData = async() => {
+      if( currentUser.login) {
+        try {
+          const data = await getAllTasks(currentUser.token, HOST_ADDR, setReqStatus)
+          setTasks(data)
+          setReqStatus('success')
+        } catch (error) {
+          setReqStatus(error)
+        }
+      }
     }
+     fetchData()
   }, [currentUser, userUpdated]);
 
   return (

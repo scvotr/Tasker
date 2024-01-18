@@ -7,7 +7,7 @@ export const TaskPageUser = () => {
     <div className="user-task-page">
       <MainMenuUser />
       <div className="user-task-page__body">
-        <div className="user-task-page__containre">
+        <div className="user-task-page__container">
           <TasksView />
         </div>
       </div>
