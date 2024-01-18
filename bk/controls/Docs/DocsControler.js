@@ -20,15 +20,23 @@ const handleError = (res, error) => {
 };
 
 class DocsControler {
+  /**
+   * Обрабатывает запрос на создание тестовых документов.
+   * @param {Object} req - Объект запроса. Содержит информацию о запросе, включая данные пользователя и другие параметры.
+   * @param {Object} res - Объект ответа. Используется для отправки ответа клиенту, в том числе модифицированного документа или сообщения об ошибке.
+   * @returns {Promise<void>} - Асинхронная функция, которая не возвращает явного значения.
+   */
   async testDocData(req, res) {
     try {
+      // Извлекаем данные пользователя из запроса
       const authDecodeUserData = req.user;
       const userData = authDecodeUserData.payLoad;
-      const templateFileName = 'template.docx'
-      const new_f = 'modified_document.docx'
 
-      console.log('userData', userData)
+      // Указываем названия файлов шаблона и нового документа
+      const templateFileName = 'template.docx';
+      const new_f = 'modified_document.docx';
 
+      // Модифицируем шаблон документа с использованием данных пользователя
       await ModifyDocxTemplate(templateFileName, new_f, [
         {key: 'USERNAME', value: userData.fields.name},
         {key: 'CURRENTDATE', value: userData.fields.currentData},
@@ -36,10 +44,13 @@ class DocsControler {
         {key: 'TIMESTART', value: userData.fields.timeStart},
         {key: 'TIMEEND', value: userData.fields.timeEnd},
         {key: 'DATEONCREATE', value: new Date(Date.now())},
-      ])
-      sendResponseWithData(res, 'testDocData OK!!')
+      ]);
+
+      // Отправляем измененный документ в ответ
+      sendResponseWithData(res, 'testDocData OK!!');
     } catch (error) {
-      handleError(res, `testDocData: ${error}`)
+      // Обрабатываем ошибку и отправляем соответствующий статус ответа
+      handleError(res, `testDocData: ${error}`);
     }
   }
 }
