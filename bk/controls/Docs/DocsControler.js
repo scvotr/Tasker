@@ -11,8 +11,15 @@ const sendResponseWithData = (res, data) => {
   res.end();
 };
 
+const sendFileResponse = (res, fileContent, fileName) => {
+  res.writeHead(200, {
+    'Content-Type': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    'Content-Disposition': `attachment; filename=${fileName}`
+  });
+  res.end(fileContent, 'binary');
+};
+
 const handleError = (res, error) => {
-  console.log('handleError', error);
   res.statusCode = 500;
   res.end(JSON.stringify({
     error: error
@@ -47,7 +54,8 @@ class DocsControler {
       ]);
 
       // Отправляем измененный документ в ответ
-      sendResponseWithData(res, 'testDocData OK!!');
+      // sendResponseWithData(res, 'testDocData OK!!');
+      sendFileResponse(res, modifiedContent, 'modified_document.docx')
     } catch (error) {
       // Обрабатываем ошибку и отправляем соответствующий статус ответа
       handleError(res, `testDocData: ${error}`);
