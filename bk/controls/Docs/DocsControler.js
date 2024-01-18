@@ -26,17 +26,16 @@ class DocsControler {
       const userData = authDecodeUserData.payLoad;
       const templateFileName = 'template.docx'
       const new_f = 'modified_document.docx'
-      const data = {
-        name: userData.fields.name,
-        age: userData.fields.age,
-      }
+
+      console.log('userData', userData)
+
       await ModifyDocxTemplate(templateFileName, new_f, [
         {key: 'USERNAME', value: userData.fields.name},
-        {key: 'AGE', value: userData.fields.age},
-        {key: 'DATE', value: new Date(Date.now())},
-        {key: 'TIMESTART', value: '8.00'},
-        {key: 'TIMEEND', value: '13.00'},
-        {key: 'CURRENTDATE', value: new Date(Date.now())},
+        {key: 'CURRENTDATE', value: userData.fields.currentData},
+        {key: 'SDATE', value: userData.fields.selectData},
+        {key: 'TIMESTART', value: userData.fields.timeStart},
+        {key: 'TIMEEND', value: userData.fields.timeEnd},
+        {key: 'DATEONCREATE', value: new Date(Date.now())},
       ])
       sendResponseWithData(res, 'testDocData OK!!')
     } catch (error) {

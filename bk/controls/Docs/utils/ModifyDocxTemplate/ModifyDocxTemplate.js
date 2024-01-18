@@ -21,6 +21,8 @@ const JSZip = require('jszip');
 const xml2js = require('xml2js');
 
 const ModifyDocxTemplate = async (inputFilePath, outputFilePath, modifications) => {
+  console.log('modifications', modifications)  
+  
   const currentDirectory = process.cwd(); // Получаем текущую директорию
   const templateFullPath = path.join(currentDirectory, inputFilePath);
   const modifyFullPath = path.join(currentDirectory, outputFilePath);
