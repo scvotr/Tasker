@@ -23,14 +23,13 @@ export const TasksTableVIew = ({ tasks, actionType, test, rowForPage }) => {
   // задаем количество задач на странице
   const tasksPerPage = rowForPage;
   // используем хук useParams для получения текущего номера страницы из URL
-  const page = useParams();
-  const [currentPage, setCurrentPage] = useState(parseInt(page) || 1);
+  const {pageNumber } = useParams();
+  const [currentPage, setCurrentPage] = useState(parseInt(pageNumber ) || 1);
   // возвращает список задач для текущей выбранной страницы
   const getCurrentTasks = () => {
-    const lastIndex = currentPage * tasksPerPage;
-    const firstIndex = lastIndex - tasksPerPage;
-    // 24.08
-    const sortedTasksSlice = sortedTasks.slice(firstIndex, lastIndex);
+    const offset = (currentPage - 1) * tasksPerPage; // Рассчитываем смещение для текущей страницы
+    const sortedTasksSlice = sortedTasks.slice(offset, offset + tasksPerPage); // Выбираем задачи для текущей страницы
+
     if (sortedColumn) {
       sortedTasksSlice.sort((a, b) => {
         const valueA = a[sortedColumn];
@@ -139,7 +138,7 @@ export const TasksTableVIew = ({ tasks, actionType, test, rowForPage }) => {
           <tbody>
             {getCurrentTasks().map((task, index) => (
               <tr key={index} onClick={() => openModal(task)}>
-                <td>{index + 1}</td>
+                <td>{(currentPage - 1) * tasksPerPage + index + 1}</td>
                 <td>{task.task_descript.substring(0, 25)} ... </td>
                 <td>{formatDate(task.created_on)}</td>
                 <td>

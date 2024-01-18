@@ -42,7 +42,7 @@ export const GeneralSpComponents = () => {
                 {/* <V2UserComponents updateToTop={setTaskFormKey}/> */}
               </div>
               <div>
-                <RenderTasksTable tasks={allTasks} actionType='viewOnly' rowForPage='15'/>
+                <RenderTasksTable tasks={allTasks} actionType='viewOnly' rowForPage='20'/>
               </div>
             </>
           ) : (

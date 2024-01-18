@@ -10,6 +10,7 @@ const {
   getAllTasksByDep,
   getAllTasksBySubDep,
   getAllResponsibleTasksByDep,
+  getAllAppointTasksFromDep,
   getAllResponsibleTasksBySubDep,
   getAllResponsibleTasksByUserId,
   updateTaskStatus,
@@ -114,6 +115,17 @@ class TasksControler {
       sendResponseWithData(res, data)
     } catch (error) {
       handleError(res, 'getAllResponsibleTasksByDep')
+    }
+  }
+  //! Все задачи от Департамента 18.01.24
+  async getAllAppointTasksFromDep(req, res) {
+    try {
+      const authDecodeUserData = req.user
+      const subDep_id = authDecodeUserData.subdepartment_id
+      const data = await getAllAppointTasksFromDep(subDep_id)
+      sendResponseWithData(res, data)
+    } catch (error) {
+      handleError(res, 'getAllAppointTasksFromDep')
     }
   }
   // Все задачи для Отделам
