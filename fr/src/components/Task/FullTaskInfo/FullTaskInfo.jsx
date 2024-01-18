@@ -56,6 +56,8 @@ const getFullFile = async (file, task_id, token) => {
 };
 
 export const FullTaskInfo = ({ task }) => {
+  console.log("!!!!!!!!!!!!!!!!!!!!", task)
+  console.log("!!!!!!!!!!!!!!!!!!!!", task.setResponseSubDep_on)
   const currentUser = useAuthContext();
 
   const [taskData, setTaskData] = useState(task);
