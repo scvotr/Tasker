@@ -10,12 +10,8 @@
 */
 
 
-import {
-  HOST_ADDR
-} from "./ApiHostAdres";
-import {
-  convertToFormData
-} from "./convertToFormData";
+import {  HOST_ADDR} from "./ApiHostAdres";
+import {  convertToFormData} from "./convertToFormData";
 
 export const sendDataToEndpoint = async (
   token,
@@ -46,7 +42,6 @@ export const sendDataToEndpoint = async (
         const fileUrl = URL.createObjectURL(fileBlob)
         responseData = fileUrl
       }
-      // const responseData = await res.json();
       onSuccess(responseData);
     } else {
       throw new Error("Server response was not ok");
@@ -55,3 +50,17 @@ export const sendDataToEndpoint = async (
     onSuccess(error);
   }
 };
+
+// import React from 'react';
+
+// const DownloadLink = ({ blobUrl, fileName }) => {
+//   return (
+//     <a href={blobUrl} download={fileName}>
+//       Скачать файл
+//     </a>
+//   );
+// };
+
+// export default DownloadLink;
+
+// <DownloadLink blobUrl={URL.createObjectURL(blobData)} fileName="document.docx" />

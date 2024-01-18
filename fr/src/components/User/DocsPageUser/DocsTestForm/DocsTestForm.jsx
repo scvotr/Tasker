@@ -11,14 +11,16 @@ export const DocsTestForm = () => {
     name: currentUser.name,
     currentData: formatDate(new Date()).split('.').reverse().join('-'),
     selectData: formatDate(new Date()).split('.').reverse().join('-'), // Приведение даты к ожидаемому формату "yyyy-MM-dd"
-    timeStart: "",
-    timeEnd: "",
+    timeStart: "08:00",
+    timeEnd: "09:00",
   };
 
   const [formData, setFormData] = useState(initVal);
   console.log(formData);
   const [reqStatus, setReqStatus] = useState(null);
   console.log('reqStatus', reqStatus)
+  const [blobData, setBlobData] = useState(null);
+  console.log('blobData', blobData)
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -35,7 +37,13 @@ export const DocsTestForm = () => {
       updateFormData,
       "/docs/test",
       "POST",
-      setReqStatus
+      "blob",
+      (response) => {
+        console.log('Тип данных response:', typeof response); // Вывод типа данных response
+        console.log('Содержимое response:', response); // Вывод содержимого response
+        setBlobData(response); // Сохранение объекта Blob в состоянии
+        setReqStatus('success'); // Обновление статуса запроса
+      },
     );
     setFormData(initVal);
   };
@@ -98,6 +106,14 @@ export const DocsTestForm = () => {
           <button type="submit">Отправить</button>
         </form>
       </>
+      <div>
+        {blobData && ( // Отображаем данные только если blobData существует
+          // Если BLOB обьект
+          // <a href={URL.createObjectURL(blobData)} download="document.docx">Скачать файл</a>
+          // Если ссылка из BLOB обьекта
+          <a href={blobData} download="document.docx">Скачать</a>
+        )}
+      </div>
     </>
   );
 };
