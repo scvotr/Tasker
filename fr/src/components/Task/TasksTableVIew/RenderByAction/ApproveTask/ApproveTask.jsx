@@ -28,7 +28,6 @@ export const updateTaskStatus = async (token, data ,onSuccess) => {
 };
 
 export const ApproveTask = ({ task, reRenderUp }) => {
-  console.log('ApproveTask', task)
   const currentUser = useAuthContext();
   const [resStaus, setReqStatus] = useState(null);
   const [isApprove, setIsApprove] = useState(false);

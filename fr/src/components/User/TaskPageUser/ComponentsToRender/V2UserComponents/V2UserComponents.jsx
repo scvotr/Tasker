@@ -92,8 +92,6 @@ export const V2UserComponents = ({ updateToTop }) => {
       if (currentUser.login) {
         try {
           const newData = await getDataFromEndpoint(currentUser.token, '/tasks/getAllUserTasks', 'POST', null, setReqStatus);
-          console.log('newData', newData)  
-          console.log('prevUserAppointTasks', prevUserAppointTasks)  
           // Сравнение предыдущих данных с новыми данными
           if (!arraysAreEqual(newData, prevUserAppointTasks)) {
             setMsg(`New data received at ${new Date().toLocaleString()}`)

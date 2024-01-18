@@ -16,11 +16,8 @@ export const DocsTestForm = () => {
   };
 
   const [formData, setFormData] = useState(initVal);
-  console.log(formData);
   const [reqStatus, setReqStatus] = useState(null);
-  console.log('reqStatus', reqStatus)
   const [blobData, setBlobData] = useState(null);
-  console.log('blobData', blobData)
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -39,8 +36,8 @@ export const DocsTestForm = () => {
       "POST",
       "blob",
       (response) => {
-        console.log('Тип данных response:', typeof response); // Вывод типа данных response
-        console.log('Содержимое response:', response); // Вывод содержимого response
+        // console.log('Тип данных response:', typeof response); // Вывод типа данных response
+        // console.log('Содержимое response:', response); // Вывод содержимого response
         setBlobData(response); // Сохранение объекта Blob в состоянии
         setReqStatus('success'); // Обновление статуса запроса
       },

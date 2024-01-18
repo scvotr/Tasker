@@ -1,7 +1,6 @@
 import "./TaskStatus.css";
 
 export const TaskStatus = ({ staus }) => {
-  console.log('staus', staus)
   let taskStatus;
   if (staus === "inWork") {
     taskStatus = "В работе";
@@ -11,7 +10,9 @@ export const TaskStatus = ({ staus }) => {
     taskStatus = "Согласованна";
   } else if(staus === "needToConfirm"){
     taskStatus = "На подтверждении";
-  } 
+  } else if (staus === "reject") {
+    taskStatus = "На Отклонена";
+  }
 
   return <>{taskStatus}</>;
 };

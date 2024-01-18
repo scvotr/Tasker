@@ -2,6 +2,11 @@
   color: red;
 }
 
+.no-tasks {
+  display: flex;
+  justify-content: center;
+  margin: 20px;
+}
 
 .table-bordered {
   width: 100%;
