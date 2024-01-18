@@ -9,6 +9,7 @@ import App from '../App';
 import { VenchelPageAdministration } from '../components/Administration/VenchelPageAdministration/VenchelPageAdministration';
 import { DepsPageAdministration } from '../components/Administration/DepsPageAdministration/DepsPageAdministration'
 import { VenchelPageAdministrationV2 } from '../components/Administration/VenchelPageAdministrationV2/VenchelPageAdministrationV2';
+import { DocsPageUser } from '../components/User/DocsPageUser/DocsPageUser';
 
 export const routes = createBrowserRouter([{
   path: '/',
@@ -58,6 +59,10 @@ export const routes = createBrowserRouter([{
   {
     path: '/taskPageUser',
     element: <TaskPageUser />,
+  },
+  {
+    path: '/docsPageUser',
+    element: <DocsPageUser />,
   },
 ]
 }])
