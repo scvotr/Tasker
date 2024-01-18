@@ -10,15 +10,19 @@
 */
 
 
-import { HOST_ADDR } from "./ApiHostAdres";
-import { convertToFormData } from "./convertToFormData";
+import {
+  HOST_ADDR
+} from "./ApiHostAdres";
+import {
+  convertToFormData
+} from "./convertToFormData";
 
 export const sendDataToEndpoint = async (
   token,
   formData,
   endpoint,
   method,
-  responseType, // Аргумент для указания типа обработки ответа
+  responseType = "json", // Значение по умолчанию для responseType
   onSuccess,
 ) => {
   if (formData.hasOwnProperty("filePreviews")) {
@@ -35,13 +39,13 @@ export const sendDataToEndpoint = async (
     });
     if (res.ok) {
       let responseData;
-      if(responseType === "json"){
+      if (responseType === "json") {
         responseData = await res.json();
-      } else if ( responseType === 'blob'){
+      } else if (responseType === 'blob') {
         const fileBlob = await res.blob()
         const fileUrl = URL.createObjectURL(fileBlob)
         responseData = fileUrl
-      } 
+      }
       // const responseData = await res.json();
       onSuccess(responseData);
     } else {
