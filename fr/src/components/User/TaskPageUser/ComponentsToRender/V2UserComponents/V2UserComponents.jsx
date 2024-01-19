@@ -131,7 +131,7 @@ export const V2UserComponents = ({ updateToTop }) => {
     // Вызываем fetchData при первоначальной загрузке
     fetchData();
     // Если вы хотите обновлять данные с определенной периодичностью, раскомментируйте следующие строки
-    const getRandomInterval = () => Math.floor(Math.random() * 5000) + 1000; 
+    const getRandomInterval = () => Math.floor(Math.random() * 10000) + 1000; 
     const t = getRandomInterval(); console.log(t)
     const fetchDataInterval = setInterval(fetchData, getRandomInterval());
     return () => clearInterval(fetchDataInterval);
@@ -142,9 +142,10 @@ export const V2UserComponents = ({ updateToTop }) => {
   useEffect(() => {
     const initialData = localStorage.getItem('initialData');
 
-    if(!initialData) {
+    if(!initialData || initialData === 'undefined') {
       console.log('no data in local')
       localStorage.setItem('initialData', JSON.stringify(alltasks));
+
     } else if(!arraysAreEqual(alltasks, JSON.parse(initialData))) {
       console.log('Some thin not equal')
       const prevTasks = JSON.parse(initialData)
