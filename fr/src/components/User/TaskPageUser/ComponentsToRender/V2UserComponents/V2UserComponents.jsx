@@ -148,8 +148,7 @@ export const V2UserComponents = ({ updateToTop }) => {
     } else if(!arraysAreEqual(alltasks, JSON.parse(initialData))) {
       console.log('Some thin not equal')
       const prevTasks = JSON.parse(initialData)
-      // console.log('prevTasks', prevTasks)
-      // console.log('alltasks', alltasks)
+
       
       // Проверяем, определен ли prevTasks перед использованием его свойств
       if (Array.isArray(prevTasks) && Array.isArray(alltasks)) {
