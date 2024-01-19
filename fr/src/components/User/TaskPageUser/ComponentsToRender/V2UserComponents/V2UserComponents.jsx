@@ -87,11 +87,14 @@ export const V2UserComponents = ({ updateToTop }) => {
     setShowForm(false);
   };
 
+  const [alltasks, setAllTasks] = useState()
+
   useEffect(() => {
     const fetchData = async () => {
       if (currentUser.login) {
         try {
           const newData = await getDataFromEndpoint(currentUser.token, '/tasks/getAllUserTasks', 'POST', null, setReqStatus);
+          setAllTasks(newData)//!---------------------------
           // Сравнение предыдущих данных с новыми данными
           if (!arraysAreEqual(newData, prevUserAppointTasks)) {
             setMsg(`New data received at ${new Date().toLocaleString()}`)
@@ -128,9 +131,37 @@ export const V2UserComponents = ({ updateToTop }) => {
     // Вызываем fetchData при первоначальной загрузке
     fetchData();
     // Если вы хотите обновлять данные с определенной периодичностью, раскомментируйте следующие строки
-    const fetchDataInterval = setInterval(fetchData, 15000);
+    const getRandomInterval = () => Math.floor(Math.random() * 5000) + 1000; 
+    const t = getRandomInterval(); console.log(t)
+    const fetchDataInterval = setInterval(fetchData, getRandomInterval());
     return () => clearInterval(fetchDataInterval);
   }, [currentUser, prevUserAppointTasks, prevUserResponsibleTasks, taskFormKey]);
+
+
+// !------------------------------------
+  useEffect(() => {
+    const initialData = localStorage.getItem('initialData');
+
+    if(!initialData) {
+      console.log('no data in local')
+      localStorage.setItem('initialData', JSON.stringify(alltasks));
+    } else if(!arraysAreEqual(alltasks, JSON.parse(initialData))) {
+      console.log('Some thin not equal')
+      const prevTasks = JSON.parse(initialData)
+      // console.log('prevTasks', prevTasks)
+      // console.log('alltasks', alltasks)
+      
+      // Проверяем, определен ли prevTasks перед использованием его свойств
+      if (Array.isArray(prevTasks) && Array.isArray(alltasks)) {
+        // Получаем записи, которых нет в prevTasks
+        const newTasks = alltasks.filter((task) => !prevTasks.some(prevTask => prevTask.task_id === task.task_id));
+        console.log('Новые задачи:', newTasks);
+      } else {
+        console.log('prevTasks или alltasks не являются массивами или не определены');
+      }
+    }
+  },[currentUser, taskFormKey, alltasks])
+// !------------------------------------
 
   const tableDataMapping = {
     createdTasks: {
