@@ -2,7 +2,6 @@
 
 const fs = require('fs');
 const path = require('path');
-const mammoth = require('mammoth');
 const { ModifyDocxTemplate } = require('./utils/ModifyDocxTemplate/ModifyDocxTemplate');
 
 const sendResponseWithData = (res, data) => {
