@@ -1,40 +1,43 @@
-import './ButtonMenuGroup.css'
+import "./ButtonMenuGroup.css";
 
-export const ButtonMenuGroup = ({selectedButton, handleButtonClick, notResponcer, workingNow, onConfirm, wasClosed}) => {
+export const ButtonMenuGroup = ({
+  selectedButton,
+  handleButtonClick,
+  notResponcer,
+  workingNow,
+  onConfirm,
+  wasClosed,
+}) => {
   return (
     <div className="user-button-group">
       <button
-        onClick={()=>handleButtonClick('inWork')}
+        onClick={() => handleButtonClick("needToApprove")}
         style={{
-          backgroundColor:
-            selectedButton === "inWork" ? "green" : "",
+          backgroundColor: selectedButton === "needToApprove" ? "green" : "",
+        }}
+      >
+        Не назначен исполнитель {notResponcer}
+      </button>
+      <button
+        onClick={() => handleButtonClick("inWork")}
+        style={{
+          backgroundColor: selectedButton === "inWork" ? "green" : "",
         }}
       >
         В работе {workingNow}
       </button>
       <button
-        onClick={()=>handleButtonClick('needToApprove')}
+        onClick={() => handleButtonClick("onConfirm")}
         style={{
-          backgroundColor:
-            selectedButton === "needToApprove" ? "green" : "",
-        }}
-      >
-       Не назначен исполнитель {notResponcer}
-      </button>
-      <button
-        onClick={()=>handleButtonClick('onConfirm')}
-        style={{
-          backgroundColor:
-            selectedButton === "onConfirm" ? "green" : "",
+          backgroundColor: selectedButton === "onConfirm" ? "green" : "",
         }}
       >
         Исполненые (на проверке) {onConfirm}
       </button>
       <button
-        onClick={()=>handleButtonClick('closed')}
+        onClick={() => handleButtonClick("closed")}
         style={{
-          backgroundColor:
-            selectedButton === "closed" ? "green" : "",
+          backgroundColor: selectedButton === "closed" ? "green" : "",
         }}
       >
         Закрытые {wasClosed}
@@ -58,5 +61,5 @@ export const ButtonMenuGroup = ({selectedButton, handleButtonClick, notResponcer
         Закрытые
       </button> */}
     </div>
-  )
-}
+  );
+};
