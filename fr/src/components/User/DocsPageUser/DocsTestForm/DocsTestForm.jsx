@@ -21,28 +21,29 @@ export const DocsTestForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if(currentUser.login){
+      const updateFormData = {
+        ...formData,
+        currentData: formatDate(formData.currentData),
+        selectData: formatDate(formData.selectData),
+      }
 
-    const updateFormData = {
-      ...formData,
-      currentData: formatDate(formData.currentData),
-      selectData: formatDate(formData.selectData),
-    }
-
-    sendDataToEndpoint(
-      currentUser.token,
-      // formData,
-      updateFormData,
-      "/docs/test",
-      "POST",
-      "blob",
-      (response) => {
-        // console.log('Тип данных response:', typeof response); // Вывод типа данных response
-        // console.log('Содержимое response:', response); // Вывод содержимого response
-        setBlobData(response); // Сохранение объекта Blob в состоянии
-        setReqStatus('success'); // Обновление статуса запроса
-      },
-    );
-    setFormData(initVal);
+      sendDataToEndpoint(
+        currentUser.token,
+        // formData,
+        updateFormData,
+        "/docs/test",
+        "POST",
+        "blob",
+        (response) => {
+          // console.log('Тип данных response:', typeof response); // Вывод типа данных response
+          // console.log('Содержимое response:', response); // Вывод содержимого response
+          setBlobData(response); // Сохранение объекта Blob в состоянии
+          setReqStatus('success'); // Обновление статуса запроса
+        },
+      );
+      setFormData(initVal);
+    }  
   };
 
   const handleGetData = (e) => {
@@ -66,12 +67,14 @@ export const DocsTestForm = () => {
   };
 
   useEffect(() => {
-    setFormData((prev) => ({
-      ...prev,
-      name:currentUser.name,
-      currentData: formatDate(new Date()).split('.').reverse().join('-'),
-      selectData: formatDate(new Date()).split('.').reverse().join('-'),
-    }));
+    if(currentUser.login){
+      setFormData((prev) => ({
+        ...prev,
+        name:currentUser.name,
+        currentData: formatDate(new Date()).split('.').reverse().join('-'),
+        selectData: formatDate(new Date()).split('.').reverse().join('-'),
+      }));
+    }
   }, [currentUser]);
 
   const handleDownload = () => {

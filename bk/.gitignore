@@ -11,6 +11,7 @@
 !/uploads/default/.gitkeep
 /.pnp
 .pnp.js
+/modified_document.docx
 
 # testing
 /coverage
