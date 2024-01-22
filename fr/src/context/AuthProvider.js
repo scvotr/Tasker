@@ -18,7 +18,8 @@ export const AuthProvider = ({children}) => {
 
   const checkToken = () => {
     const token = localStorage.getItem('token');
-    if (token) {
+    //! костыль что бы отключить редирект НАЙТИ ЧТО СЕТИТ token В LOCALSTORAGE  
+    if (token && name) {
       setLogin(true);
       setToken(token);
     } else {
