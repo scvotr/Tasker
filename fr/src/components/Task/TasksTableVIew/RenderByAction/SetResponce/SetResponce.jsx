@@ -34,7 +34,6 @@ export const SetResponce = ({ task, reRenderUp }) => {
 
   const [regStatus, setReqStatus] = useState(null);
   const [selectedPosition, setSelectedPosition] = useState({}); 
-  console.log('selectedPosition', selectedPosition)
 
   const handlePositionChange = (event) => {
     const name = event.target.name;

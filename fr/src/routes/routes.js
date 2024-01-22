@@ -21,7 +21,7 @@ export const routes = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <MainContent />,
+        element: <PrivateRoutes component={MainContent} />,
       },
       {
         path: '/login',
