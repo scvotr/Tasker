@@ -24,7 +24,7 @@ const routeHandlers = [
 const server = http.createServer(async (req, res) => {
   try {
     const { url, method } = req;
-    res.setHeader("Access-Control-Allow-Origin", "*"); // https://www.youtube.com/watch?v=OoB2epEgbTU
+    res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
     res.setHeader("Access-Control-Allow-Headers", "Content-Type");
     
