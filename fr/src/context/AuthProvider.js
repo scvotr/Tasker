@@ -18,7 +18,7 @@ export const AuthProvider = ({children}) => {
 
   const checkToken = () => {
     const token = localStorage.getItem('token');
-    if (token) {
+    if (token && name) {
       setLogin(true);
       setToken(token);
     } else {
@@ -54,6 +54,7 @@ export const AuthProvider = ({children}) => {
     localStorage.removeItem('dep');
     localStorage.removeItem('subDep');
     localStorage.removeItem('position');
+    localStorage.removeItem('initialData');
   };
 
   return (

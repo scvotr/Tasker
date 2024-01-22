@@ -12,7 +12,7 @@ export const sendRegData = async (regData, apiHostAddr, resError) => {
         console.log("Token not found!", data.Registration);
         resError(data.Registration)
       } else {
-        localStorage.setItem("token", token);
+        // localStorage.setItem("token", token);
         window.location.href = "/Login";
       }
     } else {

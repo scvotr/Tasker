@@ -10,7 +10,7 @@ export const PrivateRoutes = ({ component: Component }) => {
               <Component/>
             </>):(
             <>
-              <Navigate to="/" replace />
+              {/* <Navigate to="/" replace /> */}
             </>)
         }
     </>
