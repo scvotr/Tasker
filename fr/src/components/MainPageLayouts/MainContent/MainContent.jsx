@@ -14,7 +14,7 @@ export const MainContent = () => {
             {currentUser.role === "admin" ? (
               <MainPageAdministration currentUser={currentUser} />
             ) : (
-              <MainPageUser />
+              <MainPageUser currentUser={currentUser}/>
             )}
           </>
         ) : (
