@@ -8,6 +8,11 @@
 /uploads/*
 !/uploads/*/
 !/uploads/.gitkeep
+
+
+/uploads/venchels/*
+/uploads/templates/*
+
 # !/uploads/.gitkeep
 # /uploads/venchels/*
 # !/uploads/venchels/.gitkeep
