@@ -12,7 +12,7 @@
 # !/uploads/default/.gitkeep
 
 /uploads/*
-/uploads/venchels/*
+/bk/uploads/venchels/*
 
 /.pnp
 .pnp.js
