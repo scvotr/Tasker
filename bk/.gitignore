@@ -11,9 +11,6 @@
 /uploads/default/*
 !/uploads/default/.gitkeep
 
-/bk//uploads/*
-/bk/uploads/venchels/*
-
 /.pnp
 .pnp.js
 /modified_document.docx
