@@ -3,23 +3,16 @@
 # dependencies
 /node_modules
 
-# /uploads
-
+# Игнорировать все файлы внутри директории uploads
 /uploads/*
+# Отменить игнорирование поддиректорий внутри uploads
 !/uploads/*/
+# Отменить игнорирование файла .gitkeep в корне uploads
 !/uploads/.gitkeep
 
 #Игнорировать все файлы внутри директории
-/uploads/venchels/*
+!/uploads/venchels/*
 /uploads/templates/*
-
-# !/uploads/.gitkeep
-# /uploads/venchels/*
-# !/uploads/venchels/.gitkeep
-# /uploads/default/*
-# !/uploads/default/.gitkeep
-
-
 
 /.pnp
 .pnp.js
