@@ -11,9 +11,8 @@
 # /uploads/default/*
 # !/uploads/default/.gitkeep
 
-*
-!*/
-!*/uploads/
+/uploads/*
+/uploads/venchels/*
 
 /.pnp
 .pnp.js
