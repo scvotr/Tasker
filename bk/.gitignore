@@ -9,7 +9,7 @@
 !/uploads/*/
 !/uploads/.gitkeep
 
-
+#Игнорировать все файлы внутри директории
 /uploads/venchels/*
 /uploads/templates/*
 
