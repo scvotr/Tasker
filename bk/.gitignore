@@ -8,7 +8,6 @@
 /uploads/venchels/*
 !/uploads/venchels/.gitkeep
 
-/uploads/default/*
 
 /.pnp
 .pnp.js
