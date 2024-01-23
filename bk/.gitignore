@@ -5,7 +5,7 @@
 
 # /uploads
 
-/uploads
+/uploads*
 # !/uploads/.gitkeep
 # !/uploads/venchels/.gitkeep
 
