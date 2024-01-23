@@ -11,7 +11,10 @@
 !/uploads/.gitkeep
 
 #Игнорировать все файлы внутри директории
-!/uploads/venchels/*
+/uploads/venchels/*
+#!/uploads/venchels/*  Отменить игнорирование всех файлов внутри venchel
+
+#Игнорировать все файлы внутри директории
 /uploads/templates/*
 
 /.pnp
