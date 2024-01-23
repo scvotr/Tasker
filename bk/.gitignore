@@ -5,16 +5,10 @@
 # /uploads
 /uploads/*
 !/uploads/.gitkeep
-
 /uploads/venchels/*
 !/uploads/venchels/.gitkeep
-
 /uploads/default/*
 !/uploads/default/.gitkeep
-
-/uploads/outputDir/*
-!/uploads/outputDir/.gitkeep
-
 /.pnp
 .pnp.js
 
