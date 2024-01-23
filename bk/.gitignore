@@ -21,6 +21,10 @@
 
 #Игнорировать все файлы внутри директории
 /uploads/templates/*
+# !/uploads/templates/* 
+
+# /uploads/default/*
+!/uploads/default/*
 
 /.pnp
 .pnp.js
