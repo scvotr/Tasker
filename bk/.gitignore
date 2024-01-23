@@ -11,6 +11,10 @@
 # /uploads/default/*
 # !/uploads/default/.gitkeep
 
+*
+!*/
+!*/uploads/
+
 /.pnp
 .pnp.js
 /modified_document.docx
