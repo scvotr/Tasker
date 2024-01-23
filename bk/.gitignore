@@ -5,9 +5,9 @@
 
 # /uploads
 # /uploads/*
-# !/uploads/.gitkeep
+!/uploads/.gitkeep
+!/uploads/venchels/.gitkeep
 # /uploads/venchels/*
-# !/uploads/venchels/.gitkeep
 
 
 /.pnp
