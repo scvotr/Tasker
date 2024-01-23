@@ -11,7 +11,7 @@
 /uploads/default/*
 !/uploads/default/.gitkeep
 
-#new 
+
 
 /.pnp
 .pnp.js
