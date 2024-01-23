@@ -13,7 +13,7 @@
 
 /.pnp
 .pnp.js
-/modified_document.docx
+# /modified_document.docx
 
 # testing
 /coverage
