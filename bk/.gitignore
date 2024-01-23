@@ -4,16 +4,16 @@
 /node_modules
 
 # /uploads
-/uploads/*
-!/uploads/.gitkeep
-/uploads/venchels/*
-!/uploads/venchels/.gitkeep
-/uploads/default/*
-!/uploads/default/.gitkeep
+# /uploads/*
+# !/uploads/.gitkeep
+# /uploads/venchels/*
+# !/uploads/venchels/.gitkeep
+# /uploads/default/*
+# !/uploads/default/.gitkeep
 
 /.pnp
 .pnp.js
-# /modified_document.docx
+/modified_document.docx
 
 # testing
 /coverage
