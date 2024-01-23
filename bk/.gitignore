@@ -11,6 +11,7 @@
 
 #Игнорировать все файлы внутри директории
 /uploads/venchels/*
+!/uploads/venchels/*/
 /uploads/templates/*
 
 # !/uploads/.gitkeep
