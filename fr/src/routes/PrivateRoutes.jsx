@@ -10,6 +10,7 @@ export const PrivateRoutes = ({ component: Component }) => {
               <Component/>
             </>):(
             <>
+              {/* изменить на 404 или достпу запрщен! редиректит на  / */}
               {/* <Navigate to="/" replace /> */}
             </>)
         }
