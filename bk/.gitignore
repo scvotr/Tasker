@@ -2,6 +2,7 @@
 
 # dependencies
 /node_modules
+
 # /uploads
 /uploads/*
 !/uploads/.gitkeep
@@ -9,6 +10,7 @@
 !/uploads/venchels/.gitkeep
 /uploads/default/*
 !/uploads/default/.gitkeep
+
 /.pnp
 .pnp.js
 /modified_document.docx
