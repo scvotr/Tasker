@@ -6,6 +6,7 @@
 # /uploads
 
 /uploads/*
+!/uploads/*/
 # !/uploads/.gitkeep
 # /uploads/venchels/*
 # !/uploads/venchels/.gitkeep
