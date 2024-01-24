@@ -27,7 +27,7 @@
 !/uploads/default/*
 
 /fonts/*
-!/fonts/*
+# !/fonts/*/
 
 # files in ./
 /modified_test_tmp.docx
