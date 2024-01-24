@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
+import io from 'socket.io-client';
 import { useAuthContext } from "../../../../../context/AuthProvider";
 import { getDataFromEndpoint } from "../../../../../utils/getDataFromEndpoint";
 import { V2UserButtonGroup } from "./V2UserButtonGroup/V2UserButtonGroup";
 import { RenderTasksTable } from "../../../../Task/RenderTasksTable/RenderTasksTable";
 import { Modal } from "../../../../Modal/Modal";
 import { TaskForm } from "../../../../Task/TaskForm/TaskForm";
+import { HOST_SOCKET } from "../../../../../utils/ApiHostAdres";
 
 const filterTasksByStatus = (data, status) => {
   return data.filter((task) => task.task_status && task.task_status.toString() === status);
@@ -88,6 +90,8 @@ export const V2UserComponents = ({ updateToTop }) => {
   };
 
   const [alltasks, setAllTasks] = useState()
+  const [alltasksSocket, setAllTasksSocket] = useState()
+  console.log('!!!!!!!!!!!!', alltasksSocket)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -131,14 +135,55 @@ export const V2UserComponents = ({ updateToTop }) => {
     // Вызываем fetchData при первоначальной загрузке
     fetchData();
     // Если вы хотите обновлять данные с определенной периодичностью, раскомментируйте следующие строки
-    const getRandomInterval = () => Math.floor(Math.random() * 10000) + 1000; 
-    const t = getRandomInterval(); console.log(t)
-    const fetchDataInterval = setInterval(fetchData, getRandomInterval());
-    return () => clearInterval(fetchDataInterval);
+    // const getRandomInterval = () => Math.floor(Math.random() * 10000) + 1000; 
+    // const t = getRandomInterval(); console.log(t)
+    // const fetchDataInterval = setInterval(fetchData, getRandomInterval());
+    // return () => clearInterval(fetchDataInterval);
   }, [currentUser, prevUserAppointTasks, prevUserResponsibleTasks, taskFormKey]);
+  // !------------------------------------
+  useEffect(()=> {
+    const socket = io(HOST_SOCKET);
+
+    const sendDataToServer = (data) => {
+      socket.emit('userConnect', data);
+    };
+
+    socket.on('connect', () => {
+      console.log('Подключение к серверу установлено');
+      sendDataToServer( {userId: currentUser.id, userName : currentUser.name})
+    });
+
+    socket.on('taskDataChanged', () => {
+      // Обновляем данные задач пользователя
+      const fetchData = async () => {
+        if (currentUser.login) {
+          try {
+            const newData = await getDataFromEndpoint(currentUser.token, '/tasks/getAllUserTasks', 'POST', null, setReqStatus);
+            setAllTasksSocket(newData); // Обновляем задачи пользователя
+          } catch (error) {
+            console.log(error);
+          }
+        }
+      };
+      fetchData();
+    });
+
+    // Отключение сокета при размонтировании компонента
+    window.addEventListener('beforeunload', () => {
+      socket.disconnect();
+    });
+  
+    return () => {
+      window.removeEventListener('beforeunload', () => {
+        socket.disconnect();
+      });
+      socket.disconnect();
+    };
+
+  }, [currentUser])
 
 
-// !------------------------------------
+  // !------------------------------------
   useEffect(() => {
     const initialData = localStorage.getItem('initialData');
 
