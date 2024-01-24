@@ -1,0 +1,37 @@
+{"level":"error","message":"testToPDF convertDocxToPdf: ogger is not defined","timestamp":"2024-01-24T13:58:15.962Z"}
+{"level":"error","message":"testToPDF convertDocxToPdf: ogger is not defined","timestamp":"2024-01-24T13:58:18.122Z"}
+{"level":"error","message":"testToPDF convertDocxToPdf: ogger is not defined","timestamp":"2024-01-24T13:59:11.439Z"}
+{"level":"error","message":"testToPDF convertDocxToPdf: ogger is not defined","timestamp":"2024-01-24T13:59:27.195Z"}
+{"level":"error","message":"testToPDF convertDocxToPdf: ogger is not defined","timestamp":"2024-01-24T14:00:33.099Z"}
+{"level":"error","message":"testToPDF convertDocxToPdf: Cannot write headers after they are sent to the client","timestamp":"2024-01-24T14:01:13.989Z"}
+{"level":"error","message":"testToPDF -> testDocData: testToPDF convertDocxToPdf: Cannot write headers after they are sent to the client","timestamp":"2024-01-24T14:01:13.992Z"}
+{"level":"error","message":"testToPDF convertDocxToPdf: Cannot write headers after they are sent to the client","timestamp":"2024-01-24T14:05:13.956Z"}
+{"level":"error","message":"testToPDF -> testDocData: testToPDF convertDocxToPdf: Cannot write headers after they are sent to the client","timestamp":"2024-01-24T14:05:13.957Z"}
+{"level":"error","message":"testToPDF -> testDocData: newFileFromTamplate is not defined","timestamp":"2024-01-24T14:13:00.881Z"}
+{"level":"error","message":"testToPDF -> testDocData: newFileFromTamplate is not defined","timestamp":"2024-01-24T14:13:02.575Z"}
+{"level":"error","message":"testToPDF -> testDocData: newFileFromTamplate is not defined","timestamp":"2024-01-24T14:13:03.480Z"}
+{"level":"error","message":"testToPDF convertDocxToPdf: Cannot write headers after they are sent to the client","timestamp":"2024-01-24T14:13:24.546Z"}
+{"level":"error","message":"testToPDF -> testDocData: testToPDF convertDocxToPdf: Cannot write headers after they are sent to the client","timestamp":"2024-01-24T14:13:24.569Z"}
+{"level":"error","message":"testToPDF convertDocxToPdf: Cannot write headers after they are sent to the client","timestamp":"2024-01-24T14:13:31.284Z"}
+{"level":"error","message":"testToPDF -> testDocData: testToPDF convertDocxToPdf: Cannot write headers after they are sent to the client","timestamp":"2024-01-24T14:13:31.286Z"}
+{"level":"error","message":"testToPDF convertDocxToPdf: Cannot write headers after they are sent to the client","timestamp":"2024-01-24T14:14:55.064Z"}
+{"level":"error","message":"testToPDF -> testDocData: testToPDF convertDocxToPdf: Cannot write headers after they are sent to the client","timestamp":"2024-01-24T14:14:55.065Z"}
+{"level":"error","message":"testToPDF convertDocxToPdf: Cannot write headers after they are sent to the client","timestamp":"2024-01-24T14:15:10.624Z"}
+{"level":"error","message":"testToPDF -> testDocData: testToPDF convertDocxToPdf: Cannot write headers after they are sent to the client","timestamp":"2024-01-24T14:15:10.625Z"}
+{"level":"error","message":"testToPDF convertDocxToPdf: Cannot write headers after they are sent to the client","timestamp":"2024-01-24T14:16:16.262Z"}
+{"level":"error","message":"testToPDF -> testDocData: testToPDF convertDocxToPdf: Cannot write headers after they are sent to the client","timestamp":"2024-01-24T14:16:16.264Z"}
+{"level":"error","message":"testToPDF convertDocxToPdf: Cannot write headers after they are sent to the client","timestamp":"2024-01-24T14:18:05.820Z"}
+{"level":"error","message":"testToPDF -> testDocData: testToPDF convertDocxToPdf: Cannot write headers after they are sent to the client","timestamp":"2024-01-24T14:18:05.821Z"}
+{"level":"error","message":"testToPDF convertDocxToPdf: Cannot write headers after they are sent to the client","timestamp":"2024-01-24T14:18:56.327Z"}
+{"level":"error","message":"testToPDF -> testDocData: testToPDF convertDocxToPdf: Cannot write headers after they are sent to the client","timestamp":"2024-01-24T14:18:56.328Z"}
+{"level":"error","message":"File C:\\MySt\\node_react_2023\\v010_02\\Tasker\\bk\\output_with_watermark2.pdf not found.","timestamp":"2024-01-24T14:23:25.840Z"}
+{"level":"error","message":"testToPDF convertDocxToPdf: res.setHeader is not a function","timestamp":"2024-01-24T14:23:25.842Z"}
+{"level":"error","message":"testToPDF -> testDocData: testToPDF convertDocxToPdf: res.setHeader is not a function","timestamp":"2024-01-24T14:23:25.843Z"}
+{"level":"error","message":"testToPDF convertDocxToPdf: Cannot write headers after they are sent to the client","timestamp":"2024-01-24T14:25:18.473Z"}
+{"level":"error","message":"testToPDF -> testDocData: testToPDF convertDocxToPdf: Cannot write headers after they are sent to the client","timestamp":"2024-01-24T14:25:18.474Z"}
+{"level":"error","message":"testToPDF convertDocxToPdf: Cannot write headers after they are sent to the client","timestamp":"2024-01-24T14:29:27.362Z"}
+{"level":"error","message":"testToPDF -> testDocData: testToPDF convertDocxToPdf: Cannot write headers after they are sent to the client","timestamp":"2024-01-24T14:29:27.363Z"}
+{"level":"error","message":"testToPDF convertDocxToPdf: res.writeHead is not a function","timestamp":"2024-01-24T14:45:20.005Z"}
+{"level":"error","message":"testToPDF -> testDocData: testToPDF convertDocxToPdf: res.writeHead is not a function","timestamp":"2024-01-24T14:45:20.006Z"}
+{"level":"error","message":"testToPDF error: res.writeHead is not a function","timestamp":"2024-01-24T14:58:21.681Z"}
+{"level":"error","message":"testToPDF error: res.writeHead is not a function","timestamp":"2024-01-24T15:00:13.189Z"}

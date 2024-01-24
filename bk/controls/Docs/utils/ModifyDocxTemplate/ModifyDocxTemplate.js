@@ -3,7 +3,7 @@
 const fs = require('fs').promises;
 const path = require('path');
 const JSZip = require('jszip');
-const xml2js = require('xml2js');
+;
 
 /**
  * Модифицирует файл шаблона .docx с указанными изменениями и сохраняет результат в выходной файл.
