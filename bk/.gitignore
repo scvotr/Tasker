@@ -26,6 +26,16 @@
 # /uploads/default/*
 !/uploads/default/*
 
+/fonts/*
+!/fonts/*
+
+# files in ./
+/modified_test_tmp.docx
+/output_with_watermark.pdf
+/output.pdf
+
+
+
 /.pnp
 .pnp.js
 /modified_document.docx
