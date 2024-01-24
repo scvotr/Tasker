@@ -1,5 +1,12 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+# Игнорировать все каталоги
+*/
+# Отменить игнорирование конкретных каталогов
+!/default/
+!/templates/
+!/venchels/
+
 # dependencies
 /node_modules
 
@@ -25,6 +32,19 @@
 
 # /uploads/default/*
 !/uploads/default/*
+
+/fonts/*
+# !/fonts/*/
+
+# files in ./
+/modified_test_tmp.docx
+/output_with_watermark.pdf
+/output.pdf
+/combined.log
+/error.log
+/.env
+/socket_logs.txt
+
 
 /.pnp
 .pnp.js

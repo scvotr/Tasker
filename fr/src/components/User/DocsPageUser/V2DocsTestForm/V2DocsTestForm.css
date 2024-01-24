@@ -1,0 +1,71 @@
+@media screen and (min-width: 320px) {
+  /* Стили для формы */
+  .form-send {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: #f4f4f4;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .form-send__label {
+    margin-bottom: 15px;
+  }
+  
+  .form-send__button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .form-send__button:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Стили для ссылки загрузки и кнопки "Закрыть" */
+  .download-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .download-link__link {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .download-link__link:hover {
+    background-color: #0056b3;
+  }
+  
+  .download-link__button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #dc3545;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .download-link__button:hover {
+    background-color: #bd2130;
+  }
+  }
+  @media screen and (min-width: 768px) {
+  }
+  @media screen and (min-width: 1024px) {
+  }
+  @media screen and (min-width: 1440px) {
+  }

@@ -3,7 +3,7 @@
 const fs = require('fs').promises;
 const path = require('path');
 const JSZip = require('jszip');
-const xml2js = require('xml2js');
+;
 
 /**
  * Модифицирует файл шаблона .docx с указанными изменениями и сохраняет результат в выходной файл.
@@ -37,8 +37,10 @@ const ModifyDocxTemplate = async (inputFilePath, outputFilePath, modifications) 
     
     // Сохранение измененного файла
     const content = await zip.generateAsync({ type: 'nodebuffer' });
+    const contentArBf = await zip.generateAsync({ type: 'arraybuffer' });
     await fs.writeFile(modifyFullPath, content);
-    return content; //? Возвращаем содержимое файла
+    return {content, contentArBf}; //? Возвращаем содержимое файла
+    // return content; //? Возвращаем содержимое файла
   } catch (error) {
     console.error('An error occurred:', error);
   }

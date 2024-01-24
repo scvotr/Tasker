@@ -1,5 +1,9 @@
 'use strict'
 const http = require("http");
+const socketIo = require('socket.io');
+const { setupSocket, pollDatabaseForUserTasks } = require('./socketService')
+const setupSocketLogging = require('./utils/socket/setupSocketLogging')
+
 
 const { handleDefaultRoute } = require("./routes/handleDefaultRoute");
 const { handleOptionsRequest } = require("./routes/handleOptionsRequest");
@@ -22,6 +26,16 @@ const routeHandlers = [
 ];
 
 const server = http.createServer(async (req, res) => {
+
+  const io = socketIo(server, {
+    cors: {
+      origin: "*",
+      methods: ["GET", "POST"]
+    }
+  });
+  setupSocket(io);
+  setupSocketLogging(io)  
+
   try {
     const { url, method } = req;
     res.setHeader("Access-Control-Allow-Origin", "*");

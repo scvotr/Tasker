@@ -4,6 +4,7 @@ const DocsControler = require("../controls/Docs/DocsControler")
 
 const routeHandlers = {
   "/docs/test": DocsControler.testDocData,
+  "/docs/testToPDF": DocsControler.testToPDF,
 }
 
 const handleDocsRoutes = async(req, res) => {

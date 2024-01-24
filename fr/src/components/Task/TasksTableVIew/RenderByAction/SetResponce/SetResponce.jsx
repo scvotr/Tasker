@@ -52,7 +52,8 @@ export const SetResponce = ({ task, reRenderUp }) => {
     }
   };
 
-  const handleSetResponceSubDep = async (task) => {
+  const handleSetResponceSubDep = async (e, task) => {
+    e.preventDefault();
     if (currentUser.login) {
       const transferData = {
         task_id: task.task_id,
@@ -73,7 +74,7 @@ export const SetResponce = ({ task, reRenderUp }) => {
   return (
     <div className=" approve-form">
       <FullTaskInfo task={task} />
-      <form className="task-field" onSubmit={() => handleSetResponceSubDep(task)}>
+      <form className="task-field" onSubmit={(e) => handleSetResponceSubDep(e, task)}>
         <PositionSelect filterBy={currentUser.subDep} onChange={handlePositionChange} value={selectedPosition.position_id} />
         <button className="confirm-btn" type="submit">
           назначить

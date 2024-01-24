@@ -9,7 +9,7 @@ export const ChifButtonGroup = ({
 }) => {
   return (
     <>
-      <div class="button-container">
+      <div className="button-container">
         <button
           onClick={() => handleButtonClick("allTasksFromSubDep")}
           style={{
