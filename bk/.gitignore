@@ -1,5 +1,12 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+# Игнорировать все каталоги
+*/
+# Отменить игнорирование конкретных каталогов
+!/default/
+!/templates/
+!/venchels/
+
 # dependencies
 /node_modules
 
