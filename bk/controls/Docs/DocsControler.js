@@ -3,6 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 const { ModifyDocxTemplate } = require('./utils/ModifyDocxTemplate/ModifyDocxTemplate');
+const { convertDocxToPdf , addWatermark } = require('./utils/DocxToPDF/DocxToPDF')
 
 const sendResponseWithData = (res, data) => {
   res.setHeader('Content-Type', 'application/json');
@@ -53,13 +54,77 @@ class DocsControler {
       ]);
 
       // Отправляем измененный документ в ответ
-      sendFileResponse(res, modifiedContent, 'modified_document.docx')
+      sendFileResponse(res, modifiedContent.content, 'modified_document.docx')
       // sendResponseWithData(res, 'testDocData OK!!');
     } catch (error) {
       // Обрабатываем ошибку и отправляем соответствующий статус ответа
       handleError(res, `testDocData: ${error}`);
     }
   }
+
+  async testToPDF(req, res) {
+    try {
+      const authDecodeUserData = req.user;
+      const userData = authDecodeUserData.payLoad;
+      console.log(authDecodeUserData)
+      const templateFileName = 'uploads/templates/test_tmp.docx';
+      const new_f = 'modified_test_tmp.docx';
+
+      const modifiedContent = await ModifyDocxTemplate(templateFileName, new_f, [
+        {key: 'USERNAME', value: userData.fields.name},
+        {key: 'TEXT', value: userData.fields.text},
+        {key: 'DATEONCREATE', value: new Date(Date.now())},
+      ]);
+
+      const currentDirectory = process.cwd();
+      const templateFullPath = path.join(currentDirectory, new_f);
+      const outputPdfPath = path.join(currentDirectory, 'output.pdf');
+      const outputPdfWithWatermarkPath = path.join(currentDirectory, 'output_with_watermark.pdf');
+      console.log('outputPdfWithWatermarkPath', outputPdfWithWatermarkPath)
+      const watermarkText = `ID пользователя ${authDecodeUserData.id}`;
+
+      try {
+        const test = await convertDocxToPdf(modifiedContent.content, templateFullPath)  
+        await fs.promises.writeFile(outputPdfPath, test);
+        const wt = await addWatermark(test, watermarkText)
+        await fs.promises.writeFile(outputPdfWithWatermarkPath, wt);
+        
+        sendFileResponse(res, wt, 'output_with_watermark.pdf')
+        // sendResponseWithData(res, 'testToPDF OK!!');
+      } catch (error) {
+        throw new Error(`convertDocxToPdf failed: ${error.message}`); 
+      }
+
+      } catch (error) {
+        // Обрабатываем ошибку и отправляем соответствующий статус ответа
+        handleError(res, `testToPDF -> testDocData: ${error}`);
+      }
+  }
+//?------------------------ 
 }
 
 module.exports = new DocsControler()
+
+  
+      
+// try {
+//   // Чтение содержимого файла docx
+//   const docxContent = await fs.promises.readFile(templateFullPath, 'utf-8');
+//   console.log('docxContent', typeof docxContent)
+//   const arrayBufferContent = Uint8Array.from(Buffer.from(docxContent));
+//   // Преобразование docx в PDF и добавление водяного знака
+//   const pdfBytes = await convertDocxToPdf(arrayBufferContent);
+//   // const pdfBytes = await convertDocxToPdf(docxContent);
+
+//   const result = await addWatermark(pdfBytes, watermarkText);
+
+//   // Сохранение результатов в файлы
+//   await fs.promises.writeFile(outputPdfPath, pdfBytes);
+//   // await fs.promises.writeFile(outputPdfPath, result.originalPdfBytes);
+//   await fs.promises.writeFile(outputPdfWithWatermarkPath, result.watermarkedPdfBytes);
+
+//   console.log('Successfully generated PDF with watermark.');
+// } catch (error) {
+//   console.error('Error:', error);
+// }
+// sendFileResponse(res, modifiedContent, 'modified_document.docx')

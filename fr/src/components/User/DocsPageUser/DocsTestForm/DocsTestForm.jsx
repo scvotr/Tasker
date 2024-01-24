@@ -119,6 +119,7 @@ export const DocsTestForm = () => {
         <div className="download-link download-link--modifier">
           {/* Если BLOB обьект */}
           {/* <a href={URL.createObjectURL(blobData)} download="document.docx">Скачать файл</a> */}
+          
           {/* Если ссылка из BLOB обьекта */}
           <a href={blobData} download="document.docx" className="download-link__link">Скачать</a>
           <button onClick={handleDownload} className="download-link__button">Закрыть</button>

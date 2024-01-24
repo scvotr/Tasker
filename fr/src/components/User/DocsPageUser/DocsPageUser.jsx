@@ -1,5 +1,6 @@
 import { useAuthContext } from '../../../context/AuthProvider'
 import { MainMenuUser } from '../MainMenuUser/MainMenuUser'
+import { DocsForWork } from './DocsForWork/DocsForWork'
 import './DocsPageUser.css'
 import { DocsTestForm } from './DocsTestForm/DocsTestForm'
 
@@ -16,6 +17,7 @@ export const DocsPageUser = () => {
       <div className='user-docs-page__body'>
         <div className='user-docs-page__container'>
           <DocsTestForm/>
+          <DocsForWork/>
         </div>
       </div>
     </div>

@@ -37,8 +37,10 @@ const ModifyDocxTemplate = async (inputFilePath, outputFilePath, modifications) 
     
     // Сохранение измененного файла
     const content = await zip.generateAsync({ type: 'nodebuffer' });
+    const contentArBf = await zip.generateAsync({ type: 'arraybuffer' });
     await fs.writeFile(modifyFullPath, content);
-    return content; //? Возвращаем содержимое файла
+    return {content, contentArBf}; //? Возвращаем содержимое файла
+    // return content; //? Возвращаем содержимое файла
   } catch (error) {
     console.error('An error occurred:', error);
   }
