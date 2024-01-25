@@ -6,13 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
     <meta
-      name="v10_001"
+      name="v10_008"
       content="Description"
     />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
 
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-
+    <!-- скрыть стандартный вывод ошибок от Webpack при запуске приложения в режиме разработки -->
+    <style>
+      #webpack-dev-server-client-overlay {
+        display: none !important;
+      }
+    </style>
     <title>Gelio Tasks</title>
   </head>
   <body>
