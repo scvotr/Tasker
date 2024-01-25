@@ -5,6 +5,7 @@ import { ApproveTask } from "./ApproveTask/ApproveTask";
 import { SetResponce } from './SetResponce/SetResponce';
 import { ViewTaskInfo} from './ViewTaskInfo/ViewTaskInfo'
 import { SendToConfirm } from './SendToConfirm/SendToConfirm'
+import { MarkAsRead } from "./MarkAsRead/MarkAsRead";
 
 
 export const RenderByAction = ({ actionType, task, onTaskSubmit }) => {
@@ -33,6 +34,10 @@ export const RenderByAction = ({ actionType, task, onTaskSubmit }) => {
       ) : actionType === "sendToClose" ? (
         <>
           <SendToConfirm task={task} reRenderUp={onTaskSubmit} />
+        </>
+      ) : actionType === "markAsRead" ? (
+        <>
+          <MarkAsRead task={task} reRenderUp={onTaskSubmit} />
         </>
       ) : (
         <>нет не то</>

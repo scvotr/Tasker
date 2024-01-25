@@ -70,6 +70,14 @@ export const V2UserComponents = ({ updateToTop }) => {
     }
   };
 
+  const handleTaskTakeSubmit = async(isSuccess) => {
+    setIsTaskSubmitted(isSuccess);
+    setTaskFormKey((prevKey) => prevKey + 1);
+    if(updateToTop) {
+      await updateToTop((prevKey) => prevKey + 1)
+    }
+  };
+
   const [selectedTask, setSelectedTask] = useState(null);
   const [showForm, setShowForm] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
@@ -89,7 +97,7 @@ export const V2UserComponents = ({ updateToTop }) => {
     setShowForm(false);
   };
 
-  const [alltasks, setAllTasks] = useState()
+  const [allTasks, setAllTasks] = useState()
   const [alltasksSocket, setAllTasksSocket] = useState()
   console.log('!!!!!!!!!!!!', alltasksSocket)
 
@@ -135,77 +143,73 @@ export const V2UserComponents = ({ updateToTop }) => {
     // Вызываем fetchData при первоначальной загрузке
     fetchData();
     // Если вы хотите обновлять данные с определенной периодичностью, раскомментируйте следующие строки
-    // const getRandomInterval = () => Math.floor(Math.random() * 10000) + 1000; 
-    // const t = getRandomInterval(); console.log(t)
-    // const fetchDataInterval = setInterval(fetchData, getRandomInterval());
-    // return () => clearInterval(fetchDataInterval);
+    const getRandomInterval = () => Math.floor(Math.random() * 10000) + 1000; 
+    const t = getRandomInterval(); console.log(t)
+    const fetchDataInterval = setInterval(fetchData, getRandomInterval());
+    return () => clearInterval(fetchDataInterval);
   }, [currentUser, prevUserAppointTasks, prevUserResponsibleTasks, taskFormKey]);
   // !------------------------------------
-  useEffect(()=> {
-    const socket = io(HOST_SOCKET);
+  // useEffect(()=> {
+  //   const socket = io(HOST_SOCKET);
 
-    const sendDataToServer = (data) => {
-      socket.emit('userConnect', data);
-    };
+  //   const sendDataToServer = (data) => {
+  //     socket.emit('userConnect', data);
+  //   };
 
-    socket.on('connect', () => {
-      console.log('Подключение к серверу установлено');
-      sendDataToServer( {userId: currentUser.id, userName : currentUser.name})
-    });
+  //   socket.on('connect', () => {
+  //     console.log('Подключение к серверу установлено');
+  //     sendDataToServer( {userId: currentUser.id, userName : currentUser.name})
+  //   });
 
-    socket.on('taskDataChanged', () => {
-      // Обновляем данные задач пользователя
-      const fetchData = async () => {
-        if (currentUser.login) {
-          try {
-            const newData = await getDataFromEndpoint(currentUser.token, '/tasks/getAllUserTasks', 'POST', null, setReqStatus);
-            setAllTasksSocket(newData); // Обновляем задачи пользователя
-          } catch (error) {
-            console.log(error);
-          }
-        }
-      };
-      fetchData();
-    });
+  //   socket.on('taskDataChanged', () => {
+  //     // Обновляем данные задач пользователя
+  //     const fetchData = async () => {
+  //       if (currentUser.login) {
+  //         try {
+  //           const newData = await getDataFromEndpoint(currentUser.token, '/tasks/getAllUserTasks', 'POST', null, setReqStatus);
+  //           setAllTasksSocket(newData); // Обновляем задачи пользователя
+  //         } catch (error) {
+  //           console.log(error);
+  //         }
+  //       }
+  //     };
+  //     fetchData();
+  //   });
 
-    // Отключение сокета при размонтировании компонента
-    window.addEventListener('beforeunload', () => {
-      socket.disconnect();
-    });
+  //   // Отключение сокета при размонтировании компонента
+  //   window.addEventListener('beforeunload', () => {
+  //     socket.disconnect();
+  //   });
   
-    return () => {
-      window.removeEventListener('beforeunload', () => {
-        socket.disconnect();
-      });
-      socket.disconnect();
-    };
+  //   return () => {
+  //     window.removeEventListener('beforeunload', () => {
+  //       socket.disconnect();
+  //     });
+  //     socket.disconnect();
+  //   };
 
-  }, [currentUser])
+  // }, [currentUser])
 
+  const [newTasks, setNewTasks] = useState([])
 
   // !------------------------------------
   useEffect(() => {
-    const initialData = localStorage.getItem('initialData');
+    const localStorageTasksData = localStorage.getItem('localStorageTasksData');
 
-    if(!initialData || initialData === 'undefined') {
-      console.log('no data in local')
-      localStorage.setItem('initialData', JSON.stringify(alltasks));
-
-    } else if(!arraysAreEqual(alltasks, JSON.parse(initialData))) {
-      console.log('Some thin not equal')
-      const prevTasks = JSON.parse(initialData)
-
-      
-      // Проверяем, определен ли prevTasks перед использованием его свойств
-      if (Array.isArray(prevTasks) && Array.isArray(alltasks)) {
-        // Получаем записи, которых нет в prevTasks
-        const newTasks = alltasks.filter((task) => !prevTasks.some(prevTask => prevTask.task_id === task.task_id));
-        console.log('Новые задачи:', newTasks);
+    if(!localStorageTasksData || localStorageTasksData === 'undefined') {
+      localStorage.setItem('localStorageTasksData', JSON.stringify(allTasks));
+    } else if(!arraysAreEqual(allTasks, JSON.parse(localStorageTasksData))) {
+      const tasksNotInLocalStorage  = JSON.parse(localStorageTasksData)
+      // Проверяем, определен ли tasksNotInLocalStorage  перед использованием его свойств
+      if (Array.isArray(tasksNotInLocalStorage ) && Array.isArray(allTasks)) {
+        const notInLocalStorage = allTasks.filter((task) => !tasksNotInLocalStorage.some(prevTask => prevTask.task_id === task.task_id));
+        setNewTasks(notInLocalStorage)
+        console.log('Новые задачи:', notInLocalStorage );
       } else {
-        console.log('prevTasks или alltasks не являются массивами или не определены');
+        console.log('tasksNotInLocalStorage или allTasks не являются массивами или не определены');
       }
     }
-  },[currentUser, taskFormKey, alltasks])
+  },[currentUser, taskFormKey, allTasks])
 // !------------------------------------
 
   const tableDataMapping = {
@@ -261,13 +265,26 @@ export const V2UserComponents = ({ updateToTop }) => {
 
   return (
     <>
-      {msg ? (<>{msg}</>):(<></>)}
+      {/* {msg ? (<>{msg}</>):(<></>)}
       {unreadNotification ? (
         <>
           <div>У вас новые данные!{msg}</div>
           <button onClick={markNotificationAsRead}>Отметить как прочитанное</button>
         </>
-      ) : (<></>)}
+      ) : (<></>)} */}
+      <p>Новы задачи</p>
+      {newTasks && newTasks.length ? (
+        <>
+        <RenderTasksTable
+          tasks={newTasks}
+          actionType={'markAsRead'}
+          onTaskSubmit={handleTaskTakeSubmit}
+        />
+        </>
+      ) : (
+        <><p>Новых задач нет</p></>
+      )}
+
       {/* --------------------------------------------------- */}
       <div>
         <button
@@ -309,3 +326,27 @@ export const V2UserComponents = ({ updateToTop }) => {
 V2UserButtonGroup.defaultProps = {
   updateToTop : () => {},
 }
+
+
+// function getTasksNotInLocalStorage(allTasks, localStorageTasksData) {
+//   if (!localStorageTasksData || localStorageTasksData === 'undefined') {
+//     console.log('No data in local storage');
+//     localStorage.setItem('localStorageTasksData', JSON.stringify(allTasks));
+//     return [];
+//   } else if (!arraysAreEqual(allTasks, JSON.parse(localStorageTasksData))) {
+//     console.log('Some data is not equal');
+//     return allTasks.filter(task => !JSON.parse(localStorageTasksData).some(prevTask => prevTask.task_id === task.task_id));
+//   } else {
+//     return [];
+//   }
+// }
+
+// // !------------------------------------
+// useEffect(() => {
+//   const localStorageTasksData = localStorage.getItem('localStorageTasksData');
+//   const tasksNotInLocalStorage = getTasksNotInLocalStorage(allTasks, localStorageTasksData);
+
+//   if (tasksNotInLocalStorage.length > 0) {
+//     console.log('Задачи, которых нет в локальном хранилище:', tasksNotInLocalStorage);
+//   }
+// }, [currentUser, taskFormKey, allTasks]);

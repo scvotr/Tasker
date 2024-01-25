@@ -8,6 +8,7 @@
 !/venchels/
 !/utils/*
 !/utils/.gitkeep
+# */
 
 # dependencies
 /node_modules
@@ -29,14 +30,14 @@
 #? /uploads/venchels/* + !/uploads/venchels/*/ файлы нет, папки + (.gitkeep) да
 
 #Игнорировать все файлы внутри директории
-/uploads/templates/*
-# !/uploads/templates/* 
+# /uploads/templates/*
+!/uploads/templates/* 
 
 # /uploads/default/*
 !/uploads/default/*
 
 /fonts/*
-# !/fonts/*/
+!/fonts/*/
 
 # files in ./
 /modified_test_tmp.docx
