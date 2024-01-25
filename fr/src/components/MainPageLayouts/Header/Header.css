@@ -1,10 +1,12 @@
 .header {
   grid-area: header;
+  align-items: center;
 }
 
 .header__container {
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 
 .header__container a{

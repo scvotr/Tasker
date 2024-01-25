@@ -1,5 +1,5 @@
-import { useAuthContext } from "../../../context/AuthProvider";
 import "./MainMenuUser.css";
+import { useAuthContext } from "../../../context/AuthProvider";
 import { NavLink } from "react-router-dom";
 
 export const MainMenuUser = () => {

@@ -111,9 +111,9 @@ export const TasksTableVIew = ({ tasks, actionType, test, rowForPage }) => {
       )}
 
       <div className="pagination-button">
-        <button onClick={handlePrevClick}>Назад</button>
+        <button className="user-menu__button" onClick={handlePrevClick}>Назад</button>
         {currentPage} из {pageCount}
-        <button onClick={handleNextClick}>Вперед</button>
+        <button className="user-menu__button" onClick={handleNextClick}>Вперед</button>
       </div>
 
       <div className="table-view">

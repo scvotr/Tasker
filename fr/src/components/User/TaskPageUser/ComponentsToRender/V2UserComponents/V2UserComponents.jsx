@@ -149,46 +149,46 @@ export const V2UserComponents = ({ updateToTop }) => {
     return () => clearInterval(fetchDataInterval);
   }, [currentUser, prevUserAppointTasks, prevUserResponsibleTasks, taskFormKey]);
   // !------------------------------------
-  // useEffect(()=> {
-  //   const socket = io(HOST_SOCKET);
+  useEffect(()=> {
+    const socket = io(HOST_SOCKET);
 
-  //   const sendDataToServer = (data) => {
-  //     socket.emit('userConnect', data);
-  //   };
+    const sendDataToServer = (data) => {
+      socket.emit('userConnect', data);
+    };
 
-  //   socket.on('connect', () => {
-  //     console.log('Подключение к серверу установлено');
-  //     sendDataToServer( {userId: currentUser.id, userName : currentUser.name})
-  //   });
+    socket.on('connect', () => {
+      console.log('Подключение к серверу установлено');
+      sendDataToServer( {userId: currentUser.id, userName : currentUser.name})
+    });
 
-  //   socket.on('taskDataChanged', () => {
-  //     // Обновляем данные задач пользователя
-  //     const fetchData = async () => {
-  //       if (currentUser.login) {
-  //         try {
-  //           const newData = await getDataFromEndpoint(currentUser.token, '/tasks/getAllUserTasks', 'POST', null, setReqStatus);
-  //           setAllTasksSocket(newData); // Обновляем задачи пользователя
-  //         } catch (error) {
-  //           console.log(error);
-  //         }
-  //       }
-  //     };
-  //     fetchData();
-  //   });
+    socket.on('taskDataChanged', () => {
+      // Обновляем данные задач пользователя
+      const fetchData = async () => {
+        if (currentUser.login) {
+          try {
+            const newData = await getDataFromEndpoint(currentUser.token, '/tasks/getAllUserTasks', 'POST', null, setReqStatus);
+            setAllTasksSocket(newData); // Обновляем задачи пользователя
+          } catch (error) {
+            console.log(error);
+          }
+        }
+      };
+      fetchData();
+    });
 
-  //   // Отключение сокета при размонтировании компонента
-  //   window.addEventListener('beforeunload', () => {
-  //     socket.disconnect();
-  //   });
+    // Отключение сокета при размонтировании компонента
+    window.addEventListener('beforeunload', () => {
+      socket.disconnect();
+    });
   
-  //   return () => {
-  //     window.removeEventListener('beforeunload', () => {
-  //       socket.disconnect();
-  //     });
-  //     socket.disconnect();
-  //   };
+    return () => {
+      window.removeEventListener('beforeunload', () => {
+        socket.disconnect();
+      });
+      socket.disconnect();
+    };
 
-  // }, [currentUser])
+  }, [currentUser])
 
   const [newTasks, setNewTasks] = useState([])
 
@@ -272,7 +272,7 @@ export const V2UserComponents = ({ updateToTop }) => {
           <button onClick={markNotificationAsRead}>Отметить как прочитанное</button>
         </>
       ) : (<></>)} */}
-      <p>Новы задачи</p>
+      <h2>Уведомления новые\изменился статус: </h2>
       {newTasks && newTasks.length ? (
         <>
         <RenderTasksTable
@@ -282,12 +282,13 @@ export const V2UserComponents = ({ updateToTop }) => {
         />
         </>
       ) : (
-        <><p>Новых задач нет</p></>
+        <h3>Новых задач нет</h3>
       )}
 
       {/* --------------------------------------------------- */}
       <div>
         <button
+          className="user-menu__button"
           onClick={toggleForm}
           style={{ display: showCreateButton ? "block" : "none"}}
         >
