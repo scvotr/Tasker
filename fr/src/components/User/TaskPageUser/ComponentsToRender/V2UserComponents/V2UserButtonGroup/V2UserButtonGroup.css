@@ -1,13 +1,28 @@
 .user-button-group {
   display: flex;
-  justify-content: center;
+  /* justify-content: center; */
+  justify-content: space-between;
   padding-top: 20px;
-  flex-wrap: wrap
+  flex-wrap: wrap;
+  max-width: 2000px;
 }
 
+.test1 {
+  display: flex;
+  /* border: 2px solid #0066cc; */
+  align-content: center;
+  flex-direction: column;
+  margin-left: 270px;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
+.test1:not(:last-child) {
+  margin-left: 1px; /* Убирает пространство у последнего элемента .test1 */
+}
 
 .user-task__button {
-  width: 85px;
+  width: 185px;
   color: #fff;
   background-color: #0066cc;
   padding: 10px 30px;
@@ -21,6 +36,7 @@
   align-items: center;
   cursor: pointer;
   justify-content: center;
+  margin: 5px;
 }
 .active button.user-task__button {
   width: 85px;
@@ -38,8 +54,15 @@
   cursor: pointer;
   justify-content: center;
 }
-}
 
+.user-task__button:hover {
+  transition: 1000ms;
+  padding: 10px 50px;
+  transform: translateY(-0px);
+  background-color: #fff;
+  color: #0066cc;
+  border: solid 2px #0066cc;
+}
 
 
 @media screen and (min-width: 320px) {
