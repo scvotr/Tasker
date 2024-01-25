@@ -8,6 +8,7 @@
 !/venchels/
 !/utils/*
 !/utils/.gitkeep
+# */
 
 # dependencies
 /node_modules
