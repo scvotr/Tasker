@@ -44,7 +44,6 @@
 /output.pdf
 /combined.log
 /error.log
-/.env
 /socket_logs.txt
 
 
