@@ -1,3 +1,4 @@
+import './V2UserComponents.css'
 import { useEffect, useState } from "react";
 import io from 'socket.io-client';
 import { useAuthContext } from "../../../../../context/AuthProvider";
@@ -265,61 +266,62 @@ export const V2UserComponents = ({ updateToTop }) => {
 
   return (
     <>
-      {/* {msg ? (<>{msg}</>):(<></>)}
-      {unreadNotification ? (
-        <>
-          <div>У вас новые данные!{msg}</div>
-          <button onClick={markNotificationAsRead}>Отметить как прочитанное</button>
-        </>
-      ) : (<></>)} */}
-      <h2>Уведомления новые\изменился статус: </h2>
+      <h2 className="user-task-page__notifications-heading">
+        Уведомления новые\изменился статус:
+      </h2>
       {newTasks && newTasks.length ? (
         <>
-        <RenderTasksTable
-          tasks={newTasks}
-          actionType={'markAsRead'}
-          onTaskSubmit={handleTaskTakeSubmit}
-        />
+          <RenderTasksTable
+            tasks={newTasks}
+            actionType={'markAsRead'}
+            onTaskSubmit={handleTaskTakeSubmit}
+          />
         </>
       ) : (
-        <h3>Новых задач нет</h3>
+        <h3 className="user-task-page__no-new-tasks">Новых задач нет</h3>
       )}
-
+  
       {/* --------------------------------------------------- */}
-      <div>
+      <div className="user-task-page__button-container">
         <button
           className="user-menu__button"
           onClick={toggleForm}
-          style={{ display: showCreateButton ? "block" : "none"}}
+          style={{ display: showCreateButton ? "block" : "none" }}
         >
           Новая задача
         </button>
         {showForm && (
           <Modal isOpen={modalOpen} onClose={closeModal}>
-            <TaskForm
-              keyProp={taskFormKey}
-              onTaskSubmit={handleTaskOnModalSubmit}
-            />
-          </Modal>  
+            <TaskForm keyProp={taskFormKey} onTaskSubmit={handleTaskOnModalSubmit} />
+          </Modal>
         )}
       </div>
       {/* --------------------------------------------------- */}
-      <V2UserButtonGroup
-        handleButtonClick={handleMenuButtonClick}
-        selectedButton={selectedButton}
+      {/* Three blocks in a row */}
+      <div className="user-task-page__three-blocks-container">
+        <V2UserButtonGroup
+          handleButtonClick={handleMenuButtonClick}
+          selectedButton={selectedButton}
+          appoinNewTasks={appoinNewTasks.length}
+          approvedAppoinTasks={approvedAppoinTasks.length}
+          appoinTasksInWork={appoinTasksInWork.length}
+          needApproveToCloseAppoinTasks={needApproveToCloseAppoinTasks.length}
+          closedAppointTasks={closedAppointTasks.length}
+        />
 
-        appoinNewTasks={appoinNewTasks.length}
-        approvedAppoinTasks={approvedAppoinTasks.length}
-        appoinTasksInWork={appoinTasksInWork.length}
-        needApproveToCloseAppoinTasks={needApproveToCloseAppoinTasks.length}
-        closedAppointTasks={closedAppointTasks.length}
+        <div className="user-task-page__task-table-container">
+          {taskTableComponent}
+        </div>
 
-        responsibleTasksInWork={responsibleTasksInWork.length}
-        approvedResponsibleTasks={approvedResponsibleTasks.length}
-        needApproveToCloseResponsibleTasks={needApproveToCloseResponsibleTasks.length}
-        closedResponsibleTasks={closedResponsibleTasks.length}
-      />
-      {taskTableComponent}
+        <V2UserButtonGroup
+          handleButtonClick={handleMenuButtonClick}
+          selectedButton={selectedButton}
+          responsibleTasksInWork={responsibleTasksInWork.length}
+          approvedResponsibleTasks={approvedResponsibleTasks.length}
+          needApproveToCloseResponsibleTasks={needApproveToCloseResponsibleTasks.length}
+          closedResponsibleTasks={closedResponsibleTasks.length}
+        />
+      </div>
     </>
   );
 };
