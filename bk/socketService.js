@@ -18,14 +18,17 @@ function removeUserFromPoll(userId) {
 // Функция для опроса базы данных и обнаружения изменений в данных задач пользователя по его ID
 async function pollDatabaseForUserTasks(userId) {
   try {
-    const userTasks = await TasksControler.getAllUserTasks({
-      params: {
-        userId
-      }
-    }); // Вызываем контроллер для получения задач пользователя
-
-    // Отправляем уведомление через веб-сокет о новых данных задач пользователя
-    io.to(userId).emit('tasksUpdated', userTasks);
+    if(io){
+      const userTasks = await TasksControler.getAllUserTasks({
+        params: {
+          userId
+        }
+      }); // Вызываем контроллер для получения задач пользователя
+      // Отправляем уведомление через веб-сокет о новых данных задач пользователя
+      io.to(userId).emit('tasksUpdated', userTasks);
+    } else {
+      console.error('Socket.IO not initialized. Cannot poll database.')
+    }
   } catch (error) {
     console.error(`Error while polling tasks for user with ID ${userId}:`, error);
   }
@@ -40,9 +43,13 @@ function setupSocket(io) {
       console.log('usersToPoll:', usersToPoll)
     })
     socket.on('disconnect', () => {
-      removeUserFromPoll(socket.userId); // Используем сохраненный userId
-      console.log('Пользователь отключился', socket.userId);
-      console.log('usersToPoll:', usersToPoll)
+      if(socket.userId) {
+        removeUserFromPoll(socket.userId); // Используем сохраненный userId
+        console.log('Пользователь отключился', socket.userId);
+        console.log('usersToPoll:', usersToPoll)
+      } else {
+        console.error('socket.userId not available on disconnect.');
+      }
     });
 
     socket.on('taskUpdated', (updatedTask) => {
