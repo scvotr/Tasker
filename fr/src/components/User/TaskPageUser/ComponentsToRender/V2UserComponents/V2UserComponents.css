@@ -1,0 +1,46 @@
+.user-task-page__notifications-heading {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+}
+
+.user-task-page__no-new-tasks {
+  color: green;
+}
+
+.user-task-page__button-container {
+  margin-top: 15px;
+}
+
+.user-menu__button {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 15px;
+  border: none;
+  cursor: pointer;
+}
+
+.user-menu__button:hover {
+  background-color: #0056b3;
+}
+
+/* ----------------------------- */
+.user-task-page__three-blocks-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-top: 20px;
+}
+
+.user-task-page__task-table-container {
+  flex-grow: 1;
+  margin: 0 10px;
+}
+
+@media screen and (min-width: 320px) {
+}
+@media screen and (min-width: 768px) {
+}
+@media screen and (min-width: 1024px) {
+}
+@media screen and (min-width: 1440px) {
+}

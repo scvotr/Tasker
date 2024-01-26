@@ -27,15 +27,6 @@ const routeHandlers = [
 
 const server = http.createServer(async (req, res) => {
 
-  const io = socketIo(server, {
-    cors: {
-      origin: "*",
-      methods: ["GET", "POST"]
-    }
-  });
-  setupSocket(io);
-  setupSocketLogging(io)  
-
   try {
     const { url, method } = req;
     res.setHeader("Access-Control-Allow-Origin", "*");
@@ -65,6 +56,15 @@ const server = http.createServer(async (req, res) => {
 server.on("error", (error) => {
   console.log("server.on ", error);
 });
+
+const io = socketIo(server, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"]
+  }
+});
+setupSocket(io);
+setupSocketLogging(io)  
 
 server.listen({ host: "localhost", port: 3070 }, () => {
 // server.listen({ host: "192.168.8.109", port: 3050 }, () => {

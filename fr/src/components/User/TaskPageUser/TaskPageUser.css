@@ -1,0 +1,24 @@
+.user-task-page{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.user-task-page__body{
+  display: flex;
+  padding: 5px;
+}
+
+.user-task-page__container{
+  display: flex;
+  padding: 5px;
+}
+
+@media screen and (min-width: 320px) {
+}
+@media screen and (min-width: 768px) {
+}
+@media screen and (min-width: 1024px) {
+}
+@media screen and (min-width: 1440px) {
+}

@@ -1,3 +1,4 @@
+import './V2UserComponents.css'
 import { useEffect, useState } from "react";
 import io from 'socket.io-client';
 import { useAuthContext } from "../../../../../context/AuthProvider";
@@ -149,46 +150,46 @@ export const V2UserComponents = ({ updateToTop }) => {
     return () => clearInterval(fetchDataInterval);
   }, [currentUser, prevUserAppointTasks, prevUserResponsibleTasks, taskFormKey]);
   // !------------------------------------
-  // useEffect(()=> {
-  //   const socket = io(HOST_SOCKET);
+  useEffect(()=> {
+    const socket = io(HOST_SOCKET);
 
-  //   const sendDataToServer = (data) => {
-  //     socket.emit('userConnect', data);
-  //   };
+    const sendDataToServer = (data) => {
+      socket.emit('userConnect', data);
+    };
 
-  //   socket.on('connect', () => {
-  //     console.log('Подключение к серверу установлено');
-  //     sendDataToServer( {userId: currentUser.id, userName : currentUser.name})
-  //   });
+    socket.on('connect', () => {
+      console.log('Подключение к серверу установлено');
+      sendDataToServer( {userId: currentUser.id, userName : currentUser.name})
+    });
 
-  //   socket.on('taskDataChanged', () => {
-  //     // Обновляем данные задач пользователя
-  //     const fetchData = async () => {
-  //       if (currentUser.login) {
-  //         try {
-  //           const newData = await getDataFromEndpoint(currentUser.token, '/tasks/getAllUserTasks', 'POST', null, setReqStatus);
-  //           setAllTasksSocket(newData); // Обновляем задачи пользователя
-  //         } catch (error) {
-  //           console.log(error);
-  //         }
-  //       }
-  //     };
-  //     fetchData();
-  //   });
+    socket.on('taskDataChanged', () => {
+      // Обновляем данные задач пользователя
+      const fetchData = async () => {
+        if (currentUser.login) {
+          try {
+            const newData = await getDataFromEndpoint(currentUser.token, '/tasks/getAllUserTasks', 'POST', null, setReqStatus);
+            setAllTasksSocket(newData); // Обновляем задачи пользователя
+          } catch (error) {
+            console.log(error);
+          }
+        }
+      };
+      fetchData();
+    });
 
-  //   // Отключение сокета при размонтировании компонента
-  //   window.addEventListener('beforeunload', () => {
-  //     socket.disconnect();
-  //   });
+    // Отключение сокета при размонтировании компонента
+    window.addEventListener('beforeunload', () => {
+      socket.disconnect();
+    });
   
-  //   return () => {
-  //     window.removeEventListener('beforeunload', () => {
-  //       socket.disconnect();
-  //     });
-  //     socket.disconnect();
-  //   };
+    return () => {
+      window.removeEventListener('beforeunload', () => {
+        socket.disconnect();
+      });
+      socket.disconnect();
+    };
 
-  // }, [currentUser])
+  }, [currentUser])
 
   const [newTasks, setNewTasks] = useState([])
 
@@ -265,60 +266,62 @@ export const V2UserComponents = ({ updateToTop }) => {
 
   return (
     <>
-      {/* {msg ? (<>{msg}</>):(<></>)}
-      {unreadNotification ? (
-        <>
-          <div>У вас новые данные!{msg}</div>
-          <button onClick={markNotificationAsRead}>Отметить как прочитанное</button>
-        </>
-      ) : (<></>)} */}
-      <p>Новы задачи</p>
+      <h2 className="user-task-page__notifications-heading">
+        Уведомления новые\изменился статус:
+      </h2>
       {newTasks && newTasks.length ? (
         <>
-        <RenderTasksTable
-          tasks={newTasks}
-          actionType={'markAsRead'}
-          onTaskSubmit={handleTaskTakeSubmit}
-        />
+          <RenderTasksTable
+            tasks={newTasks}
+            actionType={'markAsRead'}
+            onTaskSubmit={handleTaskTakeSubmit}
+          />
         </>
       ) : (
-        <><p>Новых задач нет</p></>
+        <h3 className="user-task-page__no-new-tasks">Новых задач нет</h3>
       )}
-
+  
       {/* --------------------------------------------------- */}
-      <div>
+      <div className="user-task-page__button-container">
         <button
+          className="user-menu__button"
           onClick={toggleForm}
-          style={{ display: showCreateButton ? "block" : "none"}}
+          style={{ display: showCreateButton ? "block" : "none" }}
         >
           Новая задача
         </button>
         {showForm && (
           <Modal isOpen={modalOpen} onClose={closeModal}>
-            <TaskForm
-              keyProp={taskFormKey}
-              onTaskSubmit={handleTaskOnModalSubmit}
-            />
-          </Modal>  
+            <TaskForm keyProp={taskFormKey} onTaskSubmit={handleTaskOnModalSubmit} />
+          </Modal>
         )}
       </div>
       {/* --------------------------------------------------- */}
-      <V2UserButtonGroup
-        handleButtonClick={handleMenuButtonClick}
-        selectedButton={selectedButton}
+      {/* Three blocks in a row */}
+      <div className="user-task-page__three-blocks-container">
+        <V2UserButtonGroup
+          handleButtonClick={handleMenuButtonClick}
+          selectedButton={selectedButton}
+          appoinNewTasks={appoinNewTasks.length}
+          approvedAppoinTasks={approvedAppoinTasks.length}
+          appoinTasksInWork={appoinTasksInWork.length}
+          needApproveToCloseAppoinTasks={needApproveToCloseAppoinTasks.length}
+          closedAppointTasks={closedAppointTasks.length}
+        />
 
-        appoinNewTasks={appoinNewTasks.length}
-        approvedAppoinTasks={approvedAppoinTasks.length}
-        appoinTasksInWork={appoinTasksInWork.length}
-        needApproveToCloseAppoinTasks={needApproveToCloseAppoinTasks.length}
-        closedAppointTasks={closedAppointTasks.length}
+        <div className="user-task-page__task-table-container">
+          {taskTableComponent}
+        </div>
 
-        responsibleTasksInWork={responsibleTasksInWork.length}
-        approvedResponsibleTasks={approvedResponsibleTasks.length}
-        needApproveToCloseResponsibleTasks={needApproveToCloseResponsibleTasks.length}
-        closedResponsibleTasks={closedResponsibleTasks.length}
-      />
-      {taskTableComponent}
+        <V2UserButtonGroup
+          handleButtonClick={handleMenuButtonClick}
+          selectedButton={selectedButton}
+          responsibleTasksInWork={responsibleTasksInWork.length}
+          approvedResponsibleTasks={approvedResponsibleTasks.length}
+          needApproveToCloseResponsibleTasks={needApproveToCloseResponsibleTasks.length}
+          closedResponsibleTasks={closedResponsibleTasks.length}
+        />
+      </div>
     </>
   );
 };

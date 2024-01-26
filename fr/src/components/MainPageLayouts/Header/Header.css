@@ -1,94 +1,85 @@
+.header {
+  grid-area: header;
+  align-items: center;
+}
+
+.header__container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.header__container a{
+  text-decoration: none;
+}
+
+.header__button {
+  color: #fff;
+  border: 1px solid #0066cc;
+  background-color: #0066CC;
+  border-radius: 50px;
+  transition: 1000ms;
+  transform: translateY(0);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  cursor: pointer;
+}
+
+.active button.header__button {
+  color: #fff;
+  background-color: #ccd0d3;
+  padding: 10px;
+  border: 2px solid #6b6f74;
+  box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+  border-radius: 50px;
+  transition: 1000ms;
+  transform: translateY(0);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  cursor: pointer;
+}
+
 @media screen and (min-width: 320px) {
-  .header {
-    grid-area: header;
-  }
   .header__container {
     gap: 10px;
-    display: flex;
-    justify-content: center;
   }
-  .header__container a{
-    text-decoration: none;
-  }
+
   .header__button{
     width: 85px;
     margin-top: 15px;
-    padding: 0px 0px;
-    color: #fff;
-    background-color: #0066CC;
-    padding: 10px 30px;
-    border: 2px solid #0066cc;
-    box-shadow: rgb(0, 0, 0) 0px 0px 0px 0px;
-    border-radius: 50px;
-    transition : 1000ms;
-    transform: translateY(0);
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+    padding: 5px;
     justify-content: center;
-    cursor: pointer;
   }
+
   .active button.header__button{
     width: 85px;
-    color: #fff;
-    background-color: #ccd0d3;
-    padding: 10px 30px;
-    border: 2px solid #6b6f74;
-    box-shadow: rgb(0, 0, 0) 0px 0px 0px 0px;
-    border-radius: 50px;
-    transition : 1000ms;
-    transform: translateY(0);
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    cursor: pointer;
   }
 }
-/* ----------------------------------------------------------------------- TABLET-START*/
+
 @media screen and (min-width: 768px) {
   .header__button{
     width: 200px;
+    box-shadow: 0 0 0 10px rgba(0, 0, 0, 0.0);
     font-family: Roboto, sans-serif;
-    font-weight: 0;
+    font-weight: normal;
     font-size: 14px;
-    color: #fff;
-    background-color: #0066CC;
-    padding: 10px 30px;
-    border: 2px solid #0066cc;
-    box-shadow: rgb(0, 0, 0) 0px 0px 0px 0px;
-    border-radius: 50px;
-    transition : 1000ms;
-    transform: translateY(0);
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    cursor: pointer;
+    padding: 10px;
   }
+
   .header__button:hover{
-    transition : 1000ms;
     padding: 10px 50px;
     transform : translateY(-0px);
     background-color: #fff;
     color: #0066cc;
     border: solid 2px #0066cc;
   }
+
   .active button.header__button{
     width: 200px;
-    color: #fff;
-    background-color: #ccd0d3;
-    padding: 10px 30px;
-    border: 2px solid #6b6f74;
-    box-shadow: rgb(0, 0, 0) 0px 0px 0px 0px;
-    border-radius: 50px;
-    transition : 1000ms;
-    transform: translateY(0);
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    cursor: pointer;
   }
 }
-@media screen and (min-width: 1024px) {
-}
-@media screen and (min-width: 1440px) {
-}
+@media screen and (min-width: 1024px) {}
+@media screen and (min-width: 1440px) {}
+

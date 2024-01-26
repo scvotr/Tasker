@@ -1,6 +1,6 @@
-import { useAuthContext } from "../../../context/AuthProvider";
-import { NavLink } from "react-router-dom";
 import "./Header.css";
+import { NavLink } from "react-router-dom";
+import { useAuthContext } from "../../../context/AuthProvider";
 
 export const Header = () => {
   const currentUser = useAuthContext();

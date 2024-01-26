@@ -37,5 +37,5 @@ export const TasksView = () => {
     componentToRender = renderGeneralSpComponents()
   }
 
-  return <div className="render-components">{componentToRender}</div>;
+  return <div className="user-task-page__render-components">{componentToRender}</div>;
 };

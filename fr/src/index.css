@@ -8,6 +8,12 @@ html {
   box-sizing: inherit;
 }
 
+/* * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+} */
+
 body {
   min-width: 320px;
   overflow-x: hidden;
@@ -25,12 +31,16 @@ code {
 }
 
 .container {
+  width: 100%;
   margin: 0 auto;
 }
 
+/* Normalize.css */
+@import url('https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css');
+
 @media screen and (min-width: 320px) {
   body {
-    font-size: calc(4px + 2vmin);
+    font-size: calc(3px + 2vmin);
     white-space: nowrap;
   }
 }
@@ -45,7 +55,9 @@ code {
 }
 @media screen and (min-width: 1440px) {
   .container {
+    width: 100%;
     max-width: 1200px;
+    margin: 0 auto;
   }
 }
 
