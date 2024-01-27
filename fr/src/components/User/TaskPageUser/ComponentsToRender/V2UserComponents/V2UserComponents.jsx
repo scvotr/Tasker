@@ -151,17 +151,17 @@ export const V2UserComponents = ({ updateToTop }) => {
   }, [currentUser, prevUserAppointTasks, prevUserResponsibleTasks, taskFormKey]);
   // !------------------------------------
   useEffect(()=> {
-    const socket = io(HOST_SOCKET);
-
+    const socket = io(HOST_SOCKET, {
+      // query: {token : currentUser.token},
+      extraHeaders: { Authorization: currentUser.token },
+    });
     const sendDataToServer = (data) => {
       socket.emit('userConnect', data);
     };
-
     socket.on('connect', () => {
       console.log('Подключение к серверу установлено');
       sendDataToServer( {userId: currentUser.id, userName : currentUser.name})
     });
-
     socket.on('taskDataChanged', () => {
       // Обновляем данные задач пользователя
       const fetchData = async () => {
@@ -176,21 +176,18 @@ export const V2UserComponents = ({ updateToTop }) => {
       };
       fetchData();
     });
-
     // Отключение сокета при размонтировании компонента
     window.addEventListener('beforeunload', () => {
       socket.disconnect();
     });
-  
+ 
     return () => {
       window.removeEventListener('beforeunload', () => {
         socket.disconnect();
       });
       socket.disconnect();
     };
-
   }, [currentUser])
-
   const [newTasks, setNewTasks] = useState([])
 
   // !------------------------------------
