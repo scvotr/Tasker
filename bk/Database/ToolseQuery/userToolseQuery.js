@@ -21,6 +21,12 @@ const createNewUserParams = async (user) => {
   const command = `INSERT INTO users(name, email, password, role, department_id, subdepartment_id, position_id) VALUES (?, ?, ?, ?, ?, ?, ?)`;
   await queryAsyncWraperParam(command, [ name, email, password, role || 'user', department_id || 1, subdepartment_id || 1, position_id || 1 ], 'run',)
 }
+const changeUserPassword = async (user) => {
+  const { id, password } = user;
+  // Обновить пароль по id пользователя
+  const command = `UPDATE users SET password = ? WHERE id = ?`;
+  await queryAsyncWraperParam(command, [password, id], 'run');
+}
 
 module.exports = {
   fineUserById,
@@ -28,4 +34,5 @@ module.exports = {
   chekUserLoginName,
   checkUserEmail,
   createNewUserParams,
+  changeUserPassword,
 }
