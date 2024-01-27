@@ -6,6 +6,7 @@ const {
   chekUserLoginName,
   checkUserEmail,
   createNewUserParams,
+  changeUserPassword,
 } = require("../../Database/ToolseQuery/userToolseQuery");
 
 const {
@@ -113,6 +114,133 @@ class AuthControler {
       );
     }
   }
+  async changePassword(req, res) {
+    try {
+      const postPayload = await getPostDataset(req);
+      const postData = JSON.parse(postPayload);
+      const { name, oldPassword,  newPassword} = postData;
+      const isEmpty = !name || !oldPassword || !newPassword;
+      if(isEmpty) {
+        return res.end(JSON.stringify({ changePassword: "Пустые поля" }));
+      } 
+      const userName = await chekUserLoginName(name);
+      if (!userName.length)
+      return res.end(
+        JSON.stringify({ changePassword: "Пользователь не найден" })
+      );
+      const objDataUser = userName.find((item) => item);
+      const isPasswordMatched = await bcrypt.compare(
+        oldPassword,
+        objDataUser.password
+      );
+      if (!isPasswordMatched)
+        return res.end(JSON.stringify({ changePassword: "Пароль не верный" }));
+      const hashedNewPassword = await bcrypt.hash(newPassword, HASH_SALT);
+      const userData = {
+        id: objDataUser.id, 
+        password: hashedNewPassword, 
+      };
+      await changeUserPassword(userData)
+      const arrDataUser = await getUserByLgPs(postData.name, hashedNewPassword); //шаг выглядит избыточным
+      const objDataToken = arrDataUser.find((item) => item);
+      const token = jwt.sign(objDataToken, SECRET_KEY)
+      await createTokenParams(objDataToken.id, token);
+      res.setHeader("Access-Control-Expose-Headers", "Authorization");
+      res.setHeader("Authorization", `Bearer ${token}`);
+      res.statusCode = 201;
+      res.end(JSON.stringify({ changePassword: "Пароль усмешно изменен" }));
+    } catch (error) {
+      console.error(error);
+      res.statusCode = 500;
+      res.end(
+        JSON.stringify({ error: "Ошибка при смене пароля." })
+      );
+    }
+  }  
+  async dropPasswordByPincode(req, res) {
+    try {
+      const postPayload = await getPostDataset(req);
+      const postData = JSON.parse(postPayload);
+      const { name, newPassword,  psPincode} = postData;
+      const isEmpty = !name || !newPassword || !psPincode;
+      if(isEmpty) {
+        return res.end(JSON.stringify({ dropPasswordByPincode: "Пустые поля" }));
+      } 
+      const userName = await chekUserLoginName(name);
+      if (!userName.length)
+      return res.end(
+        JSON.stringify({ dropPasswordByPincode: "Пользователь не найден" })
+      );
+      const objDataUser = userName.find((item) => item);
+      const isPincodeMatched = await bcrypt.compare(
+        psPincode,
+        objDataUser.psPincode
+      );
+      if (!isPincodeMatched)
+        return res.end(JSON.stringify({ dropPasswordByPincode: "Пинкод не верный" }));
+      const hashedNewPassword = await bcrypt.hash(newPassword, HASH_SALT);
+      const userData = {
+        id: objDataUser.id, 
+        password: hashedNewPassword, 
+      };
+      await changeUserPassword(userData)
+      const arrDataUser = await getUserByLgPs(postData.name, hashedNewPassword); //шаг выглядит избыточным
+      const objDataToken = arrDataUser.find((item) => item);
+      const token = jwt.sign(objDataToken, SECRET_KEY)
+      await createTokenParams(objDataToken.id, token);
+      res.setHeader("Access-Control-Expose-Headers", "Authorization");
+      res.setHeader("Authorization", `Bearer ${token}`);
+      res.statusCode = 201;
+      res.end(JSON.stringify({ changePassword: "Пароль усмешно изменен" }));
+    } catch (error) {
+      console.error(error);
+      res.statusCode = 500;
+      res.end(
+        JSON.stringify({ error: "Ошибка при смене пароля." })
+      );
+    }
+  }
 }
 
 module.exports = new AuthControler();
+
+
+// !-------------------------------------
+// async changePassword(req, res) {
+//   try {
+//     const postPayload = await getPostDataset(req);
+//     const postData = JSON.parse(postPayload);
+//     const { name, oldPassword, newPassword } = postData;
+//     const isEmpty = !name || !oldPassword || !newPassword;
+//     if (isEmpty) {
+//       return res.end(JSON.stringify({ changePassword: "Пустые поля" }));
+//     }
+//     const userName = await chekUserLoginName(name);
+//     if (!userName.length) {
+//       return res.end(JSON.stringify({ changePassword: "Пользователь не найден" }));
+//     }
+//     const objDataUser = userName.find((item) => item);
+//     const isPasswordMatched = await bcrypt.compare(oldPassword, objDataUser.password);
+//     if (!isPasswordMatched) {
+//       return res.end(JSON.stringify({ changePassword: "Пароль не верный" }));
+//     }
+//     const hashedNewPassword = await bcrypt.hash(newPassword, HASH_SALT);
+//     const userData = {
+//       id: objDataUser.id,
+//       password: hashedNewPassword,
+//     };
+//     await changeUserPassword(userData);
+//     // Используйте данные из objDataUser для создания токена
+
+//     const token = jwt.sign({ id: objDataUser.id }, SECRET_KEY);
+//     await createTokenParams(objDataUser.id, token);
+//     res.setHeader("Access-Control-Expose-Headers", "Authorization");
+//     res.setHeader("Authorization", `Bearer ${token}`);
+//     res.statusCode = 201;
+//     res.end(JSON.stringify({ changePassword: "Пароль успешно изменен" }));
+//   } catch (error) {
+//     console.error(error);
+//     res.statusCode = 500;
+//     res.end(JSON.stringify({ error: "Ошибка при смене пароля." }));
+//   }
+// }
