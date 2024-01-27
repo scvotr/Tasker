@@ -4,6 +4,10 @@ const socketIo = require('socket.io');
 const { setupSocket, pollDatabaseForUserTasks } = require('./socketService')
 const setupSocketLogging = require('./utils/socket/setupSocketLogging')
 const logger = require('./utils/logger/logger')
+const initialSQLiteFile = require('./Database/initialSQLiteFile')
+
+// const sqlite3 = require('sqlite3').verbose()
+// new sqlite3.Database('../database2.db')
 
 const { handleDefaultRoute } = require("./routes/handleDefaultRoute");
 const { handleOptionsRequest } = require("./routes/handleOptionsRequest");
@@ -25,8 +29,9 @@ const routeHandlers = [
   { prefix: "/docs", handler: handleDocsRoutes },
 ];
 
-const server = http.createServer(async (req, res) => {
+initialSQLiteFile('../database55.db')
 
+const server = http.createServer(async (req, res) => {
   try {
     const { url, method } = req;
     res.setHeader("Access-Control-Allow-Origin", "*");
