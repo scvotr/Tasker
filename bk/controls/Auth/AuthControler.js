@@ -28,7 +28,7 @@ class AuthControler {
       res.setHeader("Content-Type", "application/json");
       const postPayload = await getPostDataset(req);
       const postData = JSON.parse(postPayload);
-      const { name, email, password, pinCode } = postData;
+      const { name, email, password, pinCode ='1234' } = postData;
       const isEmpty = name && email && password// && pinCode;
       if (!isEmpty)
         return res.end(JSON.stringify({ Registrtaion: "Пустые поля" }));
@@ -46,7 +46,7 @@ class AuthControler {
       if (chekEmail.length)
         return res.end(JSON.stringify({ Registration: "Email уже есть." }));
       const hashedPassword = await bcrypt.hash(password, HASH_SALT);
-      const hashedPincode = await bcrypt.hash(hashedPincode, HASH_SALT);
+      const hashedPincode = await bcrypt.hash(pinCode, HASH_SALT);
       const userData = { ...postData, password: hashedPassword, pin_code: hashedPincode };
       await createNewUserParams(userData);
       const arrDataUser = await getUserByLgPs(postData.name, hashedPassword);
