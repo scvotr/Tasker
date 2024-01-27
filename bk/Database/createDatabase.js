@@ -350,7 +350,7 @@ const createTableUsers = async () => {
         name TEXT NOT NULL,
         email TEXT UNIQUE NOT NULL,
         password TEXT NOT NULL,
-        pin_code INTEGER,
+        pin_code INTEGER, --временно 
         role TEXT NOT NULL,
         department_id INTEGER,
         subdepartment_id INTEGER,
