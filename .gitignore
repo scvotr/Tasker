@@ -4,10 +4,10 @@
 /node_modules
 /.pnp
 .pnp.js
-database.db
 *.drawio
 *.rar
 *.txt
+*.db
 
 # testing
 /coverage
