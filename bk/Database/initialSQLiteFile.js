@@ -7,11 +7,10 @@ const currentDirectory = process.cwd();
 
 const initialSQLiteFile = (fileName) => {
   // const fillPath = path.join(currentDirectory, fileName)
-  console.log('fillPath: ', fillPath)
 
-    fs.access(fillPath, fs.constants.F_OK, (err) => {
+  fs.access(fileName, fs.constants.F_OK, (err) => {
     if (err) {
-      new sqlite3.Database(fillPath)
+      new sqlite3.Database(fileName)
       console.log('Создан новый файл базы данных: ', fileName);
       logger.error(`Фаил базы данных отсутсвует ${fileName} : ${err}`)
       logger.info(`Создан новый файл базы данных: ${fileName}`)
