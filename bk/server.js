@@ -4,7 +4,10 @@ const socketIo = require('socket.io');
 const { setupSocket, pollDatabaseForUserTasks } = require('./socketService')
 const setupSocketLogging = require('./utils/socket/setupSocketLogging')
 const logger = require('./utils/logger/logger')
-const initialSQLiteFile = require('./Database/initialSQLiteFile')
+
+const {
+  executeDatabaseQueryAsync,
+} = require ('./Database/dbControler') 
 
 const { handleDefaultRoute } = require("./routes/handleDefaultRoute");
 const { handleOptionsRequest } = require("./routes/handleOptionsRequest");
@@ -25,8 +28,6 @@ const routeHandlers = [
   { prefix: "/venchel", handler: handleVenchelRoutes },
   { prefix: "/docs", handler: handleDocsRoutes },
 ];
-
-initialSQLiteFile('../database2.db')
 
 const server = http.createServer(async (req, res) => {
   try {
