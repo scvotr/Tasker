@@ -6,9 +6,6 @@ const setupSocketLogging = require('./utils/socket/setupSocketLogging')
 const logger = require('./utils/logger/logger')
 const initialSQLiteFile = require('./Database/initialSQLiteFile')
 
-// const sqlite3 = require('sqlite3').verbose()
-// new sqlite3.Database('../database2.db')
-
 const { handleDefaultRoute } = require("./routes/handleDefaultRoute");
 const { handleOptionsRequest } = require("./routes/handleOptionsRequest");
 const { handleAuthRoutes } = require("./routes/handleAuthRoutes");
@@ -29,7 +26,7 @@ const routeHandlers = [
   { prefix: "/docs", handler: handleDocsRoutes },
 ];
 
-initialSQLiteFile('../database55.db')
+initialSQLiteFile('../database2.db')
 
 const server = http.createServer(async (req, res) => {
   try {
