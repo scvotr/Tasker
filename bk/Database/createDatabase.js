@@ -345,15 +345,12 @@ const createTableUsers = async () => {
   try {
     await queryAsyncWraper(
       // command
-      `
-      ALTER TABLE users ADD COLUMN birthdate DATE;
-      CREATE TABLE IF NOT EXISTS users (
+      `CREATE TABLE IF NOT EXISTS users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
         email TEXT UNIQUE NOT NULL,
         password TEXT NOT NULL,
         pin_code INTEGER, --временно 
-        birthdate DATE,
         role TEXT NOT NULL,
         department_id INTEGER,
         subdepartment_id INTEGER,
