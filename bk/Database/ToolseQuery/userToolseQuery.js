@@ -17,9 +17,9 @@ const checkUserEmail = async (eml) => {
   return await queryAsyncWraper(`SELECT * FROM users WHERE email = '${eml}'`);
 }
 const createNewUserParams = async (user) => {
-  const { name, email, password, role, department_id, subdepartment_id, position_id } = user;
-  const command = `INSERT INTO users(name, email, password, role, department_id, subdepartment_id, position_id) VALUES (?, ?, ?, ?, ?, ?, ?)`;
-  await queryAsyncWraperParam(command, [ name, email, password, role || 'user', department_id || 1, subdepartment_id || 1, position_id || 1 ], 'run',)
+  const { name, email, password, pin_code, role, department_id, subdepartment_id, position_id } = user;
+  const command = `INSERT INTO users(name, email, password, pin_code, role, department_id, subdepartment_id, position_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
+  await queryAsyncWraperParam(command, [ name, email, password, pin_code, role || 'user', department_id || 1, subdepartment_id || 1, position_id || 1 ], 'run',)
 }
 const changeUserPassword = async (user) => {
   const { id, password } = user;
