@@ -20,6 +20,21 @@ const getAllDepartments = async () => {
 		console.error("Error get all departments:", error);
 	}
 }
+const getAllPosition = async (filterBy) => {
+	try {
+		const command =`SELECT * FROM positions WHERE subdepartment_id = ?`;
+		return await queryAsyncWraperParam(command, [filterBy], 'all');
+	} catch (error) {
+		console.error("Error get all position:", error);
+	}
+}
+
+module.exports = {
+  getAllUsersNames,
+  getAllPosition,
+  getAllDepartments,
+}
+
 // const getAllSubdepartments = async (filterBy) => {
 // 	try {
 // 		const command =`SELECT * FROM subdepartments`;
@@ -46,18 +61,3 @@ const getAllDepartments = async () => {
 // 		console.error("Error get all position:", error);
 // 	}
 // }
-const getAllPosition = async (filterBy) => {
-	try {
-		const command =`SELECT * FROM positions WHERE subdepartment_id = ?`;
-		return await queryAsyncWraperParam(command, [filterBy], 'all');
-	} catch (error) {
-		console.error("Error get all position:", error);
-	}
-}
-
-
-module.exports = {
-  getAllUsersNames,
-  getAllPosition,
-  getAllDepartments,
-}
