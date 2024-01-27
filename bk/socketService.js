@@ -1,5 +1,8 @@
 'use strict'
 
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
+
 let usersToPoll = [];
 // Функция для добавления нового пользователя в массив опроса
 function addUserToPoll(userId) {
@@ -35,7 +38,18 @@ async function pollDatabaseForUserTasks(userId) {
 }
 
 function setupSocket(io) {
-  io.on('connection', (socket) => {
+
+  io.use((socket, next) => {
+    let token = socket.handshake.query.token;
+    let tokenInHeaders = socket.handshake.headers.authorization;
+    tokenInHeaders = tokenInHeaders.slice(7, tokenInHeaders.length);
+
+    jwt.verify(tokenInHeaders, process.env.KEY_TOKEN, (err, decoded) => {
+      if (err) return next(new Error('Authentication error'))
+      socket.decoded = decoded
+      next()
+    })
+  }).on('connection', (socket) => {
     socket.on('userConnect', (data) => {
       socket.userId = data.userId; // Сохраняем userId в объекте socket
       addUserToPoll(data.userId)
