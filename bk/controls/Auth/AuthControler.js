@@ -28,8 +28,8 @@ class AuthControler {
       res.setHeader("Content-Type", "application/json");
       const postPayload = await getPostDataset(req);
       const postData = JSON.parse(postPayload);
-      const { name, email, password } = postData;
-      const isEmpty = name && email && password;
+      const { name, email, password, pinCode } = postData;
+      const isEmpty = name && email && password// && pinCode;
       if (!isEmpty)
         return res.end(JSON.stringify({ Registrtaion: "Пустые поля" }));
       const checkName = await chekUserLoginName(name);
@@ -46,7 +46,8 @@ class AuthControler {
       if (chekEmail.length)
         return res.end(JSON.stringify({ Registration: "Email уже есть." }));
       const hashedPassword = await bcrypt.hash(password, HASH_SALT);
-      const userData = { ...postData, password: hashedPassword };
+      const hashedPincode = await bcrypt.hash(hashedPincode, HASH_SALT);
+      const userData = { ...postData, password: hashedPassword, pin_code: hashedPincode };
       await createNewUserParams(userData);
       const arrDataUser = await getUserByLgPs(postData.name, hashedPassword);
       const objDataUser = arrDataUser.find((item) => item);
@@ -148,7 +149,7 @@ class AuthControler {
       res.setHeader("Access-Control-Expose-Headers", "Authorization");
       res.setHeader("Authorization", `Bearer ${token}`);
       res.statusCode = 201;
-      res.end(JSON.stringify({ changePassword: "Пароль усмешно изменен" }));
+      res.end(JSON.stringify({ changePassword: "Пароль успешно изменен" }));
     } catch (error) {
       console.error(error);
       res.statusCode = 500;
@@ -157,7 +158,7 @@ class AuthControler {
       );
     }
   }  
-  async dropPasswordByPincode(req, res) {
+  async changePasswordByPincode(req, res) {
     try {
       const postPayload = await getPostDataset(req);
       const postData = JSON.parse(postPayload);
@@ -191,7 +192,7 @@ class AuthControler {
       res.setHeader("Access-Control-Expose-Headers", "Authorization");
       res.setHeader("Authorization", `Bearer ${token}`);
       res.statusCode = 201;
-      res.end(JSON.stringify({ changePassword: "Пароль усмешно изменен" }));
+      res.end(JSON.stringify({ changePassword: "Пароль успешно изменен" }));
     } catch (error) {
       console.error(error);
       res.statusCode = 500;
