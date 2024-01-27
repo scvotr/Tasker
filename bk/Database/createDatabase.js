@@ -345,12 +345,15 @@ const createTableUsers = async () => {
   try {
     await queryAsyncWraper(
       // command
-      `CREATE TABLE IF NOT EXISTS users (
+      `
+      ALTER TABLE users ADD COLUMN birthdate DATE;
+      CREATE TABLE IF NOT EXISTS users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
         email TEXT UNIQUE NOT NULL,
         password TEXT NOT NULL,
         pin_code INTEGER, --временно 
+        birthdate DATE,
         role TEXT NOT NULL,
         department_id INTEGER,
         subdepartment_id INTEGER,
@@ -524,6 +527,13 @@ const createTableVenchelFiles = async () => {
         uploaded_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY(venchel_id) REFERENCES venchels(venchel_id)
        )`, "run")
+
+    try {
+      await queryAsyncWraper(`ALTER TABLE venchel_files ADD COLUMN create_on DATE;`, 'run')
+    } catch (error) {
+      console.log('createTableVenchelFiles -> ALTER TABLE venchel_files ADD COLUMN: ', error)
+    }    
+       
   } catch (error) {
     console.log('DB ERROR: ', error)
   }
