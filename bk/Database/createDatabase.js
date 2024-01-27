@@ -457,7 +457,7 @@ const createTableTokens = async () => {
       console.log('>>>>>>>>>>>>', token)
       const command = `INSERT INTO tokens(user_id, token) VALUES (?, ?)`;
       await queryAsyncWraperParam(command, [objUser.id, token], `run`)
-      // await createUsers(userDataArray)
+      await createUsers(userDataArray)
     }
   } catch (error) {
     console.error("Error creating tokens table:", error);

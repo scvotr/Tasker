@@ -3,7 +3,7 @@ const http = require("http");
 const socketIo = require('socket.io');
 const { setupSocket, pollDatabaseForUserTasks } = require('./socketService')
 const setupSocketLogging = require('./utils/socket/setupSocketLogging')
-
+const logger = require('./utils/logger/logger')
 
 const { handleDefaultRoute } = require("./routes/handleDefaultRoute");
 const { handleOptionsRequest } = require("./routes/handleOptionsRequest");
@@ -49,6 +49,7 @@ const server = http.createServer(async (req, res) => {
       }
     }
   } catch (error) {
+    logger.error(`Server : ${error}`)
     console.log("server-catch: ", error);
   }
 });
