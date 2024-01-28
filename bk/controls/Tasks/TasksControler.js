@@ -71,14 +71,10 @@ class TasksControler {
 // !--------------------------------------------
       // обеспечивает централизованный доступ к экземпляру Socket.IO
       const io = socketManager.getIO()
-       // const io = socketManager.init(server);
-      // Отправляем событие пользователю, который создал задачу
-      // io.to(req.user.id)
-      // Отправляем событие
       io.emit('taskCreated', { message: 'New task created', taskData: data });
-      // Отправляем событие предполагаемому получателю задачи
-      io.to(fields.responsible_department_id)
-        .emit('newTaskForMe', { message: 'New task added', taskData: data });
+      io.emit('newTaskForMe', { message: 'New task added', taskData: data });
+      // Отправка сообщения всем пользователям в комнате "allChifeRoom"
+      io.to('allChifeRoom').emit('messageForChiefs', 'Сообщение только для начальников!!!!')
 
       // await sendRabbitMQMessage('tasks_queue', { action: 'TaskCreated', taskData: data });
       // sendKafkaMessage('task_creation_topic', { action: 'TaskCreated', taskData: data });
