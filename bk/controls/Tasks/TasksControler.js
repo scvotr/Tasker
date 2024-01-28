@@ -1,3 +1,5 @@
+const {getIO} = require('../../utils/socket/socketManager')
+
 const {
   saveFile,
   deleteFile,
@@ -66,6 +68,20 @@ class TasksControler {
       }
       await createNewTask_V02(data)
       // await updateTaskStatus(postPayload)
+// !--------------------------------------------
+      const io = getIO()
+      // Отправляем событие пользователю, который создал задачу
+      io.to(req.user.id)
+        .emit('taskCreated', { message: 'New task created', taskData: data });
+      // Отправляем событие предполагаемому получателю задачи
+      io.to(response_user.id)
+        .emit('newTaskForMe', { message: 'New task added', taskData: data });
+
+      // await sendRabbitMQMessage('tasks_queue', { action: 'TaskCreated', taskData: data });
+      // sendKafkaMessage('task_creation_topic', { action: 'TaskCreated', taskData: data });
+      // publishRedisMessage('task_events', { action: 'TaskCreated', taskData: data });
+
+// !--------------------------------------------
       res.setHeader('Content-Type', 'application/json')
       res.write(JSON.stringify('Status acceptet'))
       res.end()
