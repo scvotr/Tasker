@@ -62,13 +62,6 @@ server.on("error", (error) => {
   console.log("server.on ", error);
 });
 
-// const io = socketIo(server, {
-//   cors: {
-//     origin: "*",
-//     methods: ["GET", "POST"]
-//   }
-// });
-
 const io = socketManager.init(server);
 setupSocket(io);
 setupSocketLogging(io)  
