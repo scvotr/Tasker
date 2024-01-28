@@ -69,11 +69,12 @@ class TasksControler {
       await createNewTask_V02(data)
       // await updateTaskStatus(postPayload)
 // !--------------------------------------------
+      // обеспечивает централизованный доступ к экземпляру Socket.IO
       const io = socketManager.getIO()
-      // const io = socketManager.init(server);
+       // const io = socketManager.init(server);
       // Отправляем событие пользователю, который создал задачу
       // io.to(req.user.id)
-      // Отправляем событие на клиентов
+      // Отправляем событие
       io.emit('taskCreated', { message: 'New task created', taskData: data });
       // Отправляем событие предполагаемому получателю задачи
       io.to(fields.responsible_department_id)
