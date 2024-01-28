@@ -70,7 +70,6 @@ server.on("error", (error) => {
 // });
 
 const io = socketManager.init(server);
-
 setupSocket(io);
 setupSocketLogging(io)  
 
