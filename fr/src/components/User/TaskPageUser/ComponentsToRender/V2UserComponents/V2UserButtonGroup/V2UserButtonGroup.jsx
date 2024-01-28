@@ -16,8 +16,8 @@ export const V2UserButtonGroup = ({
   closedResponsibleTasks,
 }) => {
 
-  console.log('closedAppointTasks', closedAppointTasks)
-  console.log('responsibleTasksInWork', responsibleTasksInWork)
+  // console.log('closedAppointTasks', closedAppointTasks)
+  // console.log('responsibleTasksInWork', responsibleTasksInWork)
 
   const buttons = [
     {key: 'createdTasks', label: 'Исх. Созданые', value: appoinNewTasks, color: '#0099CC'},
