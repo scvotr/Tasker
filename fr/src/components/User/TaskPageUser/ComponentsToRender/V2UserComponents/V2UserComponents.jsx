@@ -161,7 +161,19 @@ export const V2UserComponents = ({ updateToTop }) => {
     socket.on('connect', () => {
       console.log('Подключение к серверу установлено');
       sendDataToServer( {userId: currentUser.id, userName : currentUser.name})
+      // Запрашиваем список комнат, к которым подключен клиент
+      socket.emit('getMyRooms');
     });
+    // Обработчик для получения списка комнат
+    socket.on('yourRooms', (rooms) => {
+      console.log('Я подключен к комнатам:', rooms);
+    });
+    socket.on('messageForChiefs', (message) => {
+      console.log(message); // 'Сообщение только для начальников!!!!'
+    });
+
+
+
     socket.on('taskDataChanged', () => {
       // Обновляем данные задач пользователя
       const fetchData = async () => {
@@ -177,8 +189,8 @@ export const V2UserComponents = ({ updateToTop }) => {
       fetchData();
     });
     socket.on('taskCreated', (data) => {
-      console.log('SOCKET taskCreated', data.message)
-      console.log('SOCKET taskCreated', data.taskData.fields)
+      console.log('SOCKET taskCreated 1', data.message)
+      console.log('SOCKET taskCreated 2', data.taskData.fields)
     })
     socket.on('newTaskForMe', (data) => {
       console.log('SOCKET newTaskForMe', data.message)
