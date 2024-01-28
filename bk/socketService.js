@@ -55,18 +55,29 @@ function setupSocket(io) {
       // Переходим к следующему middleware или обработчику
       next()
     })
-  }).on('connection', (socket) => { // Настраиваем обработчик события подключения нового соединения
+  }).on('connection', (socket) => { 
+    // Настраиваем обработчик события подключения нового соединения
     // Обработчик события, когда пользователь "подключается" через Socket.io
-    // console.log('connection -> socket.decoded >>>>', socket.decoded)
+    console.log('connection -> socket.decoded >>>>', socket.decoded)
     
     socket.on('userConnect', (data) => {
+      console.log('Получены данные от клиента:', data);
       // Сохраняем userId пользователя в объект socket
       socket.userId = data.userId;
       // Добавляем пользователя в пул пользователей (предполагается, что это функция для управления пользователями)
-      addUserToPoll(data.userId)
-      // Выводим в консоль данные, отправленные пользователем, и текущий список пользователей
-      console.log('Получены данные от клиента:', data);
-      console.log('usersToPoll:', usersToPoll)
+      addUserToPoll(data.userId); console.log('usersToPoll:', usersToPoll)
+      // Добавляем пользователя в комнату
+      socket.join('allActiveUser'); 
+      if(socket.decoded.role === 'chife') {
+        socket.join('allChifeRoom')
+      }
+      // Добавляем новый обработчик события для запроса списка комнат
+      socket.on('getMyRooms', () => {
+        // В этом примере предполагается, что socket.rooms возвращает Set комнат, к которым подключен сокет
+        const rooms = Array.from(socket.rooms);
+        // Отправляем клиенту список его комнат, исключая его собственный socket.id
+        socket.emit('yourRooms', rooms.filter(room => room !== socket.id));
+      });
     })
     // Обработчик события отключения пользователя
     socket.on('disconnect', () => {
