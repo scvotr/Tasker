@@ -57,7 +57,7 @@ function setupSocket(io) {
     })
   }).on('connection', (socket) => { // Настраиваем обработчик события подключения нового соединения
     // Обработчик события, когда пользователь "подключается" через Socket.io
-    console.log('connection -> socket.decoded >>>>', socket.decoded)
+    // console.log('connection -> socket.decoded >>>>', socket.decoded)
     
     socket.on('userConnect', (data) => {
       // Сохраняем userId пользователя в объект socket
