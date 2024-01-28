@@ -1,4 +1,4 @@
-const {getIO} = require('../../utils/socket/socketManager')
+const {socketManager} = require('../../utils/socket/socketManager')
 
 const {
   saveFile,
@@ -69,12 +69,14 @@ class TasksControler {
       await createNewTask_V02(data)
       // await updateTaskStatus(postPayload)
 // !--------------------------------------------
-      const io = getIO()
+      const io = socketManager.getIO()
+      // const io = socketManager.init(server);
       // Отправляем событие пользователю, который создал задачу
-      io.to(req.user.id)
-        .emit('taskCreated', { message: 'New task created', taskData: data });
+      // io.to(req.user.id)
+      // Отправляем событие на клиентов
+      io.emit('taskCreated', { message: 'New task created', taskData: data });
       // Отправляем событие предполагаемому получателю задачи
-      io.to(response_user.id)
+      io.to(fields.responsible_department_id)
         .emit('newTaskForMe', { message: 'New task added', taskData: data });
 
       // await sendRabbitMQMessage('tasks_queue', { action: 'TaskCreated', taskData: data });
@@ -86,7 +88,7 @@ class TasksControler {
       res.write(JSON.stringify('Status acceptet'))
       res.end()
     } catch (error) {
-      handleError(res, `addNewTask${error}`)
+      handleError(res, `addNewTask: ${error}`)
     }
   }
   // Все задачи по ID пользоветля
