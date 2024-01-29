@@ -40,6 +40,19 @@ const logger = winston.createLogger({
   ]
 });
 
+// Добавление кастомных методов логирования
+logger.infoAuth = function(message, meta) {
+  this.log('infoAuth', message, meta);
+};
+
+logger.warnAuth = function(message, meta) {
+  this.log('warnAuth', message, meta);
+};
+
+logger.errorAuth = function(message, meta) {
+  this.log('errorAuth', message, meta);
+};
+
 module.exports = logger;
 
 // Примеры записи сообщений различных уровней
