@@ -536,6 +536,27 @@ const createTableVenchelFiles = async () => {
   }
 }
 
+const createTablePendingNotifications = async () => {
+  try {
+    await queryAsyncWraper(
+      `CREATE TABLE IF NOT EXISTS pending_notifications (
+         id INTEGER PRIMARY KEY AUTOINCREMENT,
+         user_id INTEGER NOT NULL,
+         message TEXT NOT NULL,
+         created_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+         FOREIGN KEY(user_id) REFERENCES users(id)
+       )`, "run")
+  } catch (error) {
+    console.log('DB ERROR: ', error)
+  }
+}
+// проверка уведомлений
+// SELECT * FROM pending_notifications WHERE user_id = ?
+// добавить уведомлений
+// INSERT INTO pending_notifications (user_id, message) VALUES (?, ?)
+// удаление уведомлений
+// DELETE FROM pending_notifications WHERE user_id = ?
+
 
 db.serialize(async () => {
   console.log('dddddddddddddddddddddddd')
@@ -550,6 +571,7 @@ db.serialize(async () => {
   createTableWorkshops()
   createVenchelTable()
   createTableVenchelFiles()
+  createTablePendingNotifications()
 })
 
 module.exports = {
