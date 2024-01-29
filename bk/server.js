@@ -2,6 +2,7 @@
 const http = require("http");
 const socketIo = require('socket.io');
 const { setupSocket, pollDatabaseForUserTasks } = require('./socketService')
+const {socketManager} = require('./utils/socket/socketManager')
 const setupSocketLogging = require('./utils/socket/setupSocketLogging')
 const logger = require('./utils/logger/logger')
 
@@ -61,12 +62,7 @@ server.on("error", (error) => {
   console.log("server.on ", error);
 });
 
-const io = socketIo(server, {
-  cors: {
-    origin: "*",
-    methods: ["GET", "POST"]
-  }
-});
+const io = socketManager.init(server);
 setupSocket(io);
 setupSocketLogging(io)  
 

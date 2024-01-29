@@ -144,10 +144,10 @@ export const V2UserComponents = ({ updateToTop }) => {
     // Вызываем fetchData при первоначальной загрузке
     fetchData();
     // Если вы хотите обновлять данные с определенной периодичностью, раскомментируйте следующие строки
-    const getRandomInterval = () => Math.floor(Math.random() * 10000) + 1000; 
-    const t = getRandomInterval(); console.log(t)
-    const fetchDataInterval = setInterval(fetchData, getRandomInterval());
-    return () => clearInterval(fetchDataInterval);
+    // const getRandomInterval = () => Math.floor(Math.random() * 10000) + 1000; 
+    // const t = getRandomInterval(); console.log(t)
+    // const fetchDataInterval = setInterval(fetchData, getRandomInterval());
+    // return () => clearInterval(fetchDataInterval);
   }, [currentUser, prevUserAppointTasks, prevUserResponsibleTasks, taskFormKey]);
   // !------------------------------------
   useEffect(()=> {
@@ -161,6 +161,15 @@ export const V2UserComponents = ({ updateToTop }) => {
     socket.on('connect', () => {
       console.log('Подключение к серверу установлено');
       sendDataToServer( {userId: currentUser.id, userName : currentUser.name})
+      // Запрашиваем список комнат, к которым подключен клиент
+      socket.emit('getMyRooms');
+    });
+    // Обработчик для получения списка комнат
+    socket.on('yourRooms', (rooms) => {
+      console.log('Я подключен к комнатам:', rooms);
+    });
+    socket.on('messageForChiefs', (message) => {
+      console.log(message); // 'Сообщение только для начальников!!!!'
     });
     socket.on('taskDataChanged', () => {
       // Обновляем данные задач пользователя
@@ -176,16 +185,26 @@ export const V2UserComponents = ({ updateToTop }) => {
       };
       fetchData();
     });
+    socket.on('taskCreated', (data) => {
+      console.log('SOCKET taskCreated 1', data.message)
+      console.log('SOCKET taskCreated 2', data.taskData.fields)
+    })
+    socket.on('newTaskForMe', (data) => {
+      console.log('SOCKET newTaskForMe', data.message)
+    })
     // Отключение сокета при размонтировании компонента
     window.addEventListener('beforeunload', () => {
       socket.disconnect();
     });
  
     return () => {
-      window.removeEventListener('beforeunload', () => {
-        socket.disconnect();
-      });
+      socket.off('connect');
+      socket.off('taskDataChanged');
+      socket.off('taskCreated');
+      socket.off('newTaskForMe');
       socket.disconnect();
+      
+      window.removeEventListener('beforeunload', () => socket.disconnect());
     };
   }, [currentUser])
   const [newTasks, setNewTasks] = useState([])
@@ -299,11 +318,10 @@ export const V2UserComponents = ({ updateToTop }) => {
         <V2UserButtonGroup
           handleButtonClick={handleMenuButtonClick}
           selectedButton={selectedButton}
-          appoinNewTasks={appoinNewTasks.length}
-          approvedAppoinTasks={approvedAppoinTasks.length}
-          appoinTasksInWork={appoinTasksInWork.length}
-          needApproveToCloseAppoinTasks={needApproveToCloseAppoinTasks.length}
-          closedAppointTasks={closedAppointTasks.length}
+          responsibleTasksInWork={responsibleTasksInWork.length}
+          approvedResponsibleTasks={approvedResponsibleTasks.length}
+          needApproveToCloseResponsibleTasks={needApproveToCloseResponsibleTasks.length}
+          closedResponsibleTasks={closedResponsibleTasks.length}
         />
 
         <div className="user-task-page__task-table-container">
@@ -313,10 +331,11 @@ export const V2UserComponents = ({ updateToTop }) => {
         <V2UserButtonGroup
           handleButtonClick={handleMenuButtonClick}
           selectedButton={selectedButton}
-          responsibleTasksInWork={responsibleTasksInWork.length}
-          approvedResponsibleTasks={approvedResponsibleTasks.length}
-          needApproveToCloseResponsibleTasks={needApproveToCloseResponsibleTasks.length}
-          closedResponsibleTasks={closedResponsibleTasks.length}
+          appoinNewTasks={appoinNewTasks.length}
+          approvedAppoinTasks={approvedAppoinTasks.length}
+          appoinTasksInWork={appoinTasksInWork.length}
+          needApproveToCloseAppoinTasks={needApproveToCloseAppoinTasks.length}
+          closedAppointTasks={closedAppointTasks.length}
         />
       </div>
     </>

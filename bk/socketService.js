@@ -21,7 +21,7 @@ function removeUserFromPoll(userId) {
 // Функция для опроса базы данных и обнаружения изменений в данных задач пользователя по его ID
 async function pollDatabaseForUserTasks(userId) {
   try {
-    if(io){
+    if (io) {
       const userTasks = await TasksControler.getAllUserTasks({
         params: {
           userId
@@ -38,39 +38,65 @@ async function pollDatabaseForUserTasks(userId) {
 }
 
 function setupSocket(io) {
-
+  // Подключаем middleware для обработки каждого входящего соединения через Socket.io
   io.use((socket, next) => {
+    // Получаем токен из строки запроса
     let token = socket.handshake.query.token;
+    // Получаем токен из заголовков авторизации, обрезая префикс 'Bearer '
     let tokenInHeaders = socket.handshake.headers.authorization;
     tokenInHeaders = tokenInHeaders.slice(7, tokenInHeaders.length);
-
+    // Верифицируем токен с помощью jwt и сохраняем декодированные данные в socket.decoded
     jwt.verify(tokenInHeaders, process.env.KEY_TOKEN, (err, decoded) => {
+      // В случае ошибки верификации токена отправляем ошибку следующему обработчику
       if (err) return next(new Error('Authentication error'))
+      // Выводим в консоль декодированные данные для отладки
+      // Сохраняем декодированные данные в socket для последующего использования
       socket.decoded = decoded
+      // Переходим к следующему middleware или обработчику
       next()
     })
-  }).on('connection', (socket) => {
+  }).on('connection', (socket) => { 
+    // Настраиваем обработчик события подключения нового соединения
+    // Обработчик события, когда пользователь "подключается" через Socket.io
+    console.log('connection -> socket.decoded >>>>', socket.decoded)
+    
     socket.on('userConnect', (data) => {
-      socket.userId = data.userId; // Сохраняем userId в объекте socket
-      addUserToPoll(data.userId)
       console.log('Получены данные от клиента:', data);
-      console.log('usersToPoll:', usersToPoll)
+      // Сохраняем userId пользователя в объект socket
+      socket.userId = data.userId;
+      // Добавляем пользователя в пул пользователей (предполагается, что это функция для управления пользователями)
+      addUserToPoll(data.userId); console.log('usersToPoll:', usersToPoll)
+      // Добавляем пользователя в комнату
+      socket.join('allActiveUser'); 
+      if(socket.decoded.role === 'chife') {
+        socket.join('allChifeRoom')
+      }
+      // Добавляем новый обработчик события для запроса списка комнат
+      socket.on('getMyRooms', () => {
+        // В этом примере предполагается, что socket.rooms возвращает Set комнат, к которым подключен сокет
+        const rooms = Array.from(socket.rooms);
+        // Отправляем клиенту список его комнат, исключая его собственный socket.id
+        socket.emit('yourRooms', rooms.filter(room => room !== socket.id));
+      });
     })
+    // Обработчик события отключения пользователя
     socket.on('disconnect', () => {
-      if(socket.userId) {
-        removeUserFromPoll(socket.userId); // Используем сохраненный userId
+      // Проверяем, сохранен ли userId в socket
+      if (socket.userId) {
+        // Если userId есть, удаляем пользователя из пула
+        removeUserFromPoll(socket.userId);
+        // Выводим в консоль сообщение об отключении пользователя и текущий список пользователей
         console.log('Пользователь отключился', socket.userId);
         console.log('usersToPoll:', usersToPoll)
       } else {
+        // В случае отсутствия userId выводим ошибку
         console.error('socket.userId not available on disconnect.');
       }
     });
-
+    // Обработчик события обновления задачи
     socket.on('taskUpdated', (updatedTask) => {
-      // Обработка обновления задачи
-      // ...
-
-      // Отправляем уведомление через веб-сокет о том, что данные задач были изменены
+      // ... Здесь может быть код обработки обновления задачи
+      // Отправляем сообщение всем подключенным пользователям о том, что данные задачи были изменены
       io.emit('taskDataChanged', {
         message: 'Данные задач были изменены'
       });

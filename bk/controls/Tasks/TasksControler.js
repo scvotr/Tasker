@@ -1,3 +1,5 @@
+const {socketManager} = require('../../utils/socket/socketManager')
+
 const {
   saveFile,
   deleteFile,
@@ -66,11 +68,24 @@ class TasksControler {
       }
       await createNewTask_V02(data)
       // await updateTaskStatus(postPayload)
+// !--------------------------------------------
+      // обеспечивает централизованный доступ к экземпляру Socket.IO
+      const io = socketManager.getIO()
+      io.emit('taskCreated', { message: 'New task created', taskData: data });
+      io.emit('newTaskForMe', { message: 'New task added', taskData: data });
+      // Отправка сообщения всем пользователям в комнате "allChifeRoom"
+      io.to('allChifeRoom').emit('messageForChiefs', 'Сообщение только для начальников!!!!')
+
+      // await sendRabbitMQMessage('tasks_queue', { action: 'TaskCreated', taskData: data });
+      // sendKafkaMessage('task_creation_topic', { action: 'TaskCreated', taskData: data });
+      // publishRedisMessage('task_events', { action: 'TaskCreated', taskData: data });
+
+// !--------------------------------------------
       res.setHeader('Content-Type', 'application/json')
       res.write(JSON.stringify('Status acceptet'))
       res.end()
     } catch (error) {
-      handleError(res, `addNewTask${error}`)
+      handleError(res, `addNewTask: ${error}`)
     }
   }
   // Все задачи по ID пользоветля
