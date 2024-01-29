@@ -38,28 +38,21 @@ async function pollDatabaseForUserTasks(userId) {
 }
 
 function setupSocket(io) {
-  // Подключаем middleware для обработки каждого входящего соединения через Socket.io
   io.use((socket, next) => {
-    // Получаем токен из строки запроса
-    let token = socket.handshake.query.token;
-    // Получаем токен из заголовков авторизации, обрезая префикс 'Bearer '
-    let tokenInHeaders = socket.handshake.headers.authorization;
-    tokenInHeaders = tokenInHeaders.slice(7, tokenInHeaders.length);
-    // Верифицируем токен с помощью jwt и сохраняем декодированные данные в socket.decoded
-    jwt.verify(tokenInHeaders, process.env.KEY_TOKEN, (err, decoded) => {
-      // В случае ошибки верификации токена отправляем ошибку следующему обработчику
-      if (err) return next(new Error('Authentication error'))
-      // Выводим в консоль декодированные данные для отладки
-      // Сохраняем декодированные данные в socket для последующего использования
-      socket.decoded = decoded
-      // Переходим к следующему middleware или обработчику
-      next()
-    })
+    let token = socket.handshake.query.token; //из строки запроса
+    let tokenInHeaders = socket.handshake.headers.authorization; //из заголовков авторизации
+    if(tokenInHeaders) {
+      tokenInHeaders = tokenInHeaders.slice(7, tokenInHeaders.length);
+      jwt.verify(tokenInHeaders, process.env.KEY_TOKEN, (err, decoded) => {
+        if (err) return next(new Error('Authentication error'))
+        socket.decoded = decoded
+        next()
+      })
+    } else {
+      next(new Error('Authentication error'))
+    }  
   }).on('connection', (socket) => { 
-    // Настраиваем обработчик события подключения нового соединения
-    // Обработчик события, когда пользователь "подключается" через Socket.io
     console.log('connection -> socket.decoded >>>>', socket.decoded)
-    
     socket.on('userConnect', (data) => {
       console.log('Получены данные от клиента:', data);
       // Сохраняем userId пользователя в объект socket
