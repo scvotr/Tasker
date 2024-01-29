@@ -550,12 +550,46 @@ const createTablePendingNotifications = async () => {
     console.log('DB ERROR: ', error)
   }
 }
-// проверка уведомлений
-// SELECT * FROM pending_notifications WHERE user_id = ?
-// добавить уведомлений
-// INSERT INTO pending_notifications (user_id, message) VALUES (?, ?)
-// удаление уведомлений
-// DELETE FROM pending_notifications WHERE user_id = ?
+
+// Добавление уведомления
+const addPendingNotification = async (userId, message) => {
+  try {
+    const command = `INSERT INTO pending_notifications (user_id, message) VALUES (?, ?)`;
+    await queryAsyncWraperParam(command, [userId, message], 'run'); // 'run' для добавления
+    console.log('Notification added to pending_notifications table');
+  } catch (error) {
+    console.error('Error adding notification to pending_notifications:', error);
+  }
+};
+// Обновление уведомления
+const updatePendingNotification = async (userId, message) => {
+  try {
+    const command = `UPDATE pending_notifications SET message = ? WHERE user_id = ?`;
+    await queryAsyncWraperParam(command, [message, userId], 'run'); // 'run' для обновления, обратите внимание на измененный порядок параметров
+    console.log('Notification updated in pending_notifications table');
+  } catch (error) {
+    console.error('Error updating notification in pending_notifications:', error);
+  }
+};
+// Получение уведомлений пользователя
+const getPendingNotification = async (userId) => {
+  try {
+    const command = `SELECT * FROM pending_notifications WHERE user_id = ?`;
+    return await queryAsyncWraperParam(command, [userId], 'all'); // 'all' для получения всех записей
+  } catch (error) {
+    console.error('Error getting notification from pending_notifications:', error);
+  }
+};
+// Удаление уведомления
+const deletePendingNotification = async (userId) => {
+  try {
+    const command = `DELETE FROM pending_notifications WHERE user_id = ?`;
+    return await queryAsyncWraperParam(command, [userId], 'run'); // 'run' для удаления
+  } catch (error) {
+    console.error('Error deleting notification from pending_notifications:', error);
+  }
+};
+
 
 
 db.serialize(async () => {
@@ -572,6 +606,8 @@ db.serialize(async () => {
   createVenchelTable()
   createTableVenchelFiles()
   createTablePendingNotifications()
+  addPendingNotification()
+  getPendingNotification()
 })
 
 module.exports = {
