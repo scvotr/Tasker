@@ -7,8 +7,7 @@ const customLevels = {
     info: 2,
     infoAuth: 3,
     warnAuth: 4,
-    errorAuth: 5
-
+    errorAuth: 5,
   },
   colors: {
     error: 'red',
@@ -23,7 +22,7 @@ const customLevels = {
 winston.addColors(customLevels.colors);
 
 const logger = winston.createLogger({
-  level: customLevels.levels, // Устанавливаем уровень логирования
+  levels: customLevels.levels, // Устанавливаем уровень логирования
   format: winston.format.combine(
     winston.format.colorize({all: true}),
     winston.format.timestamp(),
@@ -32,10 +31,12 @@ const logger = winston.createLogger({
     winston.format.printf(info => `${info.timestamp} ${info.level}: ${info.message}`)
   ),
   transports: [
-    new winston.transports.Console(), // Вывод в консоль
+    new winston.transports.Console({
+      level: 'info'
+    }), // Вывод в консоль
     new winston.transports.File({ filename: 'error.log', level: 'error' }), // Запись ошибок в файл error.log
-    new winston.transports.File({ filename: 'errorAuth.log', level: 'errorAuth' }), // Запись ошибок в файл error.log
-    new winston.transports.File({ filename: 'warnAuth.log', level: 'warnAuth' }), // Запись ошибок в файл error.log
+    // new winston.transports.File({ filename: 'errorAuth.log', level: 'errorAuth' }), // Запись ошибок в файл error.log
+    // new winston.transports.File({ filename: 'warnAuth.log', level: 'warnAuth' }), // Запись ошибок в файл error.log
     new winston.transports.File({ filename: 'combined.log' }) // Запись всех уровней в файл combined.log
   ]
 });

@@ -64,6 +64,10 @@ code {
   }
 }
 @media screen and (min-width: 1024px) {
+  body{
+    font-size: normal;
+    white-space: nowrap;
+  }
 }
 @media screen and (min-width: 1440px) {
 }

@@ -99,8 +99,9 @@ export const V2UserComponents = ({ updateToTop }) => {
   };
 
   const [allTasks, setAllTasks] = useState()
+  console.log(allTasks)
   const [alltasksSocket, setAllTasksSocket] = useState()
-  console.log('!!!!!!!!!!!!', alltasksSocket)
+  // console.log('!!!!!!!!!!!!', alltasksSocket)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -171,6 +172,14 @@ export const V2UserComponents = ({ updateToTop }) => {
     socket.on('messageForChiefs', (message) => {
       console.log(message); // 'Сообщение только для начальников!!!!'
     });
+    // socket.on('messageToHPR', function(message) {
+    //   console.log('Сообщение из комнаты HPR:', message);
+    // });
+    
+    socket.on('authenticate', function(message) {
+      console.log('Сообщение из комнаты authenticate:', message);
+    });
+
     socket.on('taskDataChanged', () => {
       // Обновляем данные задач пользователя
       const fetchData = async () => {
@@ -221,7 +230,7 @@ export const V2UserComponents = ({ updateToTop }) => {
       if (Array.isArray(tasksNotInLocalStorage ) && Array.isArray(allTasks)) {
         const notInLocalStorage = allTasks.filter((task) => !tasksNotInLocalStorage.some(prevTask => prevTask.task_id === task.task_id));
         setNewTasks(notInLocalStorage)
-        console.log('Новые задачи:', notInLocalStorage );
+        // console.log('Новые задачи:', notInLocalStorage );
       } else {
         console.log('tasksNotInLocalStorage или allTasks не являются массивами или не определены');
       }

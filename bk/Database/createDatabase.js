@@ -525,11 +525,11 @@ const createTableVenchelFiles = async () => {
         FOREIGN KEY(venchel_id) REFERENCES venchels(venchel_id)
        )`, "run")
 
-    try {
-      await queryAsyncWraper(`ALTER TABLE venchel_files ADD COLUMN create_on DATE;`, 'run')
-    } catch (error) {
-      console.log('createTableVenchelFiles -> ALTER TABLE venchel_files ADD COLUMN: ', error)
-    }    
+    // try {
+    //   await queryAsyncWraper(`ALTER TABLE venchel_files ADD COLUMN create_on DATE;`, 'run')
+    // } catch (error) {
+    //   console.log('createTableVenchelFiles -> ALTER TABLE venchel_files ADD COLUMN: ', error)
+    // }    
        
   } catch (error) {
     console.log('DB ERROR: ', error)

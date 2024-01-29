@@ -39,6 +39,7 @@ async function pollDatabaseForUserTasks(userId) {
 }
 
 function setupSocket(io) {
+  const userSockets = {};
   io.use((socket, next) => {
     let token = socket.handshake.query.token; //из строки запроса
     let tokenInHeaders = socket.handshake.headers.authorization; //из заголовков авторизации
@@ -50,25 +51,35 @@ function setupSocket(io) {
           return next(new Error('Authentication error'))
         }
         socket.decoded = decoded
-        logger.infoAuth({message: 'Authentication successful', decodedToken: socket.decoded.name })
+        logger.infoAuth({message: 'Authentication successful',  decode: socket.decoded.name })
         next()
       })
     } else {
       logger.warn({message: 'Authentication failed: token is missing' })
       next(new Error('Authentication error'))
     }  
-  }).on('connection', (socket) => { 
-    console.log('connection -> socket.decoded >>>>', socket.decoded)
+  })
+  .on('connection', (socket) => { 
     socket.on('userConnect', (data) => {
+      addUserToPoll(data.userId); console.log('usersToPoll:', usersToPoll)
       console.log('Получены данные от клиента:', data);
+      console.log('connection -> socket.decoded >>>>', socket.decoded)
+      const extData = {
+        user_id: socket.decoded.id,
+        user_role: socket.decoded.role,
+        user_dep_id: socket.decoded.department_id,
+        user_sub_dep_id: socket.decoded.subdepartment_id,
+      }
+      socket.userData = extData
       // Сохраняем userId пользователя в объект socket
       socket.userId = data.userId;
-      // Добавляем пользователя в пул пользователей (предполагается, что это функция для управления пользователями)
-      addUserToPoll(data.userId); console.log('usersToPoll:', usersToPoll)
       // Добавляем пользователя в комнату
       socket.join('allActiveUser'); 
       if(socket.decoded.role === 'chife') {
         socket.join('allChifeRoom')
+      }
+      if(socket.userData.user_sub_dep_id === 2) {
+        socket.join('allHPRRoom')
       }
       // Добавляем новый обработчик события для запроса списка комнат
       socket.on('getMyRooms', () => {
@@ -78,6 +89,11 @@ function setupSocket(io) {
         socket.emit('yourRooms', rooms.filter(room => room !== socket.id));
       });
     })
+    // socket.on('authenticate', () => {
+    //   const user_id = socket.decoded.id
+    //   userSockets[user_id] = socket.id;
+    // })
+    
     // Обработчик события отключения пользователя
     socket.on('disconnect', () => {
       // Проверяем, сохранен ли userId в socket
