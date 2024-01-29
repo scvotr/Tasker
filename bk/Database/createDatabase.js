@@ -593,7 +593,6 @@ const deletePendingNotification = async (userId) => {
 
 
 db.serialize(async () => {
-  console.log('dddddddddddddddddddddddd')
   createTableTasks()
   createTableUsers()
   createTableTokens()
@@ -607,7 +606,9 @@ db.serialize(async () => {
   createTableVenchelFiles()
   createTablePendingNotifications()
   addPendingNotification()
+  updatePendingNotification
   getPendingNotification()
+  deletePendingNotification()
 })
 
 module.exports = {
