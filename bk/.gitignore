@@ -43,10 +43,8 @@
 /modified_test_tmp.docx
 /output_with_watermark.pdf
 /output.pdf
-/combined.log
-/error.log
 /socket_logs.txt
-
+*.log
 
 /.pnp
 .pnp.js
