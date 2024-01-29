@@ -144,10 +144,10 @@ export const V2UserComponents = ({ updateToTop }) => {
     // Вызываем fetchData при первоначальной загрузке
     fetchData();
     // Если вы хотите обновлять данные с определенной периодичностью, раскомментируйте следующие строки
-    const getRandomInterval = () => Math.floor(Math.random() * 10000) + 1000; 
-    const t = getRandomInterval(); console.log(t)
-    const fetchDataInterval = setInterval(fetchData, getRandomInterval());
-    return () => clearInterval(fetchDataInterval);
+    // const getRandomInterval = () => Math.floor(Math.random() * 10000) + 1000; 
+    // const t = getRandomInterval(); console.log(t)
+    // const fetchDataInterval = setInterval(fetchData, getRandomInterval());
+    // return () => clearInterval(fetchDataInterval);
   }, [currentUser, prevUserAppointTasks, prevUserResponsibleTasks, taskFormKey]);
   // !------------------------------------
   useEffect(()=> {
