@@ -605,14 +605,15 @@ db.serialize(async () => {
   createVenchelTable()
   createTableVenchelFiles()
   createTablePendingNotifications()
-  addPendingNotification()
-  updatePendingNotification
-  getPendingNotification()
-  deletePendingNotification()
 })
 
 module.exports = {
   queryAsyncWraper,
   queryAsyncWraperParam,
   queryAsyncWraperTransaction,
+  //вынести отдельно
+  addPendingNotification,
+  updatePendingNotification,
+  getPendingNotification,
+  deletePendingNotification,
 }
