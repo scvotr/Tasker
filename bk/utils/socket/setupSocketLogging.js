@@ -104,9 +104,9 @@ module.exports = setupSocketLogging;
 //       id: data.userId,
 //       name: data.userName,
 //     };
-    // fs.appendFile('socket_logs.txt', logMessage(userData, 'что то отправил'), (err) => {
-    //   if (err) throw err;
-    //   console.log('Данные о подключении пользователя записаны в файл');
+//     fs.appendFile('socket_logs.txt', logMessage(userData, 'что то отправил'), (err) => {
+//       if (err) throw err;
+//       console.log('Данные о подключении пользователя записаны в файл');
 //     });
 //   })
 // }

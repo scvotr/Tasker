@@ -28,7 +28,7 @@ const arraysAreEqual = (array1, array2) => {
 const defaultSelect =  localStorage.getItem("selectedUserMenuButton") || "createdTasks"
 
 export const V2UserComponents = ({ updateToTop }) => {
-  const currentUser = useAuthContext();
+  const currentUser = useAuthContext()
   const [resStatus, setReqStatus] = useState(null);
 
   const [msg, setMsg] = useState('')
@@ -99,7 +99,7 @@ export const V2UserComponents = ({ updateToTop }) => {
   };
 
   const [allTasks, setAllTasks] = useState()
-  console.log(allTasks)
+  // console.log(allTasks)
   const [alltasksSocket, setAllTasksSocket] = useState()
   // console.log('!!!!!!!!!!!!', alltasksSocket)
 
@@ -152,71 +152,113 @@ export const V2UserComponents = ({ updateToTop }) => {
   }, [currentUser, prevUserAppointTasks, prevUserResponsibleTasks, taskFormKey]);
   // !------------------------------------
   useEffect(()=> {
+    const leadSubDep = 'leadSubDep_' + currentUser.subDep;
+
     const socket = io(HOST_SOCKET, {
-      // query: {token : currentUser.token},
       extraHeaders: { Authorization: currentUser.token },
     });
-    const sendDataToServer = (data) => {
-      socket.emit('userConnect', data);
-    };
     socket.on('connect', () => {
-      console.log('Подключение к серверу установлено');
-      sendDataToServer( {userId: currentUser.id, userName : currentUser.name})
-      // Запрашиваем список комнат, к которым подключен клиент
       socket.emit('getMyRooms');
     });
-    // Обработчик для получения списка комнат
     socket.on('yourRooms', (rooms) => {
       console.log('Я подключен к комнатам:', rooms);
     });
-    socket.on('messageForChiefs', (message) => {
-      console.log(message); // 'Сообщение только для начальников!!!!'
-    });
-    // socket.on('messageToHPR', function(message) {
-    //   console.log('Сообщение из комнаты HPR:', message);
-    // });
-    
-    socket.on('authenticate', function(message) {
-      console.log('Сообщение из комнаты authenticate:', message);
+    socket.on(leadSubDep, (data) => {
+      console.log(`подключен к комнате ${leadSubDep}`, data.taskData)
     });
 
-    socket.on('taskDataChanged', () => {
-      // Обновляем данные задач пользователя
-      const fetchData = async () => {
-        if (currentUser.login) {
-          try {
-            const newData = await getDataFromEndpoint(currentUser.token, '/tasks/getAllUserTasks', 'POST', null, setReqStatus);
-            setAllTasksSocket(newData); // Обновляем задачи пользователя
-          } catch (error) {
-            console.log(error);
-          }
-        }
-      };
-      fetchData();
+    socket.on('taskCreated', (taskData) => {
+      console.log('Получена информация о создании задачи:', taskData);
+      // Здесь вы можете добавить логику обработки задачи
     });
-    socket.on('taskCreated', (data) => {
-      console.log('SOCKET taskCreated 1', data.message)
-      console.log('SOCKET taskCreated 2', data.taskData.fields)
-    })
-    socket.on('newTaskForMe', (data) => {
-      console.log('SOCKET newTaskForMe', data.message)
-    })
-    // Отключение сокета при размонтировании компонента
+
     window.addEventListener('beforeunload', () => {
       socket.disconnect();
     });
  
     return () => {
       socket.off('connect');
-      socket.off('taskDataChanged');
-      socket.off('taskCreated');
-      socket.off('newTaskForMe');
+      socket.off(leadSubDep);
       socket.disconnect();
-      
       window.removeEventListener('beforeunload', () => socket.disconnect());
     };
   }, [currentUser])
   const [newTasks, setNewTasks] = useState([])
+
+  // useEffect(()=> {
+  //   const socket = io(HOST_SOCKET, {
+  //     // query: {token : currentUser.token},
+  //     extraHeaders: { Authorization: currentUser.token },
+  //   });
+  //   const sendDataToServer = (data) => {
+  //     socket.emit('userConnect', data);
+  //   };
+  //   socket.on('connect', () => {
+  //     console.log('Подключение к серверу установлено');
+  //     sendDataToServer( {userId: currentUser.id, userName : currentUser.name})
+  //     // Запрашиваем список комнат, к которым подключен клиент
+  //     socket.emit('getMyRooms');
+  //   });
+  //   // Обработчик для получения списка комнат
+  //   socket.on('yourRooms', (rooms) => {
+  //     console.log('Я подключен к комнатам:', rooms);
+  //   });
+  //   socket.on('messageForChiefs', (message) => {
+  //     // console.log(message); // 'Сообщение только для начальников!!!!'
+  //   });
+    
+  //   socket.on(currentUser.id, (data) => {
+  //     // console.log('SOCKET currentUser.id ', data.message)
+  //     // console.log('SOCKE currentUser.id ', data.taskData.fields)
+  //   });
+
+  //   socket.on('messageToHPR', function(message) {
+  //     // console.log('Сообщение из комнаты HPR:', message);
+  //   });
+    
+  //   socket.on('leadSubDep_' + currentUser.subDep, (data) => {
+  //     console.log('leadSubDep_' + currentUser.subDep, data);
+  //     console.log('leadSubDep_message', data.message);
+  //     console.log('leadSubDep_data', data.taskData);
+  //   });
+
+  //   socket.on('taskDataChanged', () => {
+  //     // Обновляем данные задач пользователя
+  //     const fetchData = async () => {
+  //       if (currentUser.login) {
+  //         try {
+  //           const newData = await getDataFromEndpoint(currentUser.token, '/tasks/getAllUserTasks', 'POST', null, setReqStatus);
+  //           setAllTasksSocket(newData); // Обновляем задачи пользователя
+  //         } catch (error) {
+  //           console.log(error);
+  //         }
+  //       }
+  //     };
+  //     fetchData();
+  //   });
+  //   socket.on('taskCreated', (data) => {
+  //     console.log('SOCKET taskCreated 1', data.message)
+  //     console.log('SOCKET taskCreated 2', data.taskData.fields)
+  //   })
+  //   socket.on('newTaskForMe', (data) => {
+  //     console.log('SOCKET newTaskForMe', data.message)
+  //   })
+  //   // Отключение сокета при размонтировании компонента
+  //   window.addEventListener('beforeunload', () => {
+  //     socket.disconnect();
+  //   });
+ 
+  //   return () => {
+  //     socket.off('connect');
+  //     socket.off('taskDataChanged');
+  //     socket.off('taskCreated');
+  //     socket.off('newTaskForMe');
+  //     socket.disconnect();
+      
+  //     window.removeEventListener('beforeunload', () => socket.disconnect());
+  //   };
+  // }, [currentUser])
+  // const [newTasks, setNewTasks] = useState([])
 
   // !------------------------------------
   useEffect(() => {

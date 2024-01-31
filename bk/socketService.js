@@ -4,19 +4,21 @@ const jwt = require('jsonwebtoken');
 const logger = require('./utils/logger/logger');
 require('dotenv').config();
 
-let usersToPoll = []; console.log('Активных пользователй: ', usersToPoll)
+let usersCacheFromSocketConnects = [];
 // Функция для добавления нового пользователя в массив опроса
-function addUserToPoll(userId) {
-  console.log('addUserToPoll', userId)
-  if (!usersToPoll.includes(userId)) {
-    usersToPoll.push(userId);
+function addUserInCache(userId) {
+  console.log('addUserInCache', userId)
+  if (!usersCacheFromSocketConnects.includes(userId)) {
+    usersCacheFromSocketConnects.push(userId);
+    console.log('Активных пользователй: ', usersCacheFromSocketConnects)
   }
 }
 
 // Функция для удаления пользователя из массива опроса
-function removeUserFromPoll(userId) {
-  console.log('removeUserFromPoll', userId)
-  usersToPoll = usersToPoll.filter(id => id !== userId);
+function removeUserFromCache(userId) {
+  console.log('removeUserFromCache', userId)
+  usersCacheFromSocketConnects = usersCacheFromSocketConnects.filter(id => id !== userId);
+  console.log('Активных пользователй: ', usersCacheFromSocketConnects)
 }
 
 //? Функция для опроса базы данных и обнаружения изменений в данных задач пользователя по его ID
@@ -65,41 +67,78 @@ function authenticateSocket(socket, next) {
     return next(new Error('Authentication error'));
   }
 }
-
+// ----------------------------------------
 function setupSocket(io) {
   io.use(authenticateSocket)
     .on('connection', (socket) => {
-      socket.on('userConnect', (data) => {
-        addUserToPoll(data.userId); //масиив с активными пользователями 
-        socket.userId = data.userId;
-        socket.join(data.userId)
-        socket.join('allActiveUser');
-        if (socket.decoded.role === 'chife') {
-          socket.join('allChifeRoom')
-        }
-        if (socket.userData.user_sub_dep_id === 2) {
-          socket.join('allHPRRoom')
-        }
-        socket.on('getMyRooms', () => {
-          const rooms = Array.from(socket.rooms);
-          socket.emit('yourRooms', rooms.filter(room => room !== socket.id));
+      addUserInCache(socket.decoded.id)
+
+      socket.join('allActiveUser')
+      socket.join('user_' + socket.decoded.id) //?для каждого пользователя
+      socket.join('dep_' + socket.decoded.department_id) //? для каждого подразделения
+      socket.join('subDep_' + socket.decoded.subdepartment_id) //? для каждого отдела
+
+      if (socket.decoded.role === 'chife') {
+        let leadRoomName = 'leadSubDep_' + socket.decoded.subdepartment_id
+        socket.join(leadRoomName)
+        // Обработчик события для комнаты leadRoomName
+        socket.on('newMessage', (message) => {
+          // Это пример, внутренняя логика зависит от вашего предназначения
+          io.to(leadRoomName).emit('messageReceived', message);
         });
+      }
+
+      socket.on('getMyRooms', () => {
+        const allRooms = Array.from(socket.rooms)
+        socket.emit('yourRooms',
+          allRooms.filter((room) => room !== socket.id)
+        )
       })
       socket.on('disconnect', () => {
-        if (socket.userId) {
-          removeUserFromPoll(socket.userId);
-        } else {
-          console.error('socket.userId not available on disconnect.');
-        }
+        removeUserFromCache(socket.decoded.id)
+      })
+      socket.on('error', (error) => {
+        console.error('Произошла ошибка сокета для пользователя с ID:', socket.decoded.id, error);
       });
-      socket.on('taskUpdated', (updatedTask) => {
-        io.emit('taskDataChanged', {
-          message: 'Данные задач были изменены'
-        });
-      });
-    });
+    })
 }
 
 module.exports = {
-  setupSocket
+  setupSocket,
+  usersCacheFromSocketConnects,
 };
+
+
+// function setupSocket(io) {
+//   io.use(authenticateSocket)
+//     .on('connection', (socket) => {
+//       socket.on('userConnect', (data) => {
+//         addUserInCache(data.userId); //масиив с активными пользователями 
+//         socket.userId = data.userId;
+//         socket.join(data.userId)
+//         socket.join('allActiveUser');
+//         if (socket.decoded.role === 'chife') {
+//           socket.join('allChifeRoom')
+//         }
+//         if (socket.userData.user_sub_dep_id === 2) {
+//           socket.join('allHPRRoom')
+//         }
+//         socket.on('getMyRooms', () => {
+//           const rooms = Array.from(socket.rooms);
+//           socket.emit('yourRooms', rooms.filter(room => room !== socket.id));
+//         });
+//       })
+//       socket.on('disconnect', () => {
+//         if (socket.userId) {
+//           removeUserFromCache(socket.userId);
+//         } else {
+//           console.error('socket.userId not available on disconnect.');
+//         }
+//       });
+//       socket.on('taskUpdated', (updatedTask) => {
+//         io.emit('taskDataChanged', {
+//           message: 'Данные задач были изменены'
+//         });
+//       });
+//     });
+// }

@@ -1,4 +1,5 @@
 const {socketManager} = require('../../utils/socket/socketManager')
+const {usersCacheFromSocketConnects} = require('../../socketService')
 
 const {
   saveFile,
@@ -46,6 +47,12 @@ const handleError = (res, error) => {
   }));
 };
 
+const sendNotificationToDepLead = () => {
+
+}
+const sendNotificationToSubDepLead = () => {
+
+}
 
 class TasksControler {
   async addNewTask(req, res) {
@@ -71,28 +78,12 @@ class TasksControler {
         user_id
       }
       await createNewTask_V02(data)
-      // await updateTaskStatus(postPayload)
-// !--------------------------------------------
-      // обеспечивает централизованный доступ к экземпляру Socket.IO
-      const socket_id = user_id
+      
       const io = socketManager.getIO()
-      io.emit('taskCreated', { message: 'New task created', taskData: data });
-      io.emit('newTaskForMe', { message: 'New task added', taskData: data });
-      // Отправка сообщения всем пользователям в комнате "allChifeRoom"
-      io.to('allChifeRoom').emit('messageForChiefs', 'Сообщение только для начальников!!!!')
-      io.to('allHPRRoom').emit('messageToHPR', 'Это сообщение для всех в комнате HPR');
-
-      // if(user_id) {
-      //   io.to(socket_id).emit('taskCreated', { message: 'New task created', taskData: data })
-      // } else {
-      //   console.log(`Сокет для пользователя с ID ${user_id} не найден.`);
-      // }
-
-      //? await sendRabbitMQMessage('tasks_queue', { action: 'TaskCreated', taskData: data });
-      //? sendKafkaMessage('task_creation_topic', { action: 'TaskCreated', taskData: data });
-      //? publishRedisMessage('task_events', { action: 'TaskCreated', taskData: data });
-
-// !--------------------------------------------
+      io.to('leadSubDep_' + fields.appoint_subdepartment_id)
+        .emit('taskCreated',{ message: 'Новая задача на согласование', taskData: fields })
+    
+        // await updateTaskStatus(postPayload)
       res.setHeader('Content-Type', 'application/json')
       res.write(JSON.stringify('Status acceptet'))
       res.end()
@@ -300,3 +291,22 @@ class TasksControler {
 }
 
 module.exports = new TasksControler()
+
+
+
+
+       
+// io.to('allChifeRoom').emit('messageForChiefs', 'Сообщение только для начальников!!!!')
+// io.to('allHPRRoom').emit('messageToHPR', 'Это сообщение для всех в комнате HPR');
+
+//? await sendRabbitMQMessage('tasks_queue', { action: 'TaskCreated', taskData: data });
+//? sendKafkaMessage('task_creation_topic', { action: 'TaskCreated', taskData: data });
+//? publishRedisMessage('task_events', { action: 'TaskCreated', taskData: data });
+
+
+// --------------------------------
+// const io = socketManager.getIO()
+// !io.emit('leadSubDep_' + fields.appoint_subdepartment_id, { message: 'Новая задача на согласование', taskData: fields });
+// io.to('leadSubDep_' + fields.appoint_subdepartment_id)
+// .emit('newTask', { message: 'Новая задача на согласование', taskData: fields })
+// --------------------------------
