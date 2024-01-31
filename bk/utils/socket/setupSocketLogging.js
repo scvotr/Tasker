@@ -37,8 +37,10 @@ function logConnectionUserData(socket) {
       name: data.userName,
     };
     fs.appendFile('socket_logs.txt', logMessage(userData, 'что то отправил'), (err) => {
-      if (err) throw err;
-      console.log('Данные о подключении пользователя записаны в файл');
+      if (err) {
+        console.log('logConnectionUserData', err)
+        throw err
+      }
     });
   })
 }
@@ -49,8 +51,10 @@ function logConnectionUserData(socket) {
  */
 function logConnection(socket) {
   fs.appendFile('socket_logs.txt', logMessage(socket.decoded, 'подключился'), (err) => {
-    if (err) throw err
-    console.log('Данные пользователя записаны в файл')
+    if (err) {
+      console.log('logConnection', err)
+      throw err
+    }
   })
   // Дополнительная логика при подключении пользователя
 }
@@ -60,8 +64,10 @@ function logConnection(socket) {
  */
 function logDisconnection(socket) {
   fs.appendFile('socket_logs.txt', logMessage(socket.decoded, 'отключился'), (err) => {
-    if (err) throw err;
-    console.log(logMessage);
+    if (err) {
+      console.log('logDisconnection', err)
+      throw err
+    }
   });
   // Дополнительная логика при отключении пользователя
 }
@@ -81,3 +87,54 @@ function setupSocketLogging(io) {
 }
 
 module.exports = setupSocketLogging;
+
+// !------------------------------------------------------
+
+
+// const logMessage = (data, actionTypeName) => {
+//   const now = new Date()
+//   const currentDate = `${now.getDate()} ${now.getFullYear()}`
+//   const currentTime = now.toLocaleTimeString()
+//   return `\n Пользователь ID: ${data.id} ${data.name} ${currentDate} ${currentTime} ${actionTypeName};\n`
+// }
+
+// function logConnectionUserData(socket) {
+//   socket.on('userConnect', (data) => {
+//     const userData = {
+//       id: data.userId,
+//       name: data.userName,
+//     };
+    // fs.appendFile('socket_logs.txt', logMessage(userData, 'что то отправил'), (err) => {
+    //   if (err) throw err;
+    //   console.log('Данные о подключении пользователя записаны в файл');
+//     });
+//   })
+// }
+
+// function logConnection(socket) {
+//   fs.appendFile('socket_logs.txt', logMessage(socket.decoded, 'подключился'), (err) => {
+//     if (err) throw err
+//     console.log('Данные пользователя записаны в файл')
+//   })
+//   // Дополнительная логика при подключении пользователя
+// }
+
+// function logDisconnection(socket) {
+//   fs.appendFile('socket_logs.txt', logMessage(socket.decoded, 'отключился'), (err) => {
+//     if (err) throw err;
+//     console.log(logMessage);
+//   });
+//   // Дополнительная логика при отключении пользователя
+// }
+
+// function setupSocketLogging(io) {
+//   io.on('connection', (socket) => {
+//     logConnection(socket);
+//     logConnectionUserData(socket)
+//     socket.on('disconnect', () => {
+//       logDisconnection(socket);
+//     });
+//     // Другие обработчики событий и логика
+//   });
+// }
+
