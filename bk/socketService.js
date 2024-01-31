@@ -4,10 +4,10 @@ const jwt = require('jsonwebtoken');
 const logger = require('./utils/logger/logger');
 require('dotenv').config();
 
-let usersToPoll = [];
+let usersToPoll = []; console.log('Активных пользователй: ', usersToPoll)
 // Функция для добавления нового пользователя в массив опроса
 function addUserToPoll(userId) {
-  // console.log('addUserToPoll', userId)
+  console.log('addUserToPoll', userId)
   if (!usersToPoll.includes(userId)) {
     usersToPoll.push(userId);
   }
@@ -15,7 +15,7 @@ function addUserToPoll(userId) {
 
 // Функция для удаления пользователя из массива опроса
 function removeUserFromPoll(userId) {
-  // console.log('removeUserFromPoll', userId)
+  console.log('removeUserFromPoll', userId)
   usersToPoll = usersToPoll.filter(id => id !== userId);
 }
 
@@ -38,7 +38,7 @@ async function pollDatabaseForUserTasks(userId) {
   }
 }
 
-export default function authenticateSocket(socket, next) {
+function authenticateSocket(socket, next) {
   let token = socket.handshake.query.token;
   let tokenInHeaders = socket.handshake.headers.authorization;
   if (tokenInHeaders) {
@@ -70,14 +70,7 @@ function setupSocket(io) {
   io.use(authenticateSocket)
     .on('connection', (socket) => {
       socket.on('userConnect', (data) => {
-        addUserToPoll(data.userId);
-        const extData = {
-          user_id: socket.decoded.id,
-          user_role: socket.decoded.role,
-          user_dep_id: socket.decoded.department_id,
-          user_sub_dep_id: socket.decoded.subdepartment_id,
-        }
-        socket.userData = extData
+        addUserToPoll(data.userId); //масиив с активными пользователями 
         socket.userId = data.userId;
         socket.join(data.userId)
         socket.join('allActiveUser');
