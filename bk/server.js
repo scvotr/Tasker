@@ -1,10 +1,10 @@
 'use strict'
 const http = require("http");
-const socketIo = require('socket.io');
-const { setupSocket, pollDatabaseForUserTasks } = require('./socketService')
+const { setupSocket } = require('./socketService')
 const {socketManager} = require('./utils/socket/socketManager')
 const setupSocketLogging = require('./utils/socket/setupSocketLogging')
 const logger = require('./utils/logger/logger')
+require('dotenv').config();
 
 const {
   executeDatabaseQueryAsync,
@@ -53,8 +53,8 @@ const server = http.createServer(async (req, res) => {
       }
     }
   } catch (error) {
-    logger.error(`Server : ${error}`)
-    console.log("server-catch: ", error);
+    logger.error(`Server-error: ${error}`)
+    console.log("server-catch-error: ", error);
   }
 });
 
@@ -66,8 +66,14 @@ const io = socketManager.init(server);
 setupSocket(io);
 setupSocketLogging(io)  
 
-server.listen({ host: "localhost", port: 3070 }, () => {
-// server.listen({ host: "192.168.8.109", port: 3050 }, () => {
+const host = process.env.HOST || "localhost"; 
+const port = process.env.PORT || 3070;
+server.listen({ host, port }, () => {
   const address = server.address();
   console.log(`Сервер запущен на адресе ${address.address}:${address.port}`);
 });
+
+// $env:HOST="192.168.8.102"; $env:PORT="3050"; node .\server.js // win PowerShell 
+// $env:HOST="localhost"; $env:PORT="3070"; node .\server.js     // win PowerShell 
+// export HOST=192.168.8.102 export PORT=3050 node ./server.js   // Unix и Linux
+// export HOST=localhost export PORT=3070 node ./server.js       // Unix и Linux
