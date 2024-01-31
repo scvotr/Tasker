@@ -1,40 +1,37 @@
 const fs = require('fs');
-const path = require('path')
 
-const currentDirectory = process.cwd()
-console.log('currentDirectory', currentDirectory)
+const logMessage = (data, actionTypeName) => {
+  const now = new Date()
+  const currentDate = `${now.getDate()} ${now.getFullYear()}`
+  const currentTime  = now.toLocaleTimeString()
+  return `\n Пользователь ID: ${data.id} ${data.name} ${currentDate} ${currentTime} ${actionTypeName};\n`
+}
 
-// function logConnection(socket) {
-//   const logMessage = `Пользователь ${socket.id} подключился\n`;
-//   fs.appendFile('socket_logs.txt', logMessage, (err) => {
-//     if (err) throw err;
-//     console.log(logMessage);
-//   });
-// }
-
-
-function logConnection(socket) {
+function logConnectionUserData(socket) {
   socket.on('userConnect', (data) => {
-    const userId = data.userId
-    const userName = data.userName
-
-    const now = new Date();
-    const datePart = `${now.getDate()} ${now.getFullYear()}`;
-    const timePart = now.toLocaleTimeString();
-
-    const logMsg = `\n Пользователь ID: ${userId} ${userName} ${datePart} ${timePart} подключился;\n`;
-    fs.appendFile('socket_logs.txt', logMsg, (err) => {
-      if(err) throw err
-      console.log('Данные пользователя записаны в файл')
-    })
+    const userData = {
+      id: data.userId,
+      name: data.userName,
+    };
+    fs.appendFile('socket_logs.txt', logMessage(userData, 'что то отправил'), (err) => {
+      if (err) throw err;
+      console.log('Данные о подключении пользователя записаны в файл');
+    });
   })
 }
 
+function logConnection(socket) {
+  fs.appendFile('socket_logs.txt', logMessage(socket.decoded, 'подключился'), (err) => {
+    if (err) throw err
+    console.log('Данные пользователя записаны в файл')
+  })
+  // Дополнительная логика при подключении пользователя
+}
+
 function logDisconnection(socket) {
-  const disconnectLogMessage = `\n Пользователь ${socket.id} отключился\n`;
-  fs.appendFile('socket_logs.txt', disconnectLogMessage, (err) => {
+  fs.appendFile('socket_logs.txt', logMessage(socket.decoded, 'отключился'), (err) => {
     if (err) throw err;
-    console.log(disconnectLogMessage);
+    console.log(logMessage);
   });
   // Дополнительная логика при отключении пользователя
 }
@@ -42,13 +39,11 @@ function logDisconnection(socket) {
 function setupSocketLogging(io) {
   io.on('connection', (socket) => {
     logConnection(socket);
-
+    logConnectionUserData(socket)
     socket.on('disconnect', () => {
       logDisconnection(socket);
     });
-
     // Другие обработчики событий и логика
-
   });
 }
 
