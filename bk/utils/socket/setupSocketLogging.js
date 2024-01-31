@@ -1,12 +1,22 @@
 const fs = require('fs');
 /**
- * Generates a log message with user data and action type.
+ * @description
+ * EN: Generates a log message with user data and the type of action performed.
+ * RU: Генерирует сообщение журнала с данными пользователя и типом выполненного действия.
  *
- * @param {Object} data - An object containing user data.
+ * @param {Object} data - The object containing the user's data.
+ * EN: The unique identifier of the user.
+ * RU: Уникальный идентификатор пользователя.
  * @param {string} data.id - The unique identifier of the user.
+ * EN: The name of the user.
+ * RU: Имя пользователя.
  * @param {string} data.name - The name of the user.
+ * EN: The name of the action performed by the user.
+ * RU: Название выполняемого пользователем действия. 
  * @param {string} actionTypeName - The name of the action performed by the user.
- * @returns {string} A formatted log message containing user information and action.
+ * @returns {string}
+ * EN: A formatted log message containing information about the user and the action.
+ * RU: Форматированное сообщение журнала, содержащее информацию о пользователе и действии.
  */
 const logMessage = (data, actionTypeName) => {
   const now = new Date()
