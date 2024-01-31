@@ -1,6 +1,7 @@
 'use strict'
 
 const jwt = require('jsonwebtoken');
+const logger = require('./utils/logger/logger');
 require('dotenv').config();
 
 let usersToPoll = [];
@@ -38,38 +39,47 @@ async function pollDatabaseForUserTasks(userId) {
 }
 
 function setupSocket(io) {
-  // Подключаем middleware для обработки каждого входящего соединения через Socket.io
+  const userSockets = {};
   io.use((socket, next) => {
-    // Получаем токен из строки запроса
-    let token = socket.handshake.query.token;
-    // Получаем токен из заголовков авторизации, обрезая префикс 'Bearer '
-    let tokenInHeaders = socket.handshake.headers.authorization;
-    tokenInHeaders = tokenInHeaders.slice(7, tokenInHeaders.length);
-    // Верифицируем токен с помощью jwt и сохраняем декодированные данные в socket.decoded
-    jwt.verify(tokenInHeaders, process.env.KEY_TOKEN, (err, decoded) => {
-      // В случае ошибки верификации токена отправляем ошибку следующему обработчику
-      if (err) return next(new Error('Authentication error'))
-      // Выводим в консоль декодированные данные для отладки
-      // Сохраняем декодированные данные в socket для последующего использования
-      socket.decoded = decoded
-      // Переходим к следующему middleware или обработчику
-      next()
-    })
-  }).on('connection', (socket) => { 
-    // Настраиваем обработчик события подключения нового соединения
-    // Обработчик события, когда пользователь "подключается" через Socket.io
-    console.log('connection -> socket.decoded >>>>', socket.decoded)
-    
+    let token = socket.handshake.query.token; //из строки запроса
+    let tokenInHeaders = socket.handshake.headers.authorization; //из заголовков авторизации
+    if(tokenInHeaders) {
+      tokenInHeaders = tokenInHeaders.slice(7, tokenInHeaders.length);
+      jwt.verify(tokenInHeaders, process.env.KEY_TOKEN, (err, decoded) => {
+        if (err) { 
+          logger.errorAuth({ message: 'Authentication failed: invalid token', token: tokenInHeaders})
+          return next(new Error('Authentication error'))
+        }
+        socket.decoded = decoded
+        logger.infoAuth({message: 'Authentication successful',  decode: socket.decoded.name })
+        next()
+      })
+    } else {
+      logger.warn({message: 'Authentication failed: token is missing' })
+      next(new Error('Authentication error'))
+    }  
+  })
+  .on('connection', (socket) => { 
     socket.on('userConnect', (data) => {
+      addUserToPoll(data.userId); console.log('usersToPoll:', usersToPoll)
       console.log('Получены данные от клиента:', data);
+      console.log('connection -> socket.decoded >>>>', socket.decoded)
+      const extData = {
+        user_id: socket.decoded.id,
+        user_role: socket.decoded.role,
+        user_dep_id: socket.decoded.department_id,
+        user_sub_dep_id: socket.decoded.subdepartment_id,
+      }
+      socket.userData = extData
       // Сохраняем userId пользователя в объект socket
       socket.userId = data.userId;
-      // Добавляем пользователя в пул пользователей (предполагается, что это функция для управления пользователями)
-      addUserToPoll(data.userId); console.log('usersToPoll:', usersToPoll)
       // Добавляем пользователя в комнату
       socket.join('allActiveUser'); 
       if(socket.decoded.role === 'chife') {
         socket.join('allChifeRoom')
+      }
+      if(socket.userData.user_sub_dep_id === 2) {
+        socket.join('allHPRRoom')
       }
       // Добавляем новый обработчик события для запроса списка комнат
       socket.on('getMyRooms', () => {
@@ -79,6 +89,11 @@ function setupSocket(io) {
         socket.emit('yourRooms', rooms.filter(room => room !== socket.id));
       });
     })
+    // socket.on('authenticate', () => {
+    //   const user_id = socket.decoded.id
+    //   userSockets[user_id] = socket.id;
+    // })
+    
     // Обработчик события отключения пользователя
     socket.on('disconnect', () => {
       // Проверяем, сохранен ли userId в socket

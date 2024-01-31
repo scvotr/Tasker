@@ -26,6 +26,10 @@ const {
   updateTaskRejectRequest,
 } = require('../../Database/TasksQuery/TasksQuery');
 
+const { 
+  addPendingNotification, updatePendingNotification, getPendingNotification,deletePendingNotification
+} = require('../../Database/createDatabase')
+
 const { saveAndConvert } = require('../../utils/files/saveAndConvert');
 
 const sendResponseWithData = (res, data) => {
@@ -70,15 +74,23 @@ class TasksControler {
       // await updateTaskStatus(postPayload)
 // !--------------------------------------------
       // обеспечивает централизованный доступ к экземпляру Socket.IO
+      const socket_id = user_id
       const io = socketManager.getIO()
       io.emit('taskCreated', { message: 'New task created', taskData: data });
       io.emit('newTaskForMe', { message: 'New task added', taskData: data });
       // Отправка сообщения всем пользователям в комнате "allChifeRoom"
       io.to('allChifeRoom').emit('messageForChiefs', 'Сообщение только для начальников!!!!')
+      io.to('allHPRRoom').emit('messageToHPR', 'Это сообщение для всех в комнате HPR');
 
-      // await sendRabbitMQMessage('tasks_queue', { action: 'TaskCreated', taskData: data });
-      // sendKafkaMessage('task_creation_topic', { action: 'TaskCreated', taskData: data });
-      // publishRedisMessage('task_events', { action: 'TaskCreated', taskData: data });
+      // if(user_id) {
+      //   io.to(socket_id).emit('taskCreated', { message: 'New task created', taskData: data })
+      // } else {
+      //   console.log(`Сокет для пользователя с ID ${user_id} не найден.`);
+      // }
+
+      //? await sendRabbitMQMessage('tasks_queue', { action: 'TaskCreated', taskData: data });
+      //? sendKafkaMessage('task_creation_topic', { action: 'TaskCreated', taskData: data });
+      //? publishRedisMessage('task_events', { action: 'TaskCreated', taskData: data });
 
 // !--------------------------------------------
       res.setHeader('Content-Type', 'application/json')
