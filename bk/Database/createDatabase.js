@@ -535,13 +535,15 @@ const createTableVenchelFiles = async () => {
     console.log('DB ERROR: ', error)
   }
 }
-
+// DROP TABLE IF EXISTS pending_notifications;
 const createTablePendingNotifications = async () => {
   try {
     await queryAsyncWraper(
       `CREATE TABLE IF NOT EXISTS pending_notifications (
          id INTEGER PRIMARY KEY AUTOINCREMENT,
          user_id INTEGER NOT NULL,
+         task_id INTEGER NOT NULL,
+         delivered_status TEXT NOT NULL,
          message TEXT NOT NULL,
          created_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
          FOREIGN KEY(user_id) REFERENCES users(id)
@@ -552,15 +554,18 @@ const createTablePendingNotifications = async () => {
 }
 
 // Добавление уведомления
-const addPendingNotification = async (userId, message) => {
+const addPendingNotification = async (user_id, task_id, delivered_status ,message) => {
+  console.log(addPendingNotification)
   try {
-    const command = `INSERT INTO pending_notifications (user_id, message) VALUES (?, ?)`;
-    await queryAsyncWraperParam(command, [userId, message], 'run'); // 'run' для добавления
+    const command = `INSERT INTO pending_notifications (user_id, task_id, delivered_status ,message) VALUES (?, ?, ?, ?)`;
+    await queryAsyncWraperParam(command, [user_id, task_id, delivered_status ? 'delivered' : 'not delivered' ,message], 'run'); // 'run' для добавления
+
     console.log('Notification added to pending_notifications table');
   } catch (error) {
     console.error('Error adding notification to pending_notifications:', error);
   }
 };
+
 // Обновление уведомления
 const updatePendingNotification = async (userId, message) => {
   try {
