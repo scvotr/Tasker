@@ -1,5 +1,9 @@
-const {socketManager} = require('../../utils/socket/socketManager')
-const {usersCacheFromSocketConnects} = require('../../socketService')
+const {
+  socketManager
+} = require('../../utils/socket/socketManager')
+const {
+  usersCacheFromSocketConnects
+} = require('../../socketService')
 
 const {
   saveFile,
@@ -27,11 +31,16 @@ const {
   updateTaskRejectRequest,
 } = require('../../Database/TasksQuery/TasksQuery');
 
-const { 
-  addPendingNotification, updatePendingNotification, getPendingNotification,deletePendingNotification
+const {
+  addPendingNotification,
+  updatePendingNotification,
+  getPendingNotification,
+  deletePendingNotification
 } = require('../../Database/createDatabase')
 
-const { saveAndConvert } = require('../../utils/files/saveAndConvert');
+const {
+  saveAndConvert
+} = require('../../utils/files/saveAndConvert');
 
 const sendResponseWithData = (res, data) => {
   res.setHeader('Content-Type', 'application/json');
@@ -78,12 +87,15 @@ class TasksControler {
         user_id
       }
       await createNewTask_V02(data)
-      
+
       const io = socketManager.getIO()
       io.to('leadSubDep_' + fields.appoint_subdepartment_id)
-        .emit('taskCreated',{ message: 'Новая задача на согласование', taskData: fields })
-    
-        // await updateTaskStatus(postPayload)
+        .emit('taskCreated', {
+          message: 'Новая задача на согласование',
+          taskData: fields
+        })
+
+      // await updateTaskStatus(postPayload)
       res.setHeader('Content-Type', 'application/json')
       res.write(JSON.stringify('Status acceptet'))
       res.end()
@@ -174,6 +186,46 @@ class TasksControler {
       const authDecodeUserData = req.user
       const data = JSON.parse(authDecodeUserData.payLoad)
       await updateTaskStatus(data)
+ 
+      const io = socketManager.getIO()
+
+      const inOneDep = data.appoint_department_id === data.responsible_department_id;
+      const inDifDep = data.appoint_department_id !== data.responsible_department_id;
+      const inOneSubDep = data.appoint_subdepartment_id === data.responsible_subdepartment_id;
+      const inDifSubDep = data.appoint_subdepartment_id !== data.responsible_subdepartment_id;
+
+      const noticeToAppointUser = (user_id) => {(
+        io.to('user_' + data.appoint_user_id)
+         .emit('taskApproved', {message: 'Задача согласованна начальником', taskData: data}))
+        }
+      const noticeToAppointLead  = (lead_id) => {(
+        io.to('leadSubDep_' + data.appoint_subdepartment_id)
+        .emit('taskApproved',{ message: 'Новая задача для отдела', taskData: data })
+        )}
+      const noticeToResponceUser = (user_id) => {(
+        io.to('user_' + data.responsible_user_id)
+        .emit('taskApproved', {message: 'Задача согласованна', taskData: data}))
+      }
+      const noticeToResponceLead = (lead_id) => {(
+        io.to('leadSubDep_' + data.responsible_subdepartment_id)
+        .emit('taskApproved',{ message: 'Новая задача для отдела', taskData: data })
+      )}
+
+      if (data.approved_on) {
+        if (inOneDep && inOneSubDep) {
+          console.log('Задача внутри одного отдела в одном департаменте');
+          noticeToAppointUser()
+        } else if (inOneDep && inDifSubDep) {
+          console.log('Задача между отделами в одном департаменте');
+          noticeToAppointUser()
+          noticeToResponceLead()
+        } else if (inDifDep && inOneSubDep) {
+          console.log('Задача внутри подразделения, но между разными отделами');
+        } else if (inDifDep && inDifSubDep) {
+          console.log('Задача между разными подразделениями разных отделов');
+        }
+      }
+
       sendResponseWithData(res, data)
     } catch (error) {
       handleError(res, 'updateTaskStatus')
@@ -185,6 +237,48 @@ class TasksControler {
       const authDecodeUserData = req.user
       const data = JSON.parse(authDecodeUserData.payLoad)
       await updateTaskResponceSubDep(data)
+      
+      const io = socketManager.getIO()
+
+      const inOneDep = data.appoint_department_id === data.responsible_department_id;
+      const inDifDep = data.appoint_department_id !== data.responsible_department_id;
+      const inOneSubDep = data.appoint_subdepartment_id === data.responsible_subdepartment_id;
+      const inDifSubDep = data.appoint_subdepartment_id !== data.responsible_subdepartment_id;
+
+      const noticeToAppointUser = (user_id) => {(
+        io.to('user_' + data.appoint_user_id)
+         .emit('taskApproved', {message: 'Пользовтель создатель: Назначен исполнитель', taskData: data}))
+        }
+      const noticeToAppointLead  = (lead_id) => {(
+        io.to('leadSubDep_' + data.appoint_subdepartment_id)
+        .emit('taskApproved',{ message: 'Руководитель создатель: Назначен исполнитель', taskData: data })
+        )}
+      const noticeToResponceUser = (user_id) => {(
+        io.to('user_' + data.responsible_user_id)
+        .emit('taskApproved', {message: 'Пользователь исполнитель: Назначена новая задача', taskData: data}))
+      }
+      const noticeToResponceLead = (lead_id) => {(
+        io.to('leadSubDep_' + data.responsible_subdepartment_id)
+        .emit('taskApproved',{ message: 'Руководитель исполнитель: Назначен исполнитель', taskData: data })
+      )}
+
+      if (data.setResponseUser_on) {
+        if (inOneDep && inOneSubDep) {
+          console.log('Задача внутри одного отдела в одном департаменте');
+          noticeToAppointUser()
+          noticeToResponceUser()
+        } else if (inOneDep && inDifSubDep) {
+          console.log('Задача между отделами в одном департаменте');
+          noticeToAppointUser()
+          noticeToAppointLead()
+          noticeToResponceUser()
+        } else if (inDifDep && inOneSubDep) {
+          console.log('Задача внутри подразделения, но между разными отделами');
+        } else if (inDifDep && inDifSubDep) {
+          console.log('Задача между разными подразделениями разных отделов');
+        }
+      }
+
       sendResponseWithData(res, 'updateTaskResponceSubDep')
     } catch (error) {
       handleError(res, 'updateTaskResponceSubDep')
@@ -196,6 +290,48 @@ class TasksControler {
       const authDecodeUserData = req.user
       const data = JSON.parse(authDecodeUserData.payLoad)
       await updateTaskConfirmRequest(data)
+ 
+      const io = socketManager.getIO()
+
+      const inOneDep = data.appoint_department_id === data.responsible_department_id;
+      const inDifDep = data.appoint_department_id !== data.responsible_department_id;
+      const inOneSubDep = data.appoint_subdepartment_id === data.responsible_subdepartment_id;
+      const inDifSubDep = data.appoint_subdepartment_id !== data.responsible_subdepartment_id;
+
+      const noticeToAppointUser = (user_id) => {(
+        io.to('user_' + data.appoint_user_id)
+         .emit('taskApproved', {message: 'Пользовтель создатель: Задача выполнена', taskData: data}))
+        }
+      const noticeToAppointLead  = (lead_id) => {(
+        io.to('leadSubDep_' + data.appoint_subdepartment_id)
+        .emit('taskApproved',{ message: 'Руководитель создатель: Задача выполнена', taskData: data })
+        )}
+      const noticeToResponceUser = (user_id) => {(
+        io.to('user_' + data.responsible_user_id)
+        .emit('taskApproved', {message: 'Пользователь исполнитель: готово', taskData: data}))
+      }
+      const noticeToResponceLead = (lead_id) => {(
+        io.to('leadSubDep_' + data.responsible_subdepartment_id)
+        .emit('taskApproved',{ message: 'Руководитель исполнитель: Задача выполнена', taskData: data })
+      )}
+
+      if (data.confirmation_on) {
+        if (inOneDep && inOneSubDep) {
+          console.log('Задача внутри одного отдела в одном департаменте');
+          noticeToAppointUser()
+          noticeToAppointLead()
+        } else if (inOneDep && inDifSubDep) {
+          console.log('Задача между отделами в одном департаменте');
+          noticeToAppointUser()
+          noticeToAppointLead()
+          noticeToResponceLead()
+        } else if (inDifDep && inOneSubDep) {
+          console.log('Задача внутри подразделения, но между разными отделами');
+        } else if (inDifDep && inDifSubDep) {
+          console.log('Задача между разными подразделениями разных отделов');
+        }
+      }
+
       sendResponseWithData(res, 'updateTaskConfirmRequest')
     } catch (error) {
       handleError(res, 'updateTaskConfirmRequest')
@@ -207,6 +343,48 @@ class TasksControler {
       const authDecodeUserData = req.user
       const data = JSON.parse(authDecodeUserData.payLoad)
       await updateTaskCloseRequest(data)
+
+      const io = socketManager.getIO()
+
+      const inOneDep = data.appoint_department_id === data.responsible_department_id;
+      const inDifDep = data.appoint_department_id !== data.responsible_department_id;
+      const inOneSubDep = data.appoint_subdepartment_id === data.responsible_subdepartment_id;
+      const inDifSubDep = data.appoint_subdepartment_id !== data.responsible_subdepartment_id;
+
+      const noticeToAppointUser = (user_id) => {(
+        io.to('user_' + data.appoint_user_id)
+         .emit('taskApproved', {message: 'Пользовтель создатель: Задача закрыта', taskData: data}))
+        }
+      const noticeToAppointLead  = (lead_id) => {(
+        io.to('leadSubDep_' + data.appoint_subdepartment_id)
+        .emit('taskApproved',{ message: 'Руководитель создатель: Задача закрыта', taskData: data })
+        )}
+      const noticeToResponceUser = (user_id) => {(
+        io.to('user_' + data.responsible_user_id)
+        .emit('taskApproved', {message: 'Пользователь исполнитель: подтверждена', taskData: data}))
+      }
+      const noticeToResponceLead = (lead_id) => {(
+        io.to('leadSubDep_' + data.responsible_subdepartment_id)
+        .emit('taskApproved',{ message: 'Руководитель исполнитель: Задача закрыта', taskData: data })
+      )}
+
+      if (data.closed_on) {
+        if (inOneDep && inOneSubDep) {
+          console.log('Задача внутри одного отдела в одном департаменте');
+          noticeToAppointLead()
+          noticeToResponceUser()
+        } else if (inOneDep && inDifSubDep) {
+          console.log('Задача между отделами в одном департаменте');
+          noticeToAppointLead()
+          noticeToResponceUser()
+          noticeToResponceLead()
+        } else if (inDifDep && inOneSubDep) {
+          console.log('Задача внутри подразделения, но между разными отделами');
+        } else if (inDifDep && inDifSubDep) {
+          console.log('Задача между разными подразделениями разных отделов');
+        }
+      }
+
       sendResponseWithData(res, 'updateTaskCloseRequest')
     } catch (error) {
       handleError(res, 'updateTaskCloseRequest')
@@ -233,7 +411,7 @@ class TasksControler {
       const fileNames = [];
       const taskFolderName = postPayload.fields.task_id
       const filesToRemoveName = postPayload.fields.filesToRemove
-      
+
       if (filesToRemoveName) {
         const arrFilesToRemove = filesToRemoveName.split(",")
         for (const [key] of Object.entries(arrFilesToRemove)) {
@@ -295,7 +473,7 @@ module.exports = new TasksControler()
 
 
 
-       
+
 // io.to('allChifeRoom').emit('messageForChiefs', 'Сообщение только для начальников!!!!')
 // io.to('allHPRRoom').emit('messageToHPR', 'Это сообщение для всех в комнате HPR');
 

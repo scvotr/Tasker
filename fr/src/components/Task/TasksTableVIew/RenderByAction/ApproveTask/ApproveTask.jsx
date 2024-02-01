@@ -40,6 +40,12 @@ export const ApproveTask = ({ task, reRenderUp }) => {
             task_id: task.task_id,
             task_status: "approved",
             approved_on: true,
+            // --------------------------
+            appoint_user_id: task.appoint_user_id,
+            appoint_department_id:task.appoint_department_id,
+            responsible_department_id:task.responsible_department_id,
+            appoint_subdepartment_id: task.appoint_subdepartment_id,
+            responsible_subdepartment_id: task.responsible_subdepartment_id,
           };
           await updateTaskStatus(currentUser.token, transferData, setReqStatus);
           reRenderUp()

@@ -153,6 +153,7 @@ export const V2UserComponents = ({ updateToTop }) => {
   // !------------------------------------
   useEffect(()=> {
     const leadSubDep = 'leadSubDep_' + currentUser.subDep;
+    const userSocket = 'leadSubDep_' + currentUser.id;
 
     const socket = io(HOST_SOCKET, {
       extraHeaders: { Authorization: currentUser.token },
@@ -168,6 +169,21 @@ export const V2UserComponents = ({ updateToTop }) => {
     });
 
     socket.on('taskCreated', (taskData) => {
+      console.log('Получена информация о создании задачи:', taskData);
+      // Здесь вы можете добавить логику обработки задачи
+    });
+
+    socket.on('taskApproved', (taskData) => {
+      console.log('Новая задача:', taskData);
+      // Здесь вы можете добавить логику обработки задачи
+    });
+
+    socket.on('taskApproved2', (taskData) => {
+      console.log('Задача согласованна:', taskData);
+      // Здесь вы можете добавить логику обработки задачи
+    });
+    
+    socket.on(userSocket, (taskData) => {
       console.log('Получена информация о создании задачи:', taskData);
       // Здесь вы можете добавить логику обработки задачи
     });

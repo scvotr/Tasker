@@ -5,8 +5,7 @@ import { useAuthContext } from "../../../../../context/AuthProvider";
 import { FullTaskInfo } from "../../../../Task/FullTaskInfo/FullTaskInfo";
 import { HOST_ADDR } from "../../../../../utils/ApiHostAdres";
 
-
-export const updateTaskCloseRequest = async (token, data ,onSuccess) => {
+export const updateTaskCloseRequest = async (token, data, onSuccess) => {
   try {
     const res = await fetch(HOST_ADDR + "/tasks/updateTaskCloseRequest", {
       method: "POST",
@@ -24,10 +23,10 @@ export const updateTaskCloseRequest = async (token, data ,onSuccess) => {
       throw new Error("Server response was not ok or content type is not JSON");
     }
   } catch (error) {
-    onSuccess(error)
+    onSuccess(error);
   }
 };
-export const updateTaskRejectRequest = async (token, data ,onSuccess) => {
+export const updateTaskRejectRequest = async (token, data, onSuccess) => {
   try {
     const res = await fetch(HOST_ADDR + "/tasks/updateTaskRejectRequest", {
       method: "POST",
@@ -45,7 +44,7 @@ export const updateTaskRejectRequest = async (token, data ,onSuccess) => {
       throw new Error("Server response was not ok or content type is not JSON");
     }
   } catch (error) {
-    onSuccess(error)
+    onSuccess(error);
   }
 };
 
@@ -64,8 +63,19 @@ export const ConfirmTask = ({ task, reRenderUp }) => {
             task_id: task.task_id,
             closed_on: true,
             task_status: "closed",
+            // -----
+            responsible_user_id: task.responsible_user_id,
+            appoint_user_id: task.appoint_user_id,
+            appoint_department_id: task.appoint_department_id,
+            responsible_department_id: task.responsible_department_id,
+            appoint_subdepartment_id: task.appoint_subdepartment_id,
+            responsible_subdepartment_id: task.responsible_subdepartment_id,
           };
-          await updateTaskCloseRequest(currentUser.token, transferData, setReqStatus)
+          await updateTaskCloseRequest(
+            currentUser.token,
+            transferData,
+            setReqStatus
+          );
           reRenderUp();
         } else {
           const transferData = {
@@ -73,7 +83,11 @@ export const ConfirmTask = ({ task, reRenderUp }) => {
             reject_on: true,
             task_status: "inWork",
           };
-          await updateTaskRejectRequest(currentUser.token, transferData, setReqStatus)
+          await updateTaskRejectRequest(
+            currentUser.token,
+            transferData,
+            setReqStatus
+          );
           reRenderUp();
         }
       } catch (error) {}
@@ -83,8 +97,15 @@ export const ConfirmTask = ({ task, reRenderUp }) => {
   return (
     <div className="approve-form">
       <FullTaskInfo task={task} />
-      <button className="approve-btn" onClick={() => handleConfirmTask(true)}>Подтвердить</button>
-      <button className="approve-btn-rej" onClick={() => handleConfirmTask(false)}>отклонить</button>
+      <button className="approve-btn" onClick={() => handleConfirmTask(true)}>
+        Подтвердить
+      </button>
+      <button
+        className="approve-btn-rej"
+        onClick={() => handleConfirmTask(false)}
+      >
+        отклонить
+      </button>
     </div>
   );
 };

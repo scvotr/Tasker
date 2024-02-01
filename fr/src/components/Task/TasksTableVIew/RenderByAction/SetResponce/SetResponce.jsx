@@ -60,7 +60,14 @@ export const SetResponce = ({ task, reRenderUp }) => {
         responce_user_id: selectedPosition.position_id,
         setResponseUser_on: true,
         task_status: "inWork",
+        // ------------------
         responsible_user_id: selectedPosition.user_id,
+        appoint_user_id: task.appoint_user_id,
+        appoint_department_id:task.appoint_department_id,
+        responsible_department_id:task.responsible_department_id,
+        appoint_subdepartment_id: task.appoint_subdepartment_id,
+        responsible_subdepartment_id: task.responsible_subdepartment_id,
+
       };
       try {
         await updateTaskResponceSubDep(currentUser.token, transferData, setReqStatus);

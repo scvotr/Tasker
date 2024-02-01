@@ -1,12 +1,11 @@
-import './SendToConfirm.css'
-import { useAuthContext } from '../../../../../context/AuthProvider'
+import "./SendToConfirm.css";
+import { useAuthContext } from "../../../../../context/AuthProvider";
 import { useState } from "react";
 // import { updateTaskConfirmRequest } from '../../../../../../api/Task/Tasks';
-import { FullTaskInfo } from '../../../../Task/FullTaskInfo/FullTaskInfo'
-import { HOST_ADDR } from '../../../../../utils/ApiHostAdres'
+import { FullTaskInfo } from "../../../../Task/FullTaskInfo/FullTaskInfo";
+import { HOST_ADDR } from "../../../../../utils/ApiHostAdres";
 
-
-export const updateTaskConfirmRequest = async (token, data ,onSuccess) => {
+export const updateTaskConfirmRequest = async (token, data, onSuccess) => {
   try {
     const res = await fetch(HOST_ADDR + "/tasks/updateTaskConfirmRequest", {
       method: "POST",
@@ -24,34 +23,47 @@ export const updateTaskConfirmRequest = async (token, data ,onSuccess) => {
       throw new Error("Server response was not ok or content type is not JSON");
     }
   } catch (error) {
-    onSuccess(error)
+    onSuccess(error);
   }
 };
 
-export const SendToConfirm = ({task, reRenderUp}) => {
-  const currentUser = useAuthContext()
+export const SendToConfirm = ({ task, reRenderUp }) => {
+  const currentUser = useAuthContext();
   const [resStaus, setReqStatus] = useState(null);
 
-  const handleClick = async() => {
-    if(currentUser.login){
+  const handleClick = async () => {
+    if (currentUser.login) {
       try {
         const transferData = {
           task_id: task.task_id,
           confirmation_on: true,
           task_status: "needToConfirm",
+          // ------------------
+          responsible_user_id: task.responsible_user_id,
+          appoint_user_id: task.appoint_user_id,
+          appoint_department_id: task.appoint_department_id,
+          responsible_department_id: task.responsible_department_id,
+          appoint_subdepartment_id: task.appoint_subdepartment_id,
+          responsible_subdepartment_id: task.responsible_subdepartment_id,
         };
-        await updateTaskConfirmRequest(currentUser.token, transferData, setReqStatus)
+        await updateTaskConfirmRequest(
+          currentUser.token,
+          transferData,
+          setReqStatus
+        );
         reRenderUp();
       } catch (error) {
-        console.log('SendToConfirm', error)
+        console.log("SendToConfirm", error);
       }
     }
-  }
+  };
 
   return (
     <div className=" approve-form">
-      <FullTaskInfo task={task}/>
-      <button className='confirm-btn' onClick={handleClick}>Выполннено</button>
+      <FullTaskInfo task={task} />
+      <button className="confirm-btn" onClick={handleClick}>
+        Выполннено
+      </button>
     </div>
-  )
-}
+  );
+};
