@@ -151,6 +151,9 @@ export const V2UserComponents = ({ updateToTop }) => {
     // return () => clearInterval(fetchDataInterval);
   }, [currentUser, prevUserAppointTasks, prevUserResponsibleTasks, taskFormKey]);
   // !------------------------------------
+
+  const [masgFromSocket, setMsgFromSokcet] = useState()
+
   useEffect(()=> {
     const leadSubDep = 'leadSubDep_' + currentUser.subDep;
     const userSocket = 'leadSubDep_' + currentUser.id;
