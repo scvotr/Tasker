@@ -55,14 +55,6 @@ const handleError = (res, error) => {
     error: error
   }));
 };
-
-const sendNotificationToDepLead = () => {
-
-}
-const sendNotificationToSubDepLead = () => {
-
-}
-
 class TasksControler {
   async addNewTask(req, res) {
     try {
@@ -92,7 +84,7 @@ class TasksControler {
       io.to('leadSubDep_' + fields.appoint_subdepartment_id)
         .emit('taskCreated', {
           message: 'Новая задача на согласование',
-          taskData: fields
+          taskData: fields.task_id
         })
 
       // await updateTaskStatus(postPayload)
@@ -186,29 +178,48 @@ class TasksControler {
       const authDecodeUserData = req.user
       const data = JSON.parse(authDecodeUserData.payLoad)
       await updateTaskStatus(data)
- 
       const io = socketManager.getIO()
+      console.log(data)
 
       const inOneDep = data.appoint_department_id === data.responsible_department_id;
       const inDifDep = data.appoint_department_id !== data.responsible_department_id;
       const inOneSubDep = data.appoint_subdepartment_id === data.responsible_subdepartment_id;
       const inDifSubDep = data.appoint_subdepartment_id !== data.responsible_subdepartment_id;
 
-      const noticeToAppointUser = (user_id) => {(
-        io.to('user_' + data.appoint_user_id)
-         .emit('taskApproved', {message: 'Задача согласованна начальником', taskData: data}))
-        }
+
+      const noticeToAppointUser = (user_id) => {
+        io.in('user_' + data.appoint_user_id).allSockets()
+        .then(client => {
+          if(client.size === 0) {
+            addPendingNotification(data.appoint_user_id, data.task_id, false, 'Задача согласованна начальником')
+            console.log('offline', client, data.appoint_user_id)
+          } else {
+            addPendingNotification(data.appoint_user_id, data.task_id, true, 'Задача согласованна начальником')
+            io.to('user_' + data.appoint_user_id)
+              .emit('taskApproved', {message: 'Задача согласованна начальником', taskData: data.task_id})
+            console.log('online', client, data.appoint_user_id); 
+          }  
+        })
+        .catch(error => {
+            console.error(error); // Обработка ошибки
+        });
+      };
+
+      // const noticeToAppointUser = (user_id) => {(
+      //   io.to('user_' + data.appoint_user_id)
+      //    .emit('taskApproved', {message: 'Задача согласованна начальником', taskData: data.task_id})
+      //   )}
       const noticeToAppointLead  = (lead_id) => {(
         io.to('leadSubDep_' + data.appoint_subdepartment_id)
-        .emit('taskApproved',{ message: 'Новая задача для отдела', taskData: data })
+        .emit('taskApproved',{ message: 'Новая задача для отдела', taskData: data.task_id})
         )}
       const noticeToResponceUser = (user_id) => {(
         io.to('user_' + data.responsible_user_id)
-        .emit('taskApproved', {message: 'Задача согласованна', taskData: data}))
+        .emit('taskApproved', {message: 'Задача согласованна', taskData: data.task_id}))
       }
       const noticeToResponceLead = (lead_id) => {(
         io.to('leadSubDep_' + data.responsible_subdepartment_id)
-        .emit('taskApproved',{ message: 'Новая задача для отдела', taskData: data })
+        .emit('taskApproved',{ message: 'Новая задача для отдела', taskData: data.task_id})
       )}
 
       if (data.approved_on) {
@@ -247,19 +258,19 @@ class TasksControler {
 
       const noticeToAppointUser = (user_id) => {(
         io.to('user_' + data.appoint_user_id)
-         .emit('taskApproved', {message: 'Пользовтель создатель: Назначен исполнитель', taskData: data}))
+         .emit('taskApproved', {message: 'Пользовтель создатель: Назначен исполнитель', taskData: data.task_id}))
         }
       const noticeToAppointLead  = (lead_id) => {(
         io.to('leadSubDep_' + data.appoint_subdepartment_id)
-        .emit('taskApproved',{ message: 'Руководитель создатель: Назначен исполнитель', taskData: data })
+        .emit('taskApproved',{ message: 'Руководитель создатель: Назначен исполнитель', taskData: data.task_id})
         )}
       const noticeToResponceUser = (user_id) => {(
         io.to('user_' + data.responsible_user_id)
-        .emit('taskApproved', {message: 'Пользователь исполнитель: Назначена новая задача', taskData: data}))
+        .emit('taskApproved', {message: 'Пользователь исполнитель: Назначена новая задача', taskData: data.task_id}))
       }
       const noticeToResponceLead = (lead_id) => {(
         io.to('leadSubDep_' + data.responsible_subdepartment_id)
-        .emit('taskApproved',{ message: 'Руководитель исполнитель: Назначен исполнитель', taskData: data })
+        .emit('taskApproved',{ message: 'Руководитель исполнитель: Назначен исполнитель', taskData: data.task_id})
       )}
 
       if (data.setResponseUser_on) {
@@ -300,19 +311,19 @@ class TasksControler {
 
       const noticeToAppointUser = (user_id) => {(
         io.to('user_' + data.appoint_user_id)
-         .emit('taskApproved', {message: 'Пользовтель создатель: Задача выполнена', taskData: data}))
+         .emit('taskApproved', {message: 'Пользовтель создатель: Задача выполнена', taskData: data.task_id}))
         }
       const noticeToAppointLead  = (lead_id) => {(
         io.to('leadSubDep_' + data.appoint_subdepartment_id)
-        .emit('taskApproved',{ message: 'Руководитель создатель: Задача выполнена', taskData: data })
+        .emit('taskApproved',{ message: 'Руководитель создатель: Задача выполнена', taskData: data.task_id})
         )}
       const noticeToResponceUser = (user_id) => {(
         io.to('user_' + data.responsible_user_id)
-        .emit('taskApproved', {message: 'Пользователь исполнитель: готово', taskData: data}))
+        .emit('taskApproved', {message: 'Пользователь исполнитель: готово', taskData: data.task_id}))
       }
       const noticeToResponceLead = (lead_id) => {(
         io.to('leadSubDep_' + data.responsible_subdepartment_id)
-        .emit('taskApproved',{ message: 'Руководитель исполнитель: Задача выполнена', taskData: data })
+        .emit('taskApproved',{ message: 'Руководитель исполнитель: Задача выполнена', taskData: data.task_id})
       )}
 
       if (data.confirmation_on) {
@@ -353,19 +364,19 @@ class TasksControler {
 
       const noticeToAppointUser = (user_id) => {(
         io.to('user_' + data.appoint_user_id)
-         .emit('taskApproved', {message: 'Пользовтель создатель: Задача закрыта', taskData: data}))
+         .emit('taskApproved', {message: 'Пользовтель создатель: Задача закрыта', taskData: data.task_id}))
         }
       const noticeToAppointLead  = (lead_id) => {(
         io.to('leadSubDep_' + data.appoint_subdepartment_id)
-        .emit('taskApproved',{ message: 'Руководитель создатель: Задача закрыта', taskData: data })
+        .emit('taskApproved',{ message: 'Руководитель создатель: Задача закрыта', taskData: data.task_id})
         )}
       const noticeToResponceUser = (user_id) => {(
         io.to('user_' + data.responsible_user_id)
-        .emit('taskApproved', {message: 'Пользователь исполнитель: подтверждена', taskData: data}))
+        .emit('taskApproved', {message: 'Пользователь исполнитель: подтверждена', taskData: data.task_id}))
       }
       const noticeToResponceLead = (lead_id) => {(
         io.to('leadSubDep_' + data.responsible_subdepartment_id)
-        .emit('taskApproved',{ message: 'Руководитель исполнитель: Задача закрыта', taskData: data })
+        .emit('taskApproved',{ message: 'Руководитель исполнитель: Задача закрыта', taskData: data.task_id})
       )}
 
       if (data.closed_on) {
