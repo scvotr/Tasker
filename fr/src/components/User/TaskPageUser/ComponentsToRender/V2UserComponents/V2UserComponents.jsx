@@ -152,7 +152,8 @@ export const V2UserComponents = ({ updateToTop }) => {
   }, [currentUser, prevUserAppointTasks, prevUserResponsibleTasks, taskFormKey]);
   // !------------------------------------
 
-  const [masgFromSocket, setMsgFromSokcet] = useState()
+  const [socketMsg, setSocketMsg] = useState({})
+  console.log('socketMsg', socketMsg.message)
 
   useEffect(()=> {
     const leadSubDep = 'leadSubDep_' + currentUser.subDep;
@@ -169,11 +170,12 @@ export const V2UserComponents = ({ updateToTop }) => {
     });
     socket.on(leadSubDep, (data) => {
       console.log(`подключен к комнате ${leadSubDep}`, data.taskData)
+      
     });
 
     socket.on('taskCreated', (taskData) => {
       console.log('Получена информация о создании задачи:', taskData);
-      // Здесь вы можете добавить логику обработки задачи
+      setSocketMsg(taskData)
     });
 
     socket.on('taskApproved', (taskData) => {
@@ -198,87 +200,16 @@ export const V2UserComponents = ({ updateToTop }) => {
     return () => {
       socket.off('connect');
       socket.off(leadSubDep);
+      socket.off('taskCreated');
+      socket.off('taskApproved');
       socket.disconnect();
       window.removeEventListener('beforeunload', () => socket.disconnect());
     };
   }, [currentUser])
+
+
   const [newTasks, setNewTasks] = useState([])
-
-  // useEffect(()=> {
-  //   const socket = io(HOST_SOCKET, {
-  //     // query: {token : currentUser.token},
-  //     extraHeaders: { Authorization: currentUser.token },
-  //   });
-  //   const sendDataToServer = (data) => {
-  //     socket.emit('userConnect', data);
-  //   };
-  //   socket.on('connect', () => {
-  //     console.log('Подключение к серверу установлено');
-  //     sendDataToServer( {userId: currentUser.id, userName : currentUser.name})
-  //     // Запрашиваем список комнат, к которым подключен клиент
-  //     socket.emit('getMyRooms');
-  //   });
-  //   // Обработчик для получения списка комнат
-  //   socket.on('yourRooms', (rooms) => {
-  //     console.log('Я подключен к комнатам:', rooms);
-  //   });
-  //   socket.on('messageForChiefs', (message) => {
-  //     // console.log(message); // 'Сообщение только для начальников!!!!'
-  //   });
-    
-  //   socket.on(currentUser.id, (data) => {
-  //     // console.log('SOCKET currentUser.id ', data.message)
-  //     // console.log('SOCKE currentUser.id ', data.taskData.fields)
-  //   });
-
-  //   socket.on('messageToHPR', function(message) {
-  //     // console.log('Сообщение из комнаты HPR:', message);
-  //   });
-    
-  //   socket.on('leadSubDep_' + currentUser.subDep, (data) => {
-  //     console.log('leadSubDep_' + currentUser.subDep, data);
-  //     console.log('leadSubDep_message', data.message);
-  //     console.log('leadSubDep_data', data.taskData);
-  //   });
-
-  //   socket.on('taskDataChanged', () => {
-  //     // Обновляем данные задач пользователя
-  //     const fetchData = async () => {
-  //       if (currentUser.login) {
-  //         try {
-  //           const newData = await getDataFromEndpoint(currentUser.token, '/tasks/getAllUserTasks', 'POST', null, setReqStatus);
-  //           setAllTasksSocket(newData); // Обновляем задачи пользователя
-  //         } catch (error) {
-  //           console.log(error);
-  //         }
-  //       }
-  //     };
-  //     fetchData();
-  //   });
-  //   socket.on('taskCreated', (data) => {
-  //     console.log('SOCKET taskCreated 1', data.message)
-  //     console.log('SOCKET taskCreated 2', data.taskData.fields)
-  //   })
-  //   socket.on('newTaskForMe', (data) => {
-  //     console.log('SOCKET newTaskForMe', data.message)
-  //   })
-  //   // Отключение сокета при размонтировании компонента
-  //   window.addEventListener('beforeunload', () => {
-  //     socket.disconnect();
-  //   });
- 
-  //   return () => {
-  //     socket.off('connect');
-  //     socket.off('taskDataChanged');
-  //     socket.off('taskCreated');
-  //     socket.off('newTaskForMe');
-  //     socket.disconnect();
-      
-  //     window.removeEventListener('beforeunload', () => socket.disconnect());
-  //   };
-  // }, [currentUser])
-  // const [newTasks, setNewTasks] = useState([])
-
+  
   // !------------------------------------
   useEffect(() => {
     const localStorageTasksData = localStorage.getItem('localStorageTasksData');
@@ -355,7 +286,16 @@ export const V2UserComponents = ({ updateToTop }) => {
       <h2 className="user-task-page__notifications-heading">
         Уведомления новые\изменился статус:
       </h2>
-      {newTasks && newTasks.length ? (
+      {socketMsg.message && socketMsg.message.length ? (
+        <>
+          <h3 className="user-task-page__no-new-tasks">
+            {socketMsg.message}
+          </h3>
+        </>
+      ) : (
+        <h3 className="user-task-page__no-new-tasks">Новых задач нет</h3>
+      )}
+      {/* {newTasks && newTasks.length ? (
         <>
           <RenderTasksTable
             tasks={newTasks}
@@ -365,7 +305,7 @@ export const V2UserComponents = ({ updateToTop }) => {
         </>
       ) : (
         <h3 className="user-task-page__no-new-tasks">Новых задач нет</h3>
-      )}
+      )} */}
   
       {/* --------------------------------------------------- */}
       <div className="user-task-page__button-container">
